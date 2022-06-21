@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!--    <style name="StyleNameText">-->
+<!--        <item name="android:layout_height">wrap_content</item>-->
+<!--        <item name="android:layout_marginTop">@dimen/margin</item>-->
+<!--        <item name="android:gravity">center</item>-->
+<!--        <item name="android:textSize">@dimen/text_name_size</item>-->
+<!--        <item name="android:textStyle">bold</item>-->
+<!--        <item name="android:textColor">@color/text_color</item>-->
+<!--    </style>-->
+    <style name="StyleDetailText">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/text_description_size</item>
+        <item name="android:textColor">@color/text_color</item>
+    </style>
+
+    <style name="StyleDetailTitle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/pink_500</item>
+        <item name="android:textSize">@dimen/text_description_size</item>
+    </style>
+</resources>

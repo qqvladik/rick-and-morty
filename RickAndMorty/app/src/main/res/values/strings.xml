@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">RickAndMorty</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="characters_title">Characters</string>
+    <string name="locations_title">Locations</string>
+    <string name="episodes_title">Episodes</string>
+    <string name="avatar_content_description">avatar</string>
+    <string name="text_origin">Origin</string>
+    <string name="text_residents">Residents</string>
+    <string name="text_title_type">Type:\ </string>
+    <string name="text_title_gender">Gender:\ </string>
+    <string name="text_title_dimension">Dimension:\ </string>
+    <string name="text_title_season">Season:\ </string>
+    <string name="text_title_episode">Episode:\ </string>
 </resources>

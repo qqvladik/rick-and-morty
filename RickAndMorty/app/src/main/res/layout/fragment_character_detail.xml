@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp"
+    tools:context=".feature.characters.presentation.detail.CharacterDetailFragment">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:layout_gravity="center"
+        android:contentDescription="@string/avatar_content_description"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="@+id/text_title_gender"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/text_name"
+        app:srcCompat="@drawable/ic_launcher_background"
+        tools:ignore="ImageContrastCheck" />
+
+    <TextView
+        android:id="@+id/text_name"
+        style="@style/StyleDetailText"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Morty Smith"
+        android:textSize="@dimen/text_name_size"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text_status"
+        style="@style/StyleDetailText"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/margin"
+        android:text="Alive - Human"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/text_name"
+        app:layout_constraintTop_toBottomOf="@+id/text_name" />
+
+    <TextView
+        android:id="@+id/text_title_character_type"
+        style="@style/StyleDetailTitle"
+        android:layout_width="0dp"
+        android:text="@string/text_title_type"
+        android:layout_marginTop="@dimen/margin"
+        app:layout_constraintStart_toStartOf="@+id/text_status"
+        app:layout_constraintTop_toBottomOf="@+id/text_status" />
+
+    <TextView
+        android:id="@+id/text_character_type"
+        android:layout_width="wrap_content"
+        style="@style/StyleDetailText"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/text_title_character_type"
+        app:layout_constraintTop_toTopOf="@+id/text_title_character_type" />
+
+    <TextView
+        android:id="@+id/text_title_gender"
+        style="@style/StyleDetailTitle"
+        android:layout_width="wrap_content"
+        android:text="@string/text_title_gender"
+        android:layout_marginTop="@dimen/margin"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="@+id/text_title_character_type"
+        app:layout_constraintTop_toBottomOf="@+id/text_title_character_type" />
+
+    <TextView
+        android:id="@+id/text_gender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Male"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/text_description_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/text_title_gender"
+        app:layout_constraintTop_toTopOf="@+id/text_title_gender" />
+
+    <ViewAnimator
+        android:id="@+id/view_animator_character"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/animator_size"
+        android:layout_marginTop="@dimen/margin"
+        android:background="@color/animator_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_gender" />
+
+    <TextView
+        android:id="@+id/text_origin"
+        style="@style/StyleDetailTitle"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="@dimen/margin"
+        android:layout_marginTop="@dimen/margin"
+        android:text="@string/text_origin"
+        android:textStyle=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_animator_character" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
