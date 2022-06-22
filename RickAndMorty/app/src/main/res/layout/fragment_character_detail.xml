@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,7 +9,7 @@
     tools:context=".feature.characters.presentation.detail.CharacterDetailFragment">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/character_image"
         android:layout_width="140dp"
         android:layout_height="140dp"
         android:layout_gravity="center"
@@ -16,12 +17,12 @@
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="@+id/text_title_gender"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/text_name"
+        app:layout_constraintTop_toTopOf="@+id/text_character_name"
         app:srcCompat="@drawable/ic_launcher_background"
         tools:ignore="ImageContrastCheck" />
 
     <TextView
-        android:id="@+id/text_name"
+        android:id="@+id/text_character_name"
         style="@style/StyleDetailText"
         android:layout_width="wrap_content"
         android:layout_marginStart="8dp"
@@ -30,7 +31,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/character_image"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -41,8 +42,8 @@
         android:text="Alive - Human"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/text_name"
-        app:layout_constraintTop_toBottomOf="@+id/text_name" />
+        app:layout_constraintStart_toStartOf="@+id/text_character_name"
+        app:layout_constraintTop_toBottomOf="@+id/text_character_name" />
 
     <TextView
         android:id="@+id/text_title_character_type"
@@ -69,7 +70,7 @@
         android:layout_width="wrap_content"
         android:text="@string/text_title_gender"
         android:layout_marginTop="@dimen/margin"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/character_image"
         app:layout_constraintStart_toStartOf="@+id/text_title_character_type"
         app:layout_constraintTop_toBottomOf="@+id/text_title_character_type" />
 
@@ -86,7 +87,7 @@
         app:layout_constraintTop_toTopOf="@+id/text_title_gender" />
 
     <ViewAnimator
-        android:id="@+id/view_animator_character"
+        android:id="@+id/view_character_animator"
         android:layout_width="match_parent"
         android:layout_height="@dimen/animator_size"
         android:layout_marginTop="@dimen/margin"
@@ -106,7 +107,64 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view_animator_character" />
+        app:layout_constraintTop_toBottomOf="@+id/view_character_animator" />
+
+    <Button
+        android:id="@+id/button_origin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_origin" />
+
+    <TextView
+        android:id="@+id/text_character_location"
+        style="@style/StyleDetailTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Location"
+        android:textStyle=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/text_origin"
+        app:layout_constraintTop_toBottomOf="@+id/button_origin" />
+
+    <Button
+        android:id="@+id/button_character_location"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_character_location" />
+
+
+    <ViewAnimator
+        android:id="@+id/view_animator_character2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/animator_size"
+        android:layout_marginTop="@dimen/margin"
+        android:background="@color/animator_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_character_location" />
+
+    <TextView
+        android:id="@+id/text_character_episodes"
+        style="@style/StyleDetailTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin"
+        android:layout_marginTop="@dimen/margin"
+        android:text="@string/episodes_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_animator_character2" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

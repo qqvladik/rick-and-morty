@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,7 +9,7 @@
     tools:context=".feature.episodes.presentation.detail.EpisodeDetailFragment">
 
     <TextView
-        android:id="@+id/text_name"
+        android:id="@+id/text_episode_name"
         style="@style/StyleDetailText"
         android:layout_width="wrap_content"
         android:text="The Ricklantis Mixup"
@@ -28,7 +29,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_name" />
+        app:layout_constraintTop_toBottomOf="@+id/text_episode_name" />
 
     <TextView
         android:id="@+id/text_title_season"
@@ -50,7 +51,7 @@
         app:layout_constraintTop_toTopOf="@+id/text_title_season" />
 
     <TextView
-        android:id="@+id/text_title_episode"
+        android:id="@+id/text_title_episode_num"
         android:layout_width="wrap_content"
         style="@style/StyleDetailTitle"
         android:layout_marginTop="@dimen/margin"
@@ -59,33 +60,44 @@
         app:layout_constraintTop_toBottomOf="@+id/text_season" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/text_episode_num"
         android:layout_width="wrap_content"
         style="@style/StyleDetailText"
         android:text="07"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/text_title_episode"
-        app:layout_constraintTop_toTopOf="@+id/text_title_episode" />
+        app:layout_constraintStart_toEndOf="@+id/text_title_episode_num"
+        app:layout_constraintTop_toTopOf="@+id/text_title_episode_num" />
 
     <ViewAnimator
-        android:id="@+id/view_animator_episode"
+        android:id="@+id/view_episode_animator"
         android:layout_width="match_parent"
         android:layout_height="@dimen/animator_size"
         android:layout_marginTop="@dimen/margin"
         android:background="@color/animator_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/text_episode_num" />
 
     <TextView
-        android:id="@+id/text_characters"
+        android:id="@+id/text_episode_characters"
         style="@style/StyleDetailTitle"
         android:layout_width="wrap_content"
         android:layout_marginStart="@dimen/margin"
         android:layout_marginTop="@dimen/margin"
         android:text="@string/characters_title"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view_animator_episode" />
+        app:layout_constraintTop_toBottomOf="@+id/view_episode_animator" />
+
+    <FrameLayout
+        android:id="@+id/episode_characters_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_episode_characters">
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

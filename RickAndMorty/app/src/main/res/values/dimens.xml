@@ -4,4 +4,5 @@
     <dimen name="animator_size">3dp</dimen>
     <dimen name="text_name_size">28sp</dimen>
     <dimen name="text_description_size">20sp</dimen>
+    <dimen name="text_small_size">16sp</dimen>
 </resources>

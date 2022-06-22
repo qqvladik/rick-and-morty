@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <TextView
+        android:id="@+id/item_text_episode_name"
+        style="@style/StyleDetailText"
+        android:layout_width="wrap_content"
+        android:text="The Ricklantis Mixup"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/item_text_date"
+        style="@style/StyleDetailText"
+        android:layout_width="wrap_content"
+        android:text="September 10, 2017"
+        android:textSize="@dimen/text_small_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_text_episode_name" />
+
+    <TextView
+        android:id="@+id/item_text_title_season"
+        android:layout_width="wrap_content"
+        style="@style/StyleDetailTitle"
+        android:text="@string/text_title_season"
+        android:textSize="@dimen/text_small_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_text_date" />
+
+    <TextView
+        android:id="@+id/item_text_season"
+        android:layout_width="wrap_content"
+        style="@style/StyleDetailText"
+        android:text="3"
+        android:textSize="@dimen/text_small_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/item_text_title_season"
+        app:layout_constraintTop_toTopOf="@+id/item_text_title_season" />
+
+    <TextView
+        android:id="@+id/item_text_title_episode_num"
+        style="@style/StyleDetailTitle"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/text_title_episode"
+        android:textSize="@dimen/text_small_size"
+        app:layout_constraintStart_toEndOf="@+id/item_text_season"
+        app:layout_constraintTop_toTopOf="@+id/item_text_title_season" />
+
+    <TextView
+        android:id="@+id/item_text_episode_num"
+        android:layout_width="wrap_content"
+        style="@style/StyleDetailText"
+        android:text="07"
+        android:textSize="@dimen/text_small_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/item_text_title_episode_num"
+        app:layout_constraintTop_toTopOf="@+id/item_text_title_episode_num" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
