@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/text_location_name"
+        android:id="@+id/item_text_location_name"
         style="@style/StyleDetailText"
         android:layout_width="wrap_content"
         android:text="Citadel of Ricks"
@@ -17,44 +17,44 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/text_title_location_type"
+        android:id="@+id/item_text_title_location_type"
         style="@style/StyleDetailTitle"
         android:layout_width="wrap_content"
         android:text="@string/text_title_type"
         android:textSize="@dimen/text_small_size"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_location_name" />
+        app:layout_constraintTop_toBottomOf="@+id/item_text_location_name" />
 
     <TextView
-        android:id="@+id/text_location_type"
+        android:id="@+id/item_text_location_type"
         style="@style/StyleDetailText"
         android:layout_width="wrap_content"
         android:text="Space station"
         android:textSize="@dimen/text_small_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/text_title_location_type"
-        app:layout_constraintTop_toTopOf="@+id/text_title_location_type" />
+        app:layout_constraintStart_toEndOf="@+id/item_text_title_location_type"
+        app:layout_constraintTop_toTopOf="@+id/item_text_title_location_type" />
 
     <TextView
-        android:id="@+id/text_title_dimension"
+        android:id="@+id/item_text_title_dimension"
         style="@style/StyleDetailTitle"
         android:layout_width="wrap_content"
         android:text="@string/text_title_dimension"
         android:textSize="@dimen/text_small_size"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_title_location_type" />
+        app:layout_constraintTop_toBottomOf="@+id/item_text_location_type" />
 
 
     <TextView
-        android:id="@+id/text_dimension"
+        android:id="@+id/item_text_dimension"
         style="@style/StyleDetailText"
         android:layout_width="wrap_content"
         android:text="unknown"
         android:textSize="@dimen/text_small_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/text_title_dimension"
-        app:layout_constraintTop_toTopOf="@+id/text_title_dimension" />
+        app:layout_constraintStart_toEndOf="@+id/item_text_title_dimension"
+        app:layout_constraintTop_toTopOf="@+id/item_text_title_dimension" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
