@@ -5,7 +5,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import by.mankevich.rickandmorty.R
+import by.mankevich.rickandmorty.domain.characters.CharacterEntity
+import by.mankevich.rickandmorty.domain.episodes.EpisodeEntity
+import by.mankevich.rickandmorty.feature.base.InitUpdateViewService
+import by.mankevich.rickandmorty.feature.characters.presentation.list.CharactersAdapter
+import by.mankevich.rickandmorty.feature.characters.presentation.list.CharactersDiffUtilCallback
+import by.mankevich.rickandmorty.feature.episodes.presentation.list.EpisodesAdapter
+import by.mankevich.rickandmorty.feature.episodes.presentation.list.EpisodesDiffUtilCallback
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,6 +33,15 @@ class EpisodeDetailFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var textName: TextView
+    private lateinit var textDate: TextView
+    private lateinit var textSeason: TextView
+    private lateinit var textEpisodeNum: TextView
+    private lateinit var recyclerCharacters: RecyclerView
+
+    private lateinit var charactersDiffUtilCallback: CharactersDiffUtilCallback
+    private var charactersAdapter: CharactersAdapter? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -34,8 +54,32 @@ class EpisodeDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_episode_detail, container, false)
+        val view = inflater.inflate(R.layout.fragment_episode_detail, container, false)
+
+        initView(view)
+
+        return view
+    }
+
+    private fun initView(view: View){
+        textName = view.findViewById(R.id.text_episode_name)
+        textDate = view.findViewById(R.id.text_date)
+        textSeason = view.findViewById(R.id.text_season)
+        textEpisodeNum = view.findViewById(R.id.text_episode_num)
+        recyclerCharacters = view.findViewById(R.id.recycler_episode_characters)
+        InitUpdateViewService.getInstance().designRecyclerView(requireContext(), recyclerCharacters, 2)
+
+        charactersAdapter = CharactersAdapter(emptyList())
+        charactersDiffUtilCallback =
+            CharactersDiffUtilCallback(charactersAdapter!!.entitiesList, emptyList())
+        recyclerCharacters.adapter = charactersAdapter
+    }
+
+    private fun updateRecyclerEpisodes(
+        characters: List<CharacterEntity>
+    ) {
+        InitUpdateViewService.getInstance()
+            .updateRecyclerView(characters, charactersAdapter!!, charactersDiffUtilCallback)
     }
 
     companion object {

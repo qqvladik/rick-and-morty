@@ -1,25 +1,22 @@
 package by.mankevich.rickandmorty.feature.episodes.presentation.list
 
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import by.mankevich.rickandmorty.R
-import by.mankevich.rickandmorty.domain.characters.Character
-import by.mankevich.rickandmorty.domain.episodes.Episode
+import by.mankevich.rickandmorty.domain.episodes.EpisodeEntity
 import by.mankevich.rickandmorty.feature.base.BaseAdapter
 import by.mankevich.rickandmorty.feature.base.BaseViewHolder
-import com.squareup.picasso.Picasso
 
-class EpisodesAdapter(episodes: List<Episode>) :
-    BaseAdapter<Episode, EpisodesAdapter.EpisodeViewHolder>(episodes) {
+class EpisodesAdapter(episodes: List<EpisodeEntity>) :
+    BaseAdapter<EpisodeEntity, EpisodesAdapter.EpisodeViewHolder>(episodes) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodeViewHolder =
         EpisodeViewHolder(R.layout.item_character, parent){
             //todo onClick
         }
 
-    inner class EpisodeViewHolder(resource: Int, parent: ViewGroup, onItemClick: (Episode) -> Unit) :
-        BaseViewHolder<Episode>(
+    inner class EpisodeViewHolder(resource: Int, parent: ViewGroup, onItemClick: (EpisodeEntity) -> Unit) :
+        BaseViewHolder<EpisodeEntity>(
             resource,
             parent, onItemClick
         ) {
@@ -29,7 +26,7 @@ class EpisodesAdapter(episodes: List<Episode>) :
         private val textSeason: TextView = itemView.findViewById(R.id.item_text_season)
         private val textEpisodeNum: TextView = itemView.findViewById(R.id.item_text_episode_num)
 
-        override fun bind(entity: Episode) {
+        override fun bind(entity: EpisodeEntity) {
             textName.text = entity.name
             textDate.text = entity.airDate
             textSeason.text = entity.getSeasonNum()

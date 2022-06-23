@@ -5,7 +5,7 @@ import by.mankevich.rickandmorty.domain.base.IEntity
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Episode(
+data class EpisodeEntity(
     var id: Int,
     var name: String,
     var airDate: String,

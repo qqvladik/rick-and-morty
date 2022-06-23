@@ -5,56 +5,78 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.*
 import by.mankevich.rickandmorty.R
+import by.mankevich.rickandmorty.domain.locations.LocationEntity
+import by.mankevich.rickandmorty.feature.base.InitUpdateViewService
+import by.mankevich.rickandmorty.feature.characters.presentation.list.CharactersListFragment
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [LocationsListFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class LocationsListFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var locationsDiffUtilCallback: LocationsDiffUtilCallback
+    private var locationsAdapter: LocationsAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_location_detail, container, false)
+        val view = inflater.inflate(R.layout.fragment_list, container, false)
+
+        setHasOptionsMenu(true)
+        initRecyclerView(view)
+
+        return view
+    }
+
+    private fun initRecyclerView(view: View) {
+        locationsAdapter = LocationsAdapter(emptyList())
+        locationsDiffUtilCallback =
+            LocationsDiffUtilCallback(locationsAdapter!!.entitiesList, emptyList())
+
+        recyclerView = view.findViewById(R.id.recycler_list)
+
+        /*recyclerView.layoutManager = GridLayoutManager(context, 2)
+        val dividerItemDecorationVertical = DividerItemDecoration(context, RecyclerView.VERTICAL)
+        dividerItemDecorationVertical.setDrawable(
+            ResourcesCompat.getDrawable(
+                resources,
+                R.drawable.divider_drawable,
+                null
+            )!!
+        )
+        val dividerItemDecorationHorizontal =
+            DividerItemDecoration(context, RecyclerView.HORIZONTAL)
+        dividerItemDecorationHorizontal.setDrawable(
+            ResourcesCompat.getDrawable(
+                resources,
+                R.drawable.divider_drawable,
+                null
+            )!!
+        )
+        recyclerView.addItemDecoration(dividerItemDecorationHorizontal)
+        recyclerView.addItemDecoration(dividerItemDecorationVertical)*/
+
+        InitUpdateViewService.getInstance().designRecyclerView(requireContext(), recyclerView, 2)
+
+        recyclerView.adapter = locationsAdapter
+    }
+
+    private fun updateUI(
+        locations: List<LocationEntity>
+    ) {
+        /*locationsDiffUtilCallback.oldList = locationsAdapter.entitiesList
+        locationsDiffUtilCallback.newList = locations
+        val contactsDiffResult = DiffUtil.calculateDiff(locationsDiffUtilCallback)
+        locationsAdapter.entitiesList = locations
+        contactsDiffResult.dispatchUpdatesTo(locationsAdapter)*/
+        InitUpdateViewService.getInstance()
+            .updateRecyclerView(locations, locationsAdapter!!, locationsDiffUtilCallback)
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment LocationsListFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            LocationsListFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance(): CharactersListFragment {
+            return CharactersListFragment()
+        }
     }
 }

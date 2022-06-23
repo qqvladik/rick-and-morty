@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="margin">8dp</dimen>
-    <dimen name="animator_size">3dp</dimen>
-    <dimen name="text_name_size">28sp</dimen>
-    <dimen name="text_description_size">20sp</dimen>
+    <dimen name="animator_size">4dp</dimen>
+    <dimen name="item_decoration_divider_size">2dp</dimen>
+    <dimen name="text_big_size">28sp</dimen>
+    <dimen name="text_average_size">20sp</dimen>
     <dimen name="text_small_size">16sp</dimen>
 </resources>

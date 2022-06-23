@@ -21,9 +21,9 @@ class MainFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_main, container, false)
 
-        val charactersListFragment = CharactersListFragment()
-        val locationsListFragment = LocationsListFragment()
-        val episodesListFragment = EpisodesListFragment()
+        val charactersListFragment = CharactersListFragment.newInstance()
+        val locationsListFragment = LocationsListFragment.newInstance()
+        val episodesListFragment = EpisodesListFragment.newInstance()
 
         setCurrentFragment(charactersListFragment)
         bottomNavigationView = view.findViewById(R.id.bottom_navigation)

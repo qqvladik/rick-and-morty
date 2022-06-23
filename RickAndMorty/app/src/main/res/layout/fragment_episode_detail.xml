@@ -13,7 +13,7 @@
         style="@style/StyleDetailText"
         android:layout_width="wrap_content"
         android:text="The Ricklantis Mixup"
-        android:textSize="@dimen/text_name_size"
+        android:textSize="@dimen/text_big_size"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -89,15 +89,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_episode_animator" />
 
-    <FrameLayout
-        android:id="@+id/episode_characters_container"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_episode_characters"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_episode_characters">
-
-    </FrameLayout>
+        app:layout_constraintTop_toBottomOf="@+id/text_episode_characters"
+        tools:itemCount="2"
+        tools:listitem="@layout/item_character" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

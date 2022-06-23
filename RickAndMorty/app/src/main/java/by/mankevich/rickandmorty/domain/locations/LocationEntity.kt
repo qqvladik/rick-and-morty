@@ -5,7 +5,7 @@ import by.mankevich.rickandmorty.domain.base.IEntity
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Location(
+data class LocationEntity(
     var id: Int,
     var name: String,
     var type: String,

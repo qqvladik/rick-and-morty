@@ -2,13 +2,13 @@
 <resources>
     <style name="StyleDetailText">
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">@dimen/text_description_size</item>
+        <item name="android:textSize">@dimen/text_average_size</item>
         <item name="android:textColor">@color/text_color</item>
     </style>
 
     <style name="StyleDetailTitle">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/pink_500</item>
-        <item name="android:textSize">@dimen/text_description_size</item>
+        <item name="android:textSize">@dimen/text_average_size</item>
     </style>
 </resources>
