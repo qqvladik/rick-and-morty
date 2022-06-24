@@ -5,34 +5,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import by.mankevich.rickandmorty.R
 import by.mankevich.rickandmorty.domain.characters.CharacterEntity
 import by.mankevich.rickandmorty.domain.episodes.EpisodeEntity
-import by.mankevich.rickandmorty.feature.base.InitUpdateViewService
+import by.mankevich.rickandmorty.feature.base.UISupportService
 import by.mankevich.rickandmorty.feature.characters.presentation.list.CharactersAdapter
 import by.mankevich.rickandmorty.feature.characters.presentation.list.CharactersDiffUtilCallback
-import by.mankevich.rickandmorty.feature.episodes.presentation.list.EpisodesAdapter
-import by.mankevich.rickandmorty.feature.episodes.presentation.list.EpisodesDiffUtilCallback
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val ARG_EPISODE_ID = "episode_id"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [EpisodeDetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class EpisodeDetailFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
+    private lateinit var episode: EpisodeEntity
     private lateinit var textName: TextView
     private lateinit var textDate: TextView
     private lateinit var textSeason: TextView
@@ -44,10 +30,11 @@ class EpisodeDetailFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val episodeId: Int
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            episodeId = it.getInt(ARG_EPISODE_ID)
         }
+        //todo load episode
     }
 
     override fun onCreateView(
@@ -67,37 +54,25 @@ class EpisodeDetailFragment : Fragment() {
         textSeason = view.findViewById(R.id.text_season)
         textEpisodeNum = view.findViewById(R.id.text_episode_num)
         recyclerCharacters = view.findViewById(R.id.recycler_episode_characters)
-        InitUpdateViewService.getInstance().designRecyclerView(requireContext(), recyclerCharacters, 2)
+        UISupportService.designRecyclerView(requireContext(), recyclerCharacters, 2)
 
-        charactersAdapter = CharactersAdapter(emptyList())
-        charactersDiffUtilCallback =
-            CharactersDiffUtilCallback(charactersAdapter!!.entitiesList, emptyList())
+        charactersAdapter = CharactersAdapter(emptyList()){
+            UISupportService.showCharacterDetailFragment(parentFragmentManager, it.id)
+        }
+        charactersDiffUtilCallback = CharactersDiffUtilCallback(charactersAdapter!!.entitiesList, emptyList())
         recyclerCharacters.adapter = charactersAdapter
     }
 
-    private fun updateRecyclerEpisodes(
-        characters: List<CharacterEntity>
-    ) {
-        InitUpdateViewService.getInstance()
-            .updateRecyclerView(characters, charactersAdapter!!, charactersDiffUtilCallback)
+    private fun updateRecyclerEpisodes(characters: List<CharacterEntity>) {
+        UISupportService.updateRecyclerView(characters, charactersAdapter!!, charactersDiffUtilCallback)
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment EpisodeDetailFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(episodeId: Int) =
             EpisodeDetailFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putInt(ARG_EPISODE_ID, episodeId)
                 }
             }
     }

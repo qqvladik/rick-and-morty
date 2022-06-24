@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.*
 import by.mankevich.rickandmorty.R
 import by.mankevich.rickandmorty.domain.locations.LocationEntity
-import by.mankevich.rickandmorty.feature.base.InitUpdateViewService
+import by.mankevich.rickandmorty.feature.base.UISupportService
 import by.mankevich.rickandmorty.feature.characters.presentation.list.CharactersListFragment
 
 class LocationsListFragment : Fragment() {
@@ -30,48 +30,16 @@ class LocationsListFragment : Fragment() {
     }
 
     private fun initRecyclerView(view: View) {
-        locationsAdapter = LocationsAdapter(emptyList())
-        locationsDiffUtilCallback =
-            LocationsDiffUtilCallback(locationsAdapter!!.entitiesList, emptyList())
-
-        recyclerView = view.findViewById(R.id.recycler_list)
-
-        /*recyclerView.layoutManager = GridLayoutManager(context, 2)
-        val dividerItemDecorationVertical = DividerItemDecoration(context, RecyclerView.VERTICAL)
-        dividerItemDecorationVertical.setDrawable(
-            ResourcesCompat.getDrawable(
-                resources,
-                R.drawable.divider_drawable,
-                null
-            )!!
-        )
-        val dividerItemDecorationHorizontal =
-            DividerItemDecoration(context, RecyclerView.HORIZONTAL)
-        dividerItemDecorationHorizontal.setDrawable(
-            ResourcesCompat.getDrawable(
-                resources,
-                R.drawable.divider_drawable,
-                null
-            )!!
-        )
-        recyclerView.addItemDecoration(dividerItemDecorationHorizontal)
-        recyclerView.addItemDecoration(dividerItemDecorationVertical)*/
-
-        InitUpdateViewService.getInstance().designRecyclerView(requireContext(), recyclerView, 2)
-
+        locationsAdapter = LocationsAdapter(emptyList()){
+            UISupportService.showLocationDetailFragment(parentFragmentManager, it.id)
+        }
+        locationsDiffUtilCallback = LocationsDiffUtilCallback(locationsAdapter!!.entitiesList, emptyList())
+        UISupportService.designRecyclerView(requireContext(), recyclerView, 2)
         recyclerView.adapter = locationsAdapter
     }
 
-    private fun updateUI(
-        locations: List<LocationEntity>
-    ) {
-        /*locationsDiffUtilCallback.oldList = locationsAdapter.entitiesList
-        locationsDiffUtilCallback.newList = locations
-        val contactsDiffResult = DiffUtil.calculateDiff(locationsDiffUtilCallback)
-        locationsAdapter.entitiesList = locations
-        contactsDiffResult.dispatchUpdatesTo(locationsAdapter)*/
-        InitUpdateViewService.getInstance()
-            .updateRecyclerView(locations, locationsAdapter!!, locationsDiffUtilCallback)
+    private fun updateUI(locations: List<LocationEntity>) {
+        UISupportService.updateRecyclerView(locations, locationsAdapter!!, locationsDiffUtilCallback)
     }
 
     companion object {

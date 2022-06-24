@@ -8,10 +8,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import by.mankevich.rickandmorty.R
 import by.mankevich.rickandmorty.domain.characters.CharacterEntity
-import by.mankevich.rickandmorty.domain.locations.LocationEntity
-import by.mankevich.rickandmorty.feature.base.InitUpdateViewService
-import by.mankevich.rickandmorty.feature.locations.presentation.list.LocationsAdapter
-import by.mankevich.rickandmorty.feature.locations.presentation.list.LocationsDiffUtilCallback
+import by.mankevich.rickandmorty.feature.base.UISupportService
+import by.mankevich.rickandmorty.feature.characters.presentation.detail.CharacterDetailFragment
 
 class CharactersListFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
@@ -31,20 +29,26 @@ class CharactersListFragment : Fragment() {
     }
 
     private fun initRecyclerView(view: View) {
-        charactersAdapter = CharactersAdapter(emptyList())
+        charactersAdapter = CharactersAdapter(emptyList()){
+            UISupportService.showCharacterDetailFragment(parentFragmentManager, it.id)
+            /*val characterDetailFragment = CharacterDetailFragment.newInstance(it)
+            UISupportService.getInstance().showDetailFragment(parentFragmentManager, characterDetailFragment)
+            parentFragmentManager.beginTransaction().apply {
+                add(R.id.fragment_container, characterDetailFragment)
+                setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                addToBackStack(null)
+                commit()
+            }*/
+        }
         charactersDiffUtilCallback =
             CharactersDiffUtilCallback(charactersAdapter!!.entitiesList, emptyList())
-
         recyclerView = view.findViewById(R.id.recycler_list)
-
-        InitUpdateViewService.getInstance().designRecyclerView(requireContext(), recyclerView, 2)
-
+        UISupportService.designRecyclerView(requireContext(), recyclerView, 2)
         recyclerView.adapter = charactersAdapter
     }
 
     private fun updateUI(characters: List<CharacterEntity>) {
-        InitUpdateViewService.getInstance()
-            .updateRecyclerView(characters, charactersAdapter!!, charactersDiffUtilCallback)
+        UISupportService.updateRecyclerView(characters, charactersAdapter!!, charactersDiffUtilCallback)
     }
 
     companion object {

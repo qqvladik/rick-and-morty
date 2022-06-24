@@ -9,13 +9,12 @@ import by.mankevich.rickandmorty.feature.base.BaseAdapter
 import by.mankevich.rickandmorty.feature.base.BaseViewHolder
 import com.squareup.picasso.Picasso
 
-class CharactersAdapter(characters: List<CharacterEntity>) :
+class CharactersAdapter(characters: List<CharacterEntity>, private var onItemClick: (CharacterEntity) -> Unit) :
     BaseAdapter<CharacterEntity, CharactersAdapter.CharacterViewHolder>(characters) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder =
-        CharacterViewHolder(R.layout.item_character, parent){
-            //todo onClick
-        }
+        CharacterViewHolder(R.layout.item_character, parent, onItemClick)
+
 
     inner class CharacterViewHolder(resource: Int, parent: ViewGroup, onItemClick: (CharacterEntity) -> Unit) :
         BaseViewHolder<CharacterEntity>(

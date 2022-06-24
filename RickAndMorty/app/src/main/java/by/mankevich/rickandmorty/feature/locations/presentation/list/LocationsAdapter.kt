@@ -7,13 +7,12 @@ import by.mankevich.rickandmorty.domain.locations.LocationEntity
 import by.mankevich.rickandmorty.feature.base.BaseAdapter
 import by.mankevich.rickandmorty.feature.base.BaseViewHolder
 
-class LocationsAdapter(locations: List<LocationEntity>) :
+class LocationsAdapter(locations: List<LocationEntity>, private var onItemClick: (LocationEntity) -> Unit) :
     BaseAdapter<LocationEntity, LocationsAdapter.LocationViewHolder>(locations) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationViewHolder =
-        LocationViewHolder(R.layout.item_character, parent){
-            //todo onClick
-        }
+        LocationViewHolder(R.layout.item_character, parent, onItemClick)
+
 
     inner class LocationViewHolder(resource: Int, parent: ViewGroup, onItemClick: (LocationEntity) -> Unit) :
         BaseViewHolder<LocationEntity>(
