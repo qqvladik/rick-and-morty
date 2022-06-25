@@ -11,7 +11,7 @@ class EpisodesAdapter(episodes: List<EpisodeEntity>,private var onItemClick: (Ep
     BaseAdapter<EpisodeEntity, EpisodesAdapter.EpisodeViewHolder>(episodes) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodeViewHolder =
-        EpisodeViewHolder(R.layout.item_character, parent, onItemClick)
+        EpisodeViewHolder(R.layout.item_episode, parent, onItemClick)
 
 
     inner class EpisodeViewHolder(resource: Int, parent: ViewGroup, onItemClick: (EpisodeEntity) -> Unit) :
@@ -25,7 +25,7 @@ class EpisodesAdapter(episodes: List<EpisodeEntity>,private var onItemClick: (Ep
         private val textSeason: TextView = itemView.findViewById(R.id.item_text_season)
         private val textEpisodeNum: TextView = itemView.findViewById(R.id.item_text_episode_num)
 
-        override fun bind(entity: EpisodeEntity) {
+        override fun bindView(entity: EpisodeEntity) {
             textName.text = entity.name
             textDate.text = entity.airDate
             textSeason.text = entity.getSeasonNum()

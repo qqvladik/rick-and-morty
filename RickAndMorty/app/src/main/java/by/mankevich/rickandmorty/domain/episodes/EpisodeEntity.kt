@@ -14,10 +14,10 @@ data class EpisodeEntity(
 ): Parcelable, IEntity{
 
     fun getSeasonNum(): String{      //"S03E07"
-        return episode.toCharArray(2, 3).toString()
+        return String(episode.toCharArray(2, 3))
     }
 
     fun getEpisodeNum(): String{    //"S03E07"
-        return episode.toCharArray(5, 6).toString()
+        return String(episode.toCharArray(5, 6))
     }
 }

@@ -1,10 +1,13 @@
 package by.mankevich.rickandmorty.feature.characters.presentation.list
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import by.mankevich.rickandmorty.R
 import by.mankevich.rickandmorty.domain.characters.CharacterEntity
@@ -15,6 +18,9 @@ class CharactersListFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var charactersDiffUtilCallback: CharactersDiffUtilCallback
     private var charactersAdapter: CharactersAdapter? = null
+    private val charactersListViewModel: CharactersListViewModel by lazy {
+        ViewModelProvider(this).get(CharactersListViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,8 +34,19 @@ class CharactersListFragment : Fragment() {
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        charactersListViewModel.charactersLiveData.observe(
+            viewLifecycleOwner
+        ) { characters ->
+            characters?.let {
+                updateUI(characters)
+            }
+        }
+    }
+
     private fun initRecyclerView(view: View) {
-        charactersAdapter = CharactersAdapter(emptyList()){
+        charactersAdapter = CharactersAdapter(emptyList()) {
             UISupportService.showCharacterDetailFragment(parentFragmentManager, it.id)
             /*val characterDetailFragment = CharacterDetailFragment.newInstance(it)
             UISupportService.getInstance().showDetailFragment(parentFragmentManager, characterDetailFragment)
@@ -48,7 +65,11 @@ class CharactersListFragment : Fragment() {
     }
 
     private fun updateUI(characters: List<CharacterEntity>) {
-        UISupportService.updateRecyclerView(characters, charactersAdapter!!, charactersDiffUtilCallback)
+        UISupportService.updateRecyclerView(
+            characters,
+            charactersAdapter!!,
+            charactersDiffUtilCallback
+        )
     }
 
     companion object {

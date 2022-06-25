@@ -1,6 +1,7 @@
 package by.mankevich.rickandmorty.feature.base
 
 import android.content.Context
+import android.util.Log
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -15,6 +16,8 @@ import by.mankevich.rickandmorty.domain.locations.LocationEntity
 import by.mankevich.rickandmorty.feature.characters.presentation.detail.CharacterDetailFragment
 import by.mankevich.rickandmorty.feature.episodes.presentation.detail.EpisodeDetailFragment
 import by.mankevich.rickandmorty.feature.locations.presentation.detail.LocationDetailFragment
+
+private const val TAG = "RAMUISupportService"
 
 object UISupportService /*private constructor()*/ {
     /*companion object {
@@ -63,6 +66,7 @@ object UISupportService /*private constructor()*/ {
     }
 
     fun showCharacterDetailFragment(fragmentManager: FragmentManager, characterId: Int){
+        Log.d(TAG, "showCharacterDetailFragment: ")
         val characterDetailFragment = CharacterDetailFragment.newInstance(characterId)
         showDetailFragment(fragmentManager, characterDetailFragment)
     }
@@ -79,7 +83,7 @@ object UISupportService /*private constructor()*/ {
 
     private fun showDetailFragment(fragmentManager: FragmentManager, fragment: Fragment){
         fragmentManager.beginTransaction().apply {
-            add(R.id.fragment_container, fragment)
+            replace(R.id.fragment_container, fragment)
             setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
             addToBackStack(null)
             commit()

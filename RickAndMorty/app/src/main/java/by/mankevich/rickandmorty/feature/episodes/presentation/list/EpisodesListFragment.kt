@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import by.mankevich.rickandmorty.R
 import by.mankevich.rickandmorty.domain.episodes.EpisodeEntity
@@ -15,6 +16,9 @@ class EpisodesListFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var episodesDiffUtilCallback: EpisodesDiffUtilCallback
     private var episodesAdapter: EpisodesAdapter? = null
+    private val episodesListViewModel: EpisodesListViewModel by lazy {
+        ViewModelProvider(this).get(EpisodesListViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,11 +32,23 @@ class EpisodesListFragment : Fragment() {
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        episodesListViewModel.episodesLiveData.observe(
+            viewLifecycleOwner
+        ) { episodes ->
+            episodes?.let {
+                updateUI(episodes)
+            }
+        }
+    }
+
     private fun initRecyclerView(view: View) {
-        episodesAdapter = EpisodesAdapter(emptyList()){
+        episodesAdapter = EpisodesAdapter(emptyList()) {
             UISupportService.showEpisodeDetailFragment(parentFragmentManager, it.id)
         }
-        episodesDiffUtilCallback = EpisodesDiffUtilCallback(episodesAdapter!!.entitiesList, emptyList())
+        episodesDiffUtilCallback =
+            EpisodesDiffUtilCallback(episodesAdapter!!.entitiesList, emptyList())
         recyclerView = view.findViewById(R.id.recycler_list)
         UISupportService.designRecyclerView(requireContext(), recyclerView, 2)
         recyclerView.adapter = episodesAdapter

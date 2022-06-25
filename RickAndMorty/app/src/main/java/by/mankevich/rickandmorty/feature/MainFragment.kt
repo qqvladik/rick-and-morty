@@ -1,6 +1,7 @@
 package by.mankevich.rickandmorty.feature
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,8 @@ import by.mankevich.rickandmorty.feature.characters.presentation.list.Characters
 import by.mankevich.rickandmorty.feature.episodes.presentation.list.EpisodesListFragment
 import by.mankevich.rickandmorty.feature.locations.presentation.list.LocationsListFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+
+private const val TAG = "RAMMainFragment"
 
 class MainFragment : Fragment() {
 
@@ -25,13 +28,20 @@ class MainFragment : Fragment() {
         val locationsListFragment = LocationsListFragment.newInstance()
         val episodesListFragment = EpisodesListFragment.newInstance()
 
-        setCurrentFragment(charactersListFragment)
+        //setCurrentFragment(charactersListFragment)
         bottomNavigationView = view.findViewById(R.id.bottom_navigation)
         bottomNavigationView.setOnItemSelectedListener {
+            Log.d(TAG, "on nav click")
             when(it.itemId){
                 R.id.character_item -> setCurrentFragment(charactersListFragment)
-                R.id.locations_item -> setCurrentFragment(locationsListFragment)
-                R.id.episodes_item -> setCurrentFragment(episodesListFragment)
+                R.id.locations_item -> {
+                    Log.d(TAG, "on locations nav click: ")
+                    setCurrentFragment(locationsListFragment)
+                }
+                R.id.episodes_item -> {
+                    Log.d(TAG, "on episodes nav click: ")
+                    setCurrentFragment(episodesListFragment)
+                }
             }
             true
         }

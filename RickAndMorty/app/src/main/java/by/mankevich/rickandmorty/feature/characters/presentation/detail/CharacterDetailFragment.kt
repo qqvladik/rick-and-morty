@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import by.mankevich.rickandmorty.R
 import by.mankevich.rickandmorty.domain.characters.CharacterEntity
@@ -15,12 +16,12 @@ import by.mankevich.rickandmorty.domain.episodes.EpisodeEntity
 import by.mankevich.rickandmorty.feature.base.UISupportService
 import by.mankevich.rickandmorty.feature.episodes.presentation.list.EpisodesAdapter
 import by.mankevich.rickandmorty.feature.episodes.presentation.list.EpisodesDiffUtilCallback
+import com.squareup.picasso.Picasso
 
 private const val ARG_CHARACTER_ID = "character_id"
 
 class CharacterDetailFragment : Fragment() {
 
-    private lateinit var character: CharacterEntity
     private lateinit var textName: TextView
     private lateinit var textStatus: TextView
     private lateinit var textType: TextView
@@ -33,13 +34,14 @@ class CharacterDetailFragment : Fragment() {
     private lateinit var episodesDiffUtilCallback: EpisodesDiffUtilCallback
     private var episodesAdapter: EpisodesAdapter? = null
 
+    private val characterDetailViewModel: CharacterDetailViewModel by lazy {
+        ViewModelProvider(this).get(CharacterDetailViewModel::class.java)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val characterId: Int
-        arguments?.let {
-            characterId = it.getInt(ARG_CHARACTER_ID)
-        }
-        //todo load character
+        val characterId: Int = arguments?.getInt(ARG_CHARACTER_ID) as Int
+        characterDetailViewModel.loadCharacter(characterId)
     }
 
     override fun onCreateView(
@@ -53,6 +55,21 @@ class CharacterDetailFragment : Fragment() {
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        characterDetailViewModel.contactLiveData.observe(
+            viewLifecycleOwner
+        ) { character ->
+            character?.let {
+                characterDetailViewModel.loadEpisodes(character.episodes)
+                updateUI(character)
+            }
+        }
+        characterDetailViewModel.episodesLiveData.observe(viewLifecycleOwner){ episodes->
+            updateRecyclerEpisodes(episodes)
+        }
+    }
+
     private fun initView(view: View){
         textName = view.findViewById(R.id.text_character_name)
         textStatus = view.findViewById(R.id.text_status)
@@ -62,7 +79,26 @@ class CharacterDetailFragment : Fragment() {
         buttonOrigin = view.findViewById(R.id.button_origin)
         buttonLocation = view.findViewById(R.id.button_character_location)
         recyclerEpisodes = view.findViewById(R.id.recycler_character_episodes)
-        UISupportService.designRecyclerView(requireContext(), recyclerEpisodes, 2)
+
+        UISupportService.designRecyclerView(requireContext(), recyclerEpisodes, 1)
+        episodesAdapter = EpisodesAdapter(emptyList()){
+            UISupportService.showEpisodeDetailFragment(parentFragmentManager, it.id)
+        }
+        episodesDiffUtilCallback = EpisodesDiffUtilCallback(episodesAdapter!!.entitiesList, emptyList())
+        recyclerEpisodes.adapter = episodesAdapter
+    }
+
+    private fun updateUI(character: CharacterEntity){
+        textName.text = character.name
+        textStatus.text = character.getStatusAndSpecies()
+        textType.text = character.type
+        textGender.text = character.gender
+        Picasso.get()
+            .load(character.image)
+            .placeholder(android.R.drawable.ic_menu_gallery)
+            .error(android.R.drawable.ic_menu_report_image)
+            .fit()
+            .into(imageCharacter)
 
         buttonOrigin.text = character.origin.name
         buttonOrigin.text = character.location.name
@@ -72,13 +108,6 @@ class CharacterDetailFragment : Fragment() {
         buttonOrigin.setOnClickListener{
             UISupportService.showLocationDetailFragment(parentFragmentManager, character.location.id )
         }
-
-        episodesAdapter = EpisodesAdapter(emptyList()){
-            UISupportService.showEpisodeDetailFragment(parentFragmentManager, it.id)
-        }
-        episodesDiffUtilCallback = EpisodesDiffUtilCallback(episodesAdapter!!.entitiesList, emptyList())
-
-        recyclerEpisodes.adapter = episodesAdapter
     }
 
     private fun updateRecyclerEpisodes(episodes: List<EpisodeEntity>) {

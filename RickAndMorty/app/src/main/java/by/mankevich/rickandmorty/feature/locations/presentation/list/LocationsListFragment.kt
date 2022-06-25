@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.*
 import by.mankevich.rickandmorty.R
 import by.mankevich.rickandmorty.domain.locations.LocationEntity
@@ -16,6 +17,9 @@ class LocationsListFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var locationsDiffUtilCallback: LocationsDiffUtilCallback
     private var locationsAdapter: LocationsAdapter? = null
+    private val locationsListViewModel: LocationsListViewModel by lazy {
+        ViewModelProvider(this).get(LocationsListViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,17 +33,34 @@ class LocationsListFragment : Fragment() {
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        locationsListViewModel.locationsLiveData.observe(
+            viewLifecycleOwner
+        ) { locations ->
+            locations?.let {
+                updateUI(locations)
+            }
+        }
+    }
+
     private fun initRecyclerView(view: View) {
-        locationsAdapter = LocationsAdapter(emptyList()){
+        locationsAdapter = LocationsAdapter(emptyList()) {
             UISupportService.showLocationDetailFragment(parentFragmentManager, it.id)
         }
-        locationsDiffUtilCallback = LocationsDiffUtilCallback(locationsAdapter!!.entitiesList, emptyList())
+        locationsDiffUtilCallback =
+            LocationsDiffUtilCallback(locationsAdapter!!.entitiesList, emptyList())
+        recyclerView = view.findViewById(R.id.recycler_list)
         UISupportService.designRecyclerView(requireContext(), recyclerView, 2)
         recyclerView.adapter = locationsAdapter
     }
 
     private fun updateUI(locations: List<LocationEntity>) {
-        UISupportService.updateRecyclerView(locations, locationsAdapter!!, locationsDiffUtilCallback)
+        UISupportService.updateRecyclerView(
+            locations,
+            locationsAdapter!!,
+            locationsDiffUtilCallback
+        )
     }
 
     companion object {

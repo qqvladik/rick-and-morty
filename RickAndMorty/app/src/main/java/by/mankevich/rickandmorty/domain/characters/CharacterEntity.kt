@@ -16,7 +16,12 @@ data class CharacterEntity(
     var location: Location,
     var image: String,
     var episodes: List<Int>
-) : Parcelable, IEntity
+) : Parcelable, IEntity{
+
+    fun getStatusAndSpecies(): String{
+        return status.plus(" - ").plus(species)
+    }
+}
 
 @Parcelize
 data class Location(

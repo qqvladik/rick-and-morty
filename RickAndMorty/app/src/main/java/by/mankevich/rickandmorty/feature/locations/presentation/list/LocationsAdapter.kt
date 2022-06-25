@@ -25,7 +25,7 @@ class LocationsAdapter(locations: List<LocationEntity>, private var onItemClick:
         private val textType: TextView = itemView.findViewById(R.id.item_text_location_type)
         private val textDimension: TextView = itemView.findViewById(R.id.item_text_dimension)
 
-        override fun bind(entity: LocationEntity) {
+        override fun bindView(entity: LocationEntity) {
             textName.text = entity.name
             textType.text = entity.type
             textDimension.text = entity.dimension

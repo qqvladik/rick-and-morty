@@ -27,15 +27,15 @@ class CharactersAdapter(characters: List<CharacterEntity>, private var onItemCli
         private val textGender: TextView = itemView.findViewById(R.id.item_text_gender)
         private val imageView: ImageView = itemView.findViewById(R.id.item_character_image)
 
-        override fun bind(entity: CharacterEntity) {
+        override fun bindView(entity: CharacterEntity) {
             textName.text = entity.name
-            textStatus.text = entity.status
+            textStatus.text = entity.getStatusAndSpecies()
             textGender.text = entity.gender
             Picasso.get()
                 .load(entity.image)
                 .placeholder(android.R.drawable.ic_menu_gallery)
                 .error(android.R.drawable.ic_menu_report_image)
-                .centerCrop()
+                .fit()
                 .into(imageView)
         }
     }
