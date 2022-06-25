@@ -29,7 +29,7 @@ class LocationsRepository private constructor(){
     }
 
     fun getLocation(id: Int): LiveData<LocationEntity?>{
-        val locationEntity = locations[id].copy()
+        val locationEntity = locations[id-1].copy()
         return MutableLiveData(locationEntity)
     }
 

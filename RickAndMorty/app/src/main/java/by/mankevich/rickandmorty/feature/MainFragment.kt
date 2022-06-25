@@ -28,20 +28,13 @@ class MainFragment : Fragment() {
         val locationsListFragment = LocationsListFragment.newInstance()
         val episodesListFragment = EpisodesListFragment.newInstance()
 
-        //setCurrentFragment(charactersListFragment)
+        setCurrentFragment(charactersListFragment)
         bottomNavigationView = view.findViewById(R.id.bottom_navigation)
         bottomNavigationView.setOnItemSelectedListener {
-            Log.d(TAG, "on nav click")
             when(it.itemId){
                 R.id.character_item -> setCurrentFragment(charactersListFragment)
-                R.id.locations_item -> {
-                    Log.d(TAG, "on locations nav click: ")
-                    setCurrentFragment(locationsListFragment)
-                }
-                R.id.episodes_item -> {
-                    Log.d(TAG, "on episodes nav click: ")
-                    setCurrentFragment(episodesListFragment)
-                }
+                R.id.locations_item -> setCurrentFragment(locationsListFragment)
+                R.id.episodes_item -> setCurrentFragment(episodesListFragment)
             }
             true
         }

@@ -11,7 +11,7 @@ class LocationsAdapter(locations: List<LocationEntity>, private var onItemClick:
     BaseAdapter<LocationEntity, LocationsAdapter.LocationViewHolder>(locations) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationViewHolder =
-        LocationViewHolder(R.layout.item_character, parent, onItemClick)
+        LocationViewHolder(R.layout.item_location, parent, onItemClick)
 
 
     inner class LocationViewHolder(resource: Int, parent: ViewGroup, onItemClick: (LocationEntity) -> Unit) :

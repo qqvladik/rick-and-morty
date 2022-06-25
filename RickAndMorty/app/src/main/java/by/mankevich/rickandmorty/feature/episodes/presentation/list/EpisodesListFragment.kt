@@ -59,8 +59,8 @@ class EpisodesListFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(): CharactersListFragment {
-            return CharactersListFragment()
+        fun newInstance(): EpisodesListFragment {
+            return EpisodesListFragment()
         }
     }
 }

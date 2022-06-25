@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import by.mankevich.rickandmorty.R
 import by.mankevich.rickandmorty.domain.characters.CharacterEntity
@@ -19,52 +20,72 @@ private const val ARG_LOCATION_ID = "location_id"
 
 class LocationDetailFragment : Fragment() {
 
-    private lateinit var location: Location
     private lateinit var textName: TextView
     private lateinit var textType: TextView
     private lateinit var textDimension: TextView
     private lateinit var recyclerResidents: RecyclerView
+    private val locationDetailViewModel: LocationDetailViewModel by lazy {
+        ViewModelProvider(this).get(LocationDetailViewModel::class.java)
+    }
 
     private lateinit var charactersDiffUtilCallback: CharactersDiffUtilCallback
     private var charactersAdapter: CharactersAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val locationId: Int
-        arguments?.let {
-            locationId = it.getInt(ARG_LOCATION_ID)
-        }
-        //todo load location
+        val locationId: Int = arguments?.getInt(ARG_LOCATION_ID) as Int
+        locationDetailViewModel.loadLocation(locationId)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         val view = inflater.inflate(R.layout.fragment_location_detail, container, false)
-
         initView(view)
-
         return view
     }
 
-    private fun initView(view: View){
-        textName = view.findViewById(R.id.text_episode_name)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        locationDetailViewModel.locationLiveData.observe(viewLifecycleOwner) { location ->
+            location?.let {
+                locationDetailViewModel.loadCharacters(location.residents)
+                updateUI(location)
+            }
+        }
+        locationDetailViewModel.charactersLiveData.observe(viewLifecycleOwner) { characters ->
+            updateRecyclerCharacters(characters)
+        }
+    }
+
+    private fun initView(view: View) {
+        textName = view.findViewById(R.id.text_location_name)
         textType = view.findViewById(R.id.text_location_type)
         textDimension = view.findViewById(R.id.text_dimension)
         recyclerResidents = view.findViewById(R.id.recycler_location_residents)
         UISupportService.designRecyclerView(requireContext(), recyclerResidents, 2)
 
-        charactersAdapter = CharactersAdapter(emptyList()){
+        charactersAdapter = CharactersAdapter(emptyList()) {
             UISupportService.showCharacterDetailFragment(parentFragmentManager, it.id)
         }
-        charactersDiffUtilCallback = CharactersDiffUtilCallback(charactersAdapter!!.entitiesList, emptyList())
+        charactersDiffUtilCallback =
+            CharactersDiffUtilCallback(charactersAdapter!!.entitiesList, emptyList())
         recyclerResidents.adapter = charactersAdapter
     }
 
-    private fun updateRecyclerEpisodes(characters: List<CharacterEntity>) {
-        UISupportService.updateRecyclerView(characters, charactersAdapter!!, charactersDiffUtilCallback)
+    private fun updateUI(location: LocationEntity) {
+        textName.text = location.name
+        textType.text = location.type
+        textDimension.text = location.dimension
+    }
+
+    private fun updateRecyclerCharacters(characters: List<CharacterEntity>) {
+        UISupportService.updateRecyclerView(
+            characters,
+            charactersAdapter!!,
+            charactersDiffUtilCallback
+        )
     }
 
     companion object {

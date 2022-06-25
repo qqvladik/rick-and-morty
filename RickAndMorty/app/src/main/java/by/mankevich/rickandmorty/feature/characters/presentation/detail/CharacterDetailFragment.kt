@@ -57,7 +57,7 @@ class CharacterDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        characterDetailViewModel.contactLiveData.observe(
+        characterDetailViewModel.characterLiveData.observe(
             viewLifecycleOwner
         ) { character ->
             character?.let {
@@ -65,12 +65,12 @@ class CharacterDetailFragment : Fragment() {
                 updateUI(character)
             }
         }
-        characterDetailViewModel.episodesLiveData.observe(viewLifecycleOwner){ episodes->
+        characterDetailViewModel.episodesLiveData.observe(viewLifecycleOwner) { episodes ->
             updateRecyclerEpisodes(episodes)
         }
     }
 
-    private fun initView(view: View){
+    private fun initView(view: View) {
         textName = view.findViewById(R.id.text_character_name)
         textStatus = view.findViewById(R.id.text_status)
         textType = view.findViewById(R.id.text_character_type)
@@ -81,14 +81,15 @@ class CharacterDetailFragment : Fragment() {
         recyclerEpisodes = view.findViewById(R.id.recycler_character_episodes)
 
         UISupportService.designRecyclerView(requireContext(), recyclerEpisodes, 1)
-        episodesAdapter = EpisodesAdapter(emptyList()){
+        episodesAdapter = EpisodesAdapter(emptyList()) {
             UISupportService.showEpisodeDetailFragment(parentFragmentManager, it.id)
         }
-        episodesDiffUtilCallback = EpisodesDiffUtilCallback(episodesAdapter!!.entitiesList, emptyList())
+        episodesDiffUtilCallback =
+            EpisodesDiffUtilCallback(episodesAdapter!!.entitiesList, emptyList())
         recyclerEpisodes.adapter = episodesAdapter
     }
 
-    private fun updateUI(character: CharacterEntity){
+    private fun updateUI(character: CharacterEntity) {
         textName.text = character.name
         textStatus.text = character.getStatusAndSpecies()
         textType.text = character.type
@@ -102,11 +103,14 @@ class CharacterDetailFragment : Fragment() {
 
         buttonOrigin.text = character.origin.name
         buttonOrigin.text = character.location.name
-        buttonOrigin.setOnClickListener{
-            UISupportService.showLocationDetailFragment(parentFragmentManager, character.origin.id )
+        buttonOrigin.setOnClickListener {
+            UISupportService.showLocationDetailFragment(parentFragmentManager, character.origin.id)
         }
-        buttonOrigin.setOnClickListener{
-            UISupportService.showLocationDetailFragment(parentFragmentManager, character.location.id )
+        buttonOrigin.setOnClickListener {
+            UISupportService.showLocationDetailFragment(
+                parentFragmentManager,
+                character.location.id
+            )
         }
     }
 

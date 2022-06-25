@@ -10,20 +10,20 @@ import by.mankevich.rickandmorty.library.repository.CharactersRepository
 import by.mankevich.rickandmorty.library.repository.EpisodesRepository
 import java.util.*
 
-class CharacterDetailViewModel: ViewModel() {
+class CharacterDetailViewModel : ViewModel() {
     private val charactersRepository = CharactersRepository.getInstance()
     private val episodesRepository = EpisodesRepository.getInstance()
     private val characterIdLiveData = MutableLiveData<Int>()
     private val episodesIdListLiveData = MutableLiveData<List<Int>>()
 
-    var contactLiveData: LiveData<CharacterEntity?> =
+    var characterLiveData: LiveData<CharacterEntity?> =
         Transformations.switchMap(characterIdLiveData) { characterId ->
             charactersRepository.getCharacter(characterId)
         }
 
     var episodesLiveData: LiveData<List<EpisodeEntity>> =
-        Transformations.switchMap(episodesIdListLiveData) { characterId ->
-            episodesRepository.getMultipleEpisodes(characterId)
+        Transformations.switchMap(episodesIdListLiveData) { episodesIdList ->
+            episodesRepository.getMultipleEpisodes(episodesIdList)
         }
 
     fun loadEpisodes(episodesIdList: List<Int>) {
