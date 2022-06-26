@@ -3,16 +3,16 @@
     <item
         android:id="@+id/character_item"
         android:icon="@drawable/ic_baseline_people_24"
-        android:title="@string/characters_title" />
+        android:title="@string/text_characters" />
 
     <item
         android:id="@+id/locations_item"
         android:icon="@drawable/ic_baseline_location_on_24"
-        android:title="@string/locations_title" />
+        android:title="@string/text_locations" />
 
     <item
         android:id="@+id/episodes_item"
         android:icon="@drawable/ic_baseline_video_library_24"
-        android:title="@string/episodes_title" />
+        android:title="@string/text_episodes" />
 
 </menu>

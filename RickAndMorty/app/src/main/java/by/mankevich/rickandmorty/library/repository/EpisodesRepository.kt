@@ -11,7 +11,8 @@ class EpisodesRepository private constructor() {
     //private val rickAndMortyApi: RickAndMortyApi
     private var episodes: List<EpisodeEntity> = mutableListOf(
         EpisodeEntity(1, "Birthday", "October 09, 1998", "S01E01", mutableListOf(1)),
-        EpisodeEntity(2, "BrothersBirthday", "xxxxxxx xx, xxxx", "S01E02", mutableListOf(1, 2))
+        EpisodeEntity(2, "BrothersBirthday", "xxxxxxx xx, xxxx", "S01E02",
+            mutableListOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12))
     )
 
     init {

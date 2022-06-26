@@ -6,4 +6,9 @@
     <dimen name="text_big_size">28sp</dimen>
     <dimen name="text_average_size">20sp</dimen>
     <dimen name="text_small_size">16sp</dimen>
+
+    <dimen name="card_elevation_size">4dp</dimen>
+    <dimen name="card_corner_radius_size">4dp</dimen>
+    <dimen name="card_padding">4dp</dimen>
+    <dimen name="card_margin">4dp</dimen>
 </resources>

@@ -1,93 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="16dp"
     tools:context=".feature.locations.presentation.detail.LocationDetailFragment">
 
-    <TextView
-        android:id="@+id/text_location_name"
-        style="@style/StyleDetailText"
-        android:layout_width="wrap_content"
-        android:text="Citadel of Ricks"
-        android:textSize="@dimen/text_big_size"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/text_title_location_type"
-        style="@style/StyleDetailTitle"
-        android:layout_width="wrap_content"
-        android:layout_marginTop="@dimen/margin"
-        android:text="@string/text_title_type"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_location_name" />
-
-    <TextView
-        android:id="@+id/text_location_type"
-        style="@style/StyleDetailText"
-        android:layout_width="wrap_content"
-        android:text="Space station"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/text_title_location_type"
-        app:layout_constraintTop_toTopOf="@+id/text_title_location_type" />
-
-    <TextView
-        android:id="@+id/text_title_dimension"
-        style="@style/StyleDetailTitle"
-        android:layout_width="wrap_content"
-        android:layout_marginTop="@dimen/margin"
-        android:text="@string/text_title_dimension"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_title_location_type" />
-
-
-    <TextView
-        android:id="@+id/text_dimension"
-        style="@style/StyleDetailText"
-        android:layout_width="wrap_content"
-        android:text="unknown"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/text_title_dimension"
-        app:layout_constraintTop_toTopOf="@+id/text_title_dimension" />
-
-    <ViewAnimator
-        android:id="@+id/view_location_animator"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/animator_size"
-        android:layout_marginTop="@dimen/margin"
-        android:background="@color/animator_color"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_dimension" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/text_residents"
-        style="@style/StyleDetailTitle"
-        android:layout_width="wrap_content"
-        android:layout_marginStart="@dimen/margin"
-        android:layout_marginTop="@dimen/margin"
-        android:text="@string/text_residents"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view_location_animator" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="16dp">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_location_residents"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_residents"
-        tools:itemCount="2"
-        tools:listitem="@layout/item_character" />
+            <TextView
+                android:id="@+id/text_location_name"
+                style="@style/StyleDetailText"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/text_big_size"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Citadel of Ricks" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/text_title_location_type"
+                style="@style/StyleDetailTitle"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="@dimen/margin"
+                android:text="@string/text_type"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_location_name" />
+
+            <TextView
+                android:id="@+id/text_location_type"
+                style="@style/StyleDetailText"
+                android:layout_width="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/text_title_location_type"
+                app:layout_constraintTop_toTopOf="@+id/text_title_location_type"
+                tools:text="Space station" />
+
+            <TextView
+                android:id="@+id/text_title_dimension"
+                style="@style/StyleDetailTitle"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="@dimen/margin"
+                android:text="@string/text_dimension"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_title_location_type" />
+
+
+            <TextView
+                android:id="@+id/text_dimension"
+                style="@style/StyleDetailText"
+                android:layout_width="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/text_title_dimension"
+                app:layout_constraintTop_toTopOf="@+id/text_title_dimension"
+                tools:text="unknown" />
+
+            <ViewAnimator
+                android:id="@+id/view_location_animator"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/animator_size"
+                android:layout_marginTop="@dimen/margin"
+                android:background="@color/animator_color"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_dimension" />
+
+            <TextView
+                android:id="@+id/text_residents"
+                style="@style/StyleDetailTitle"
+                android:layout_width="wrap_content"
+                android:layout_marginStart="@dimen/margin"
+                android:layout_marginTop="@dimen/margin"
+                android:text="@string/text_residents"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view_location_animator" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_location_residents"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_residents"
+            tools:itemCount="2"
+            tools:listitem="@layout/item_character" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

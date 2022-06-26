@@ -1,72 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/StyleCardItem"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+    android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/item_text_episode_name"
-        style="@style/StyleDetailText"
-        android:layout_width="wrap_content"
-        android:text="The Ricklantis Mixup"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/card_padding">
 
-    <TextView
-        android:id="@+id/item_text_date"
-        style="@style/StyleDetailText"
-        android:layout_width="wrap_content"
-        android:text="September 10, 2017"
-        android:textSize="@dimen/text_small_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/item_text_episode_name" />
+        <TextView
+            android:id="@+id/item_text_episode_name"
+            style="@style/StyleCardText"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="The Ricklantis Mixup" />
 
-    <TextView
-        android:id="@+id/item_text_title_season"
-        android:layout_width="wrap_content"
-        style="@style/StyleDetailTitle"
-        android:text="@string/text_title_season"
-        android:textSize="@dimen/text_small_size"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/item_text_date" />
+        <TextView
+            android:id="@+id/item_text_date"
+            style="@style/StyleCardText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/item_text_episode_name"
+            tools:text="September 10, 2017" />
 
-    <TextView
-        android:id="@+id/item_text_season"
-        android:layout_width="wrap_content"
-        style="@style/StyleDetailText"
-        android:text="3"
-        android:textSize="@dimen/text_small_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/item_text_title_season"
-        app:layout_constraintTop_toTopOf="@+id/item_text_title_season" />
+        <TextView
+            android:id="@+id/item_text_title_season"
+            style="@style/StyleCardText"
+            android:text="@string/text_season"
+            android:textColor="@color/pink_500"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/item_text_date" />
 
-    <TextView
-        android:id="@+id/item_text_title_episode_num"
-        style="@style/StyleDetailTitle"
-        android:layout_width="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="@string/text_title_episode"
-        android:textSize="@dimen/text_small_size"
-        app:layout_constraintStart_toEndOf="@+id/item_text_season"
-        app:layout_constraintTop_toTopOf="@+id/item_text_title_season" />
+        <TextView
+            android:id="@+id/item_text_season"
+            style="@style/StyleCardText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/item_text_title_season"
+            app:layout_constraintTop_toTopOf="@+id/item_text_title_season"
+            tools:text="03" />
 
-    <TextView
-        android:id="@+id/item_text_episode_num"
-        android:layout_width="wrap_content"
-        style="@style/StyleDetailText"
-        android:text="07"
-        android:textSize="@dimen/text_small_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/item_text_title_episode_num"
-        app:layout_constraintTop_toTopOf="@+id/item_text_title_episode_num" />
+        <TextView
+            android:id="@+id/item_text_title_episode_num"
+            style="@style/StyleCardText"
+            android:text="@string/text_episode"
+            android:textColor="@color/pink_500"
+            app:layout_constraintStart_toStartOf="@+id/item_text_title_season"
+            app:layout_constraintTop_toBottomOf="@+id/item_text_title_season" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/item_text_episode_num"
+            style="@style/StyleCardText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/item_text_title_episode_num"
+            app:layout_constraintTop_toTopOf="@+id/item_text_title_episode_num"
+            tools:text="07" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

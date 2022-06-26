@@ -32,25 +32,25 @@ object UISupportService /*private constructor()*/ {
         spanCount: Int
     ) {
         recyclerView.layoutManager = GridLayoutManager(context, spanCount)
-        val dividerItemDecorationVertical = DividerItemDecoration(context, RecyclerView.VERTICAL)
-        dividerItemDecorationVertical.setDrawable(
-            ResourcesCompat.getDrawable(
-                context.resources,
-                R.drawable.divider_drawable,
-                null
-            )!!
-        )
-        val dividerItemDecorationHorizontal =
-            DividerItemDecoration(context, RecyclerView.HORIZONTAL)
-        dividerItemDecorationHorizontal.setDrawable(
-            ResourcesCompat.getDrawable(
-                context.resources,
-                R.drawable.divider_drawable,
-                null
-            )!!
-        )
-        recyclerView.addItemDecoration(dividerItemDecorationHorizontal)
-        recyclerView.addItemDecoration(dividerItemDecorationVertical)
+//        val dividerItemDecorationVertical = DividerItemDecoration(context, RecyclerView.VERTICAL)
+//        dividerItemDecorationVertical.setDrawable(
+//            ResourcesCompat.getDrawable(
+//                context.resources,
+//                R.drawable.divider_drawable,
+//                null
+//            )!!
+//        )
+//        val dividerItemDecorationHorizontal =
+//            DividerItemDecoration(context, RecyclerView.HORIZONTAL)
+//        dividerItemDecorationHorizontal.setDrawable(
+//            ResourcesCompat.getDrawable(
+//                context.resources,
+//                R.drawable.divider_drawable,
+//                null
+//            )!!
+//        )
+//        recyclerView.addItemDecoration(dividerItemDecorationHorizontal)
+//        recyclerView.addItemDecoration(dividerItemDecorationVertical)
     }
 
     fun <T: IEntity, K: BaseViewHolder<T>> updateRecyclerView(

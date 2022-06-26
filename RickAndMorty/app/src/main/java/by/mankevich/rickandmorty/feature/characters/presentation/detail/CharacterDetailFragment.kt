@@ -102,11 +102,11 @@ class CharacterDetailFragment : Fragment() {
             .into(imageCharacter)
 
         buttonOrigin.text = character.origin.name
-        buttonOrigin.text = character.location.name
+        buttonLocation.text = character.location.name
         buttonOrigin.setOnClickListener {
             UISupportService.showLocationDetailFragment(parentFragmentManager, character.origin.id)
         }
-        buttonOrigin.setOnClickListener {
+        buttonLocation.setOnClickListener {
             UISupportService.showLocationDetailFragment(
                 parentFragmentManager,
                 character.location.id

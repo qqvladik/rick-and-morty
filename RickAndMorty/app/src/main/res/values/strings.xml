@@ -1,15 +1,16 @@
 <resources>
     <string name="app_name">RickAndMorty</string>
 
-    <string name="characters_title">Characters</string>
-    <string name="locations_title">Locations</string>
-    <string name="episodes_title">Episodes</string>
+    <string name="text_characters">Characters</string>
+    <string name="text_locations">Locations</string>
+    <string name="text_episodes">Episodes</string>
     <string name="avatar_content_description">avatar</string>
     <string name="text_origin">Origin</string>
+    <string name="text_location">Location</string>
     <string name="text_residents">Residents</string>
-    <string name="text_title_type">Type:\ </string>
-    <string name="text_title_gender">Gender:\ </string>
-    <string name="text_title_dimension">Dimension:\ </string>
-    <string name="text_title_season">Season:\ </string>
-    <string name="text_title_episode">Episode:\ </string>
+    <string name="text_type">Type:\ </string>
+    <string name="text_gender">Gender:\ </string>
+    <string name="text_dimension">Dimension:\ </string>
+    <string name="text_season">Season:\ </string>
+    <string name="text_episode">Episode:\ </string>
 </resources>
