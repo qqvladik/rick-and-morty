@@ -9,9 +9,8 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import by.mankevich.rickandmorty.R
-import by.mankevich.rickandmorty.domain.characters.CharacterEntity
-import by.mankevich.rickandmorty.domain.characters.Location
-import by.mankevich.rickandmorty.domain.locations.LocationEntity
+import by.mankevich.rickandmorty.library.db.CharacterEntity
+import by.mankevich.rickandmorty.library.db.LocationEntity
 import by.mankevich.rickandmorty.feature.base.UISupportService
 import by.mankevich.rickandmorty.feature.characters.presentation.list.CharactersAdapter
 import by.mankevich.rickandmorty.feature.characters.presentation.list.CharactersDiffUtilCallback

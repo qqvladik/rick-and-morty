@@ -1,18 +1,15 @@
 package by.mankevich.rickandmorty.feature.characters.presentation.list
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import by.mankevich.rickandmorty.R
-import by.mankevich.rickandmorty.domain.characters.CharacterEntity
+import by.mankevich.rickandmorty.library.db.CharacterEntity
 import by.mankevich.rickandmorty.feature.base.UISupportService
-import by.mankevich.rickandmorty.feature.characters.presentation.detail.CharacterDetailFragment
 
 class CharactersListFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
@@ -20,6 +17,11 @@ class CharactersListFragment : Fragment() {
     private var charactersAdapter: CharactersAdapter? = null
     private val charactersListViewModel: CharactersListViewModel by lazy {
         ViewModelProvider(this).get(CharactersListViewModel::class.java)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        charactersListViewModel.loadCharacters()
     }
 
     override fun onCreateView(
@@ -48,14 +50,6 @@ class CharactersListFragment : Fragment() {
     private fun initRecyclerView(view: View) {
         charactersAdapter = CharactersAdapter(emptyList()) {
             UISupportService.showCharacterDetailFragment(parentFragmentManager, it.id)
-            /*val characterDetailFragment = CharacterDetailFragment.newInstance(it)
-            UISupportService.getInstance().showDetailFragment(parentFragmentManager, characterDetailFragment)
-            parentFragmentManager.beginTransaction().apply {
-                add(R.id.fragment_container, characterDetailFragment)
-                setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                addToBackStack(null)
-                commit()
-            }*/
         }
         charactersDiffUtilCallback =
             CharactersDiffUtilCallback(charactersAdapter!!.entitiesList, emptyList())

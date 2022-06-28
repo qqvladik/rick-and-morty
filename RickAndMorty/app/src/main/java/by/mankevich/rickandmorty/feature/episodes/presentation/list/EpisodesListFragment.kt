@@ -8,9 +8,8 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import by.mankevich.rickandmorty.R
-import by.mankevich.rickandmorty.domain.episodes.EpisodeEntity
+import by.mankevich.rickandmorty.library.db.EpisodeEntity
 import by.mankevich.rickandmorty.feature.base.UISupportService
-import by.mankevich.rickandmorty.feature.characters.presentation.list.CharactersListFragment
 
 class EpisodesListFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
@@ -18,6 +17,11 @@ class EpisodesListFragment : Fragment() {
     private var episodesAdapter: EpisodesAdapter? = null
     private val episodesListViewModel: EpisodesListViewModel by lazy {
         ViewModelProvider(this).get(EpisodesListViewModel::class.java)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        episodesListViewModel.loadEpisodes()
     }
 
     override fun onCreateView(

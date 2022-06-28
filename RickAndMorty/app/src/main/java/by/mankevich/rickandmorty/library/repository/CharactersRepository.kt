@@ -1,16 +1,17 @@
 package by.mankevich.rickandmorty.library.repository
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import by.mankevich.rickandmorty.domain.characters.CharacterEntity
-import by.mankevich.rickandmorty.domain.characters.Location
-import by.mankevich.rickandmorty.domain.episodes.EpisodeEntity
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import by.mankevich.photogallery.api.RickAndMortyApi
+import by.mankevich.rickandmorty.library.db.*
 
-class CharactersRepository private constructor() {
+private const val TAG = "RAMCharactersRepository"
 
-    //private val rickAndMortyApi: RickAndMortyApi
+class CharactersRepository private constructor(
+    private val rickAndMortyApi: RickAndMortyApi
+) {
+
     private var characters: List<CharacterEntity> = mutableListOf(
         CharacterEntity(
             1, "Vlad", "Alive", "Human", "Me",
@@ -74,14 +75,39 @@ class CharactersRepository private constructor() {
         ),
     )
 
-    init {
-        /*val retrofit = Retrofit.Builder()
-            .baseUrl("https://rickandmortyapi.com/api")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+//    fun fetchAllCharacters(): LiveData<List<CharacterEntity>> {
+//        Log.d(TAG, "fetchAllCharacters: ")
+//        val responseCharactersLiveData = MutableLiveData<List<CharacterEntity>>()
+//        val charactersListRequest: Call<CharactersListResponse> = rickAndMortyApi.fetchCharacters()
+//        charactersListRequest.enqueue(object : Callback<CharactersListResponse> {
+//            override fun onResponse(
+//                call: Call<CharactersListResponse>,
+//                response: Response<CharactersListResponse>
+//            ) {
+//                Log.d(TAG, "Response received")
+//                val charactersListResponse = response.body()
+//                    ?: throw IllegalStateException("charactersListResponse body is null")
+//                val charactersList = ArrayList<CharacterEntity>()
+//                charactersListResponse.charactersResponse!!.forEach {
+//                    charactersList.add(it.parseToCharacterEntity())
+//                }
+//                responseCharactersLiveData.value = charactersList
+//            }
+//
+//            override fun onFailure(call: Call<CharactersListResponse>, t: Throwable) {
+//                Log.e(TAG, "Failed to fetch characters", t)
+//            }
+//
+//        })
+//        return responseCharactersLiveData
+//    }
 
-        rickAndMortyApi = retrofit.create(RickAndMortyApi::class.java)*/
-
+    suspend fun fetchAllCharacters(): List<CharacterEntity>{
+        val characters = ArrayList<CharacterEntity>()
+        rickAndMortyApi.fetchCharacters().charactersResponse.forEach{
+            characters.add(it.parseToCharacterEntity())
+        }
+        return characters
     }
 
     fun getAllCharacters(): LiveData<List<CharacterEntity>> {
@@ -106,8 +132,15 @@ class CharactersRepository private constructor() {
     }
 
     companion object {
+        private var INSTANCE: CharactersRepository? = null
+
+        fun initialize(appContext: Context, rickAndMortyApi: RickAndMortyApi) {
+            INSTANCE = CharactersRepository(rickAndMortyApi)
+        }
+
         fun getInstance(): CharactersRepository {
-            return CharactersRepository()
+            return INSTANCE
+                ?: throw IllegalStateException("Characters repository must be initialized")
         }
     }
 }

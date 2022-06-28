@@ -8,9 +8,8 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.*
 import by.mankevich.rickandmorty.R
-import by.mankevich.rickandmorty.domain.locations.LocationEntity
+import by.mankevich.rickandmorty.library.db.LocationEntity
 import by.mankevich.rickandmorty.feature.base.UISupportService
-import by.mankevich.rickandmorty.feature.characters.presentation.list.CharactersListFragment
 
 class LocationsListFragment : Fragment() {
 
@@ -19,6 +18,11 @@ class LocationsListFragment : Fragment() {
     private var locationsAdapter: LocationsAdapter? = null
     private val locationsListViewModel: LocationsListViewModel by lazy {
         ViewModelProvider(this).get(LocationsListViewModel::class.java)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        locationsListViewModel.loadLocations()
     }
 
     override fun onCreateView(

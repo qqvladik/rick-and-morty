@@ -1,6 +1,6 @@
 package by.mankevich.rickandmorty.feature.episodes.presentation.list
 
-import by.mankevich.rickandmorty.domain.episodes.EpisodeEntity
+import by.mankevich.rickandmorty.library.db.EpisodeEntity
 import by.mankevich.rickandmorty.feature.base.BaseDiffUtilCallback
 
 class EpisodesDiffUtilCallback(oldList: List<EpisodeEntity>,

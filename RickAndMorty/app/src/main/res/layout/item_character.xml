@@ -27,7 +27,6 @@
         <TextView
             android:id="@+id/item_text_character_name"
             style="@style/StyleCardText"
-            android:layout_width="wrap_content"
             android:layout_marginStart="8dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -39,8 +38,6 @@
         <TextView
             android:id="@+id/item_text_status"
             style="@style/StyleCardText"
-            android:layout_width="wrap_content"
-            android:textSize="@dimen/text_small_size"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/item_text_character_name"
@@ -50,7 +47,6 @@
         <TextView
             android:id="@+id/item_text_title_gender"
             style="@style/StyleCardText"
-            android:layout_width="wrap_content"
             android:text="@string/text_gender"
             android:textColor="@color/pink_500"
             app:layout_constraintStart_toEndOf="@+id/item_character_image"
@@ -60,8 +56,6 @@
         <TextView
             android:id="@+id/item_text_gender"
             style="@style/StyleCardText"
-            android:layout_width="wrap_content"
-            android:textColor="@color/text_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/item_text_title_gender"

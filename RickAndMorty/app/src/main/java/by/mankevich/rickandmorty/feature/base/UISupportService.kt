@@ -2,17 +2,14 @@ package by.mankevich.rickandmorty.feature.base
 
 import android.content.Context
 import android.util.Log
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.mankevich.rickandmorty.R
 import by.mankevich.rickandmorty.domain.base.IEntity
-import by.mankevich.rickandmorty.domain.locations.LocationEntity
 import by.mankevich.rickandmorty.feature.characters.presentation.detail.CharacterDetailFragment
 import by.mankevich.rickandmorty.feature.episodes.presentation.detail.EpisodeDetailFragment
 import by.mankevich.rickandmorty.feature.locations.presentation.detail.LocationDetailFragment

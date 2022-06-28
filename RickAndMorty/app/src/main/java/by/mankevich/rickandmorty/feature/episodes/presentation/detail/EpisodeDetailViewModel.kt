@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import by.mankevich.rickandmorty.domain.characters.CharacterEntity
-import by.mankevich.rickandmorty.domain.episodes.EpisodeEntity
+import by.mankevich.rickandmorty.library.db.CharacterEntity
+import by.mankevich.rickandmorty.library.db.EpisodeEntity
 import by.mankevich.rickandmorty.library.repository.CharactersRepository
 import by.mankevich.rickandmorty.library.repository.EpisodesRepository
 

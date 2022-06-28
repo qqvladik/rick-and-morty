@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import by.mankevich.rickandmorty.R
-import by.mankevich.rickandmorty.domain.characters.CharacterEntity
+import by.mankevich.rickandmorty.library.db.CharacterEntity
 import by.mankevich.rickandmorty.feature.base.BaseAdapter
 import by.mankevich.rickandmorty.feature.base.BaseViewHolder
 import com.squareup.picasso.Picasso

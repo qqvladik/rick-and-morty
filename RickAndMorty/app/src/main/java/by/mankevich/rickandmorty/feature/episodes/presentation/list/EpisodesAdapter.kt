@@ -3,11 +3,11 @@ package by.mankevich.rickandmorty.feature.episodes.presentation.list
 import android.view.ViewGroup
 import android.widget.TextView
 import by.mankevich.rickandmorty.R
-import by.mankevich.rickandmorty.domain.episodes.EpisodeEntity
+import by.mankevich.rickandmorty.library.db.EpisodeEntity
 import by.mankevich.rickandmorty.feature.base.BaseAdapter
 import by.mankevich.rickandmorty.feature.base.BaseViewHolder
 
-class EpisodesAdapter(episodes: List<EpisodeEntity>,private var onItemClick: (EpisodeEntity) -> Unit) :
+class EpisodesAdapter(episodes: List<EpisodeEntity>, private var onItemClick: (EpisodeEntity) -> Unit) :
     BaseAdapter<EpisodeEntity, EpisodesAdapter.EpisodeViewHolder>(episodes) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodeViewHolder =
