@@ -1,10 +1,10 @@
-package by.mankevich.rickandmorty.library.db
+package by.mankevich.rickandmorty.library.db.entity
 
 import android.os.Parcelable
 import by.mankevich.rickandmorty.domain.base.IEntity
 import by.mankevich.rickandmorty.library.api.response.CharacterResponse
 import by.mankevich.rickandmorty.library.api.response.LocationResponse
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 const val UNDEFINED_VALUE = "undefined"
 

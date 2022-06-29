@@ -3,7 +3,7 @@ package by.mankevich.rickandmorty.feature.episodes.presentation.list
 import android.view.ViewGroup
 import android.widget.TextView
 import by.mankevich.rickandmorty.R
-import by.mankevich.rickandmorty.library.db.EpisodeEntity
+import by.mankevich.rickandmorty.library.db.entity.EpisodeEntity
 import by.mankevich.rickandmorty.feature.base.BaseAdapter
 import by.mankevich.rickandmorty.feature.base.BaseViewHolder
 

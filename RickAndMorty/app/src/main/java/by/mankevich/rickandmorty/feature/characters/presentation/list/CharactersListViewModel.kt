@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import by.mankevich.rickandmorty.library.api.State
-import by.mankevich.rickandmorty.library.db.CharacterEntity
+import by.mankevich.rickandmorty.library.db.entity.CharacterEntity
 import by.mankevich.rickandmorty.library.repository.CharactersRepository
 import kotlinx.coroutines.launch
 

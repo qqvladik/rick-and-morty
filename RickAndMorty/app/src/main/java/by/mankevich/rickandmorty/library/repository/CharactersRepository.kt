@@ -1,10 +1,10 @@
 package by.mankevich.rickandmorty.library.repository
 
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import by.mankevich.photogallery.api.RickAndMortyApi
-import by.mankevich.rickandmorty.library.db.*
+import by.mankevich.rickandmorty.library.db.entity.CharacterEntity
+import by.mankevich.rickandmorty.library.db.entity.Location
+import by.mankevich.rickandmorty.library.db.entity.parseToCharacterEntity
 
 private const val TAG = "RAMCharactersRepository"
 

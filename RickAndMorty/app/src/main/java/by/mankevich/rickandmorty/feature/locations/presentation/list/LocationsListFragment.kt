@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.*
 import by.mankevich.rickandmorty.R
-import by.mankevich.rickandmorty.library.db.LocationEntity
+import by.mankevich.rickandmorty.library.db.entity.LocationEntity
 import by.mankevich.rickandmorty.feature.base.UISupportService
 
 class LocationsListFragment : Fragment() {

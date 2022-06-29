@@ -1,9 +1,9 @@
-package by.mankevich.rickandmorty.library.db
+package by.mankevich.rickandmorty.library.db.entity
 
 import android.os.Parcelable
 import by.mankevich.rickandmorty.domain.base.IEntity
 import by.mankevich.rickandmorty.library.api.response.EpisodeResponse
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class EpisodeEntity(

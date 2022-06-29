@@ -1,8 +1,8 @@
 package by.mankevich.rickandmorty.feature.episodes.presentation.detail
 
 import androidx.lifecycle.*
-import by.mankevich.rickandmorty.library.db.CharacterEntity
-import by.mankevich.rickandmorty.library.db.EpisodeEntity
+import by.mankevich.rickandmorty.library.db.entity.CharacterEntity
+import by.mankevich.rickandmorty.library.db.entity.EpisodeEntity
 import by.mankevich.rickandmorty.library.repository.CharactersRepository
 import by.mankevich.rickandmorty.library.repository.EpisodesRepository
 import kotlinx.coroutines.launch

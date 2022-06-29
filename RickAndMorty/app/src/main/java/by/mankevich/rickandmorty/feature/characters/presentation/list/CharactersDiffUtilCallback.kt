@@ -1,6 +1,6 @@
 package by.mankevich.rickandmorty.feature.characters.presentation.list
 
-import by.mankevich.rickandmorty.library.db.CharacterEntity
+import by.mankevich.rickandmorty.library.db.entity.CharacterEntity
 import by.mankevich.rickandmorty.feature.base.BaseDiffUtilCallback
 
 class CharactersDiffUtilCallback(oldList: List<CharacterEntity>,

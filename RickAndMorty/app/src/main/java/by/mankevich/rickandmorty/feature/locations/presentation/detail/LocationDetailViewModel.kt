@@ -1,8 +1,8 @@
 package by.mankevich.rickandmorty.feature.locations.presentation.detail
 
 import androidx.lifecycle.*
-import by.mankevich.rickandmorty.library.db.CharacterEntity
-import by.mankevich.rickandmorty.library.db.LocationEntity
+import by.mankevich.rickandmorty.library.db.entity.CharacterEntity
+import by.mankevich.rickandmorty.library.db.entity.LocationEntity
 import by.mankevich.rickandmorty.library.repository.CharactersRepository
 import by.mankevich.rickandmorty.library.repository.LocationsRepository
 import kotlinx.coroutines.launch

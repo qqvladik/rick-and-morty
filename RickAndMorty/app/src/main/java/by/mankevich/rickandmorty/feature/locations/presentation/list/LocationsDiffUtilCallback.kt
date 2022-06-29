@@ -1,6 +1,6 @@
 package by.mankevich.rickandmorty.feature.locations.presentation.list
 
-import by.mankevich.rickandmorty.library.db.LocationEntity
+import by.mankevich.rickandmorty.library.db.entity.LocationEntity
 import by.mankevich.rickandmorty.feature.base.BaseDiffUtilCallback
 
 class LocationsDiffUtilCallback(oldList: List<LocationEntity>,

@@ -1,11 +1,9 @@
 package by.mankevich.rickandmorty.library.repository
 
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import by.mankevich.photogallery.api.RickAndMortyApi
-import by.mankevich.rickandmorty.library.db.LocationEntity
-import by.mankevich.rickandmorty.library.db.parseToLocationEntity
+import by.mankevich.rickandmorty.library.db.entity.LocationEntity
+import by.mankevich.rickandmorty.library.db.entity.parseToLocationEntity
 
 class LocationsRepository private constructor(
     private val rickAndMortyApi: RickAndMortyApi
