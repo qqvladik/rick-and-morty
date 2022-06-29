@@ -1,13 +1,16 @@
 package by.mankevich.rickandmorty.library.db.entity
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import by.mankevich.rickandmorty.domain.base.IEntity
 import by.mankevich.rickandmorty.library.api.response.LocationFullResponse
 import kotlinx.parcelize.Parcelize
 
+@Entity
 @Parcelize
 data class LocationEntity(
-    var id: Int,
+    @PrimaryKey var id: Int,
     var name: String,
     var type: String,
     var dimension: String,

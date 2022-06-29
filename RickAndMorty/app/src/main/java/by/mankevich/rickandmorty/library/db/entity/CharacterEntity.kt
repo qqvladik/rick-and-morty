@@ -1,6 +1,8 @@
 package by.mankevich.rickandmorty.library.db.entity
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import by.mankevich.rickandmorty.domain.base.IEntity
 import by.mankevich.rickandmorty.library.api.response.CharacterResponse
 import by.mankevich.rickandmorty.library.api.response.LocationResponse
@@ -8,9 +10,10 @@ import kotlinx.parcelize.Parcelize
 
 const val UNDEFINED_VALUE = "undefined"
 
+@Entity
 @Parcelize
 data class CharacterEntity(
-    var id: Int,
+    @PrimaryKey var id: Int,
     var name: String,
     var status: String,
     var species: String,
@@ -20,9 +23,9 @@ data class CharacterEntity(
     var location: Location,
     var image: String,
     var episode: List<Int>
-) : Parcelable, IEntity{
+) : Parcelable, IEntity {
 
-    fun getStatusAndSpecies(): String{
+    fun getStatusAndSpecies(): String {
         return status.plus(" - ").plus(species)
     }
 }
@@ -53,7 +56,7 @@ data class Location(
 
 fun LocationResponse.parseToLocation(): Location {
     return Location(
-        name = name?: UNDEFINED_VALUE,
+        name = name ?: UNDEFINED_VALUE,
         id = if (name == "unknown") {
             0
         } else {
