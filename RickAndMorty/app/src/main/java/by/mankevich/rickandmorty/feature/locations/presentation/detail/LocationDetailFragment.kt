@@ -49,7 +49,6 @@ class LocationDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         locationDetailViewModel.locationLiveData.observe(viewLifecycleOwner) { location ->
             location?.let {
-                locationDetailViewModel.loadCharacters(location.residents)
                 updateUI(location)
             }
         }

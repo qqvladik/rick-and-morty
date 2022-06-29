@@ -75,33 +75,6 @@ class CharactersRepository private constructor(
         ),
     )
 
-//    fun fetchAllCharacters(): LiveData<List<CharacterEntity>> {
-//        Log.d(TAG, "fetchAllCharacters: ")
-//        val responseCharactersLiveData = MutableLiveData<List<CharacterEntity>>()
-//        val charactersListRequest: Call<CharactersListResponse> = rickAndMortyApi.fetchCharacters()
-//        charactersListRequest.enqueue(object : Callback<CharactersListResponse> {
-//            override fun onResponse(
-//                call: Call<CharactersListResponse>,
-//                response: Response<CharactersListResponse>
-//            ) {
-//                Log.d(TAG, "Response received")
-//                val charactersListResponse = response.body()
-//                    ?: throw IllegalStateException("charactersListResponse body is null")
-//                val charactersList = ArrayList<CharacterEntity>()
-//                charactersListResponse.charactersResponse!!.forEach {
-//                    charactersList.add(it.parseToCharacterEntity())
-//                }
-//                responseCharactersLiveData.value = charactersList
-//            }
-//
-//            override fun onFailure(call: Call<CharactersListResponse>, t: Throwable) {
-//                Log.e(TAG, "Failed to fetch characters", t)
-//            }
-//
-//        })
-//        return responseCharactersLiveData
-//    }
-
     suspend fun fetchAllCharacters(): List<CharacterEntity>{
         val characters = ArrayList<CharacterEntity>()
         rickAndMortyApi.fetchCharacters().charactersResponse.forEach{
@@ -110,25 +83,22 @@ class CharactersRepository private constructor(
         return characters
     }
 
-    fun getAllCharacters(): LiveData<List<CharacterEntity>> {
-        val charactersLiveData: MutableLiveData<List<CharacterEntity>> = MutableLiveData()
-        charactersLiveData.value = ArrayList(characters)
-        return charactersLiveData
+    suspend fun getAllCharacters(): List<CharacterEntity> {
+        return ArrayList(characters)
     }
 
-    fun getCharacter(id: Int): LiveData<CharacterEntity?> {
-        val characterCopy = characters[id - 1].copy()
-        return MutableLiveData(characterCopy)
+    suspend fun getCharacter(id: Int): CharacterEntity? {
+        return characters[id - 1].copy()
     }
 
-    fun getMultipleCharacters(charactersIdList: List<Int>): LiveData<List<CharacterEntity>> {
-        val charactersLiveData: MutableLiveData<List<CharacterEntity>> = MutableLiveData()
+    suspend fun getMultipleCharacters(charactersIdList: List<Int>): List<CharacterEntity> {
+//        val charactersLiveData: MutableLiveData<List<CharacterEntity>> = MutableLiveData()
         val multipleCharacters = ArrayList<CharacterEntity>()
         charactersIdList.forEach {
             multipleCharacters.add(characters[it - 1].copy())
         }
-        charactersLiveData.value = multipleCharacters
-        return charactersLiveData
+//        charactersLiveData.value = multipleCharacters
+        return multipleCharacters//charactersLiveData
     }
 
     companion object {

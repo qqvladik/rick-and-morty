@@ -1,35 +1,31 @@
 package by.mankevich.rickandmorty.feature.locations.presentation.detail
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import by.mankevich.rickandmorty.library.db.CharacterEntity
 import by.mankevich.rickandmorty.library.db.LocationEntity
 import by.mankevich.rickandmorty.library.repository.CharactersRepository
 import by.mankevich.rickandmorty.library.repository.LocationsRepository
+import kotlinx.coroutines.launch
 
 class LocationDetailViewModel : ViewModel() {
     private val locationsRepository = LocationsRepository.getInstance()
     private val charactersRepository = CharactersRepository.getInstance()
-    private val locationIdLiveData = MutableLiveData<Int>()
-    private val charactersIdListLiveData = MutableLiveData<List<Int>>()
 
-    var locationLiveData: LiveData<LocationEntity?> =
-        Transformations.switchMap(locationIdLiveData) { locationId ->
-            locationsRepository.getLocation(locationId)
-        }
+    private val _locationLiveData = MutableLiveData<LocationEntity>()
+    val locationLiveData: LiveData<LocationEntity> = _locationLiveData
 
     var charactersLiveData: LiveData<List<CharacterEntity>> =
-        Transformations.switchMap(charactersIdListLiveData) { charactersIdList ->
-            charactersRepository.getMultipleCharacters(charactersIdList)
+        Transformations.switchMap(_locationLiveData) { location ->
+            val charactersLiveData = MutableLiveData<List<CharacterEntity>>()
+            viewModelScope.launch {
+                charactersLiveData.value=charactersRepository.getMultipleCharacters(location!!.residents)
+            }
+            return@switchMap charactersLiveData
         }
 
-    fun loadCharacters(charactersIdList: List<Int>) {
-        charactersIdListLiveData.value = charactersIdList
-    }
-
     fun loadLocation(locationId: Int) {
-        locationIdLiveData.value = locationId
+        viewModelScope.launch {
+            _locationLiveData.value = locationsRepository.getLocation(locationId)
+        }
     }
 }

@@ -41,7 +41,7 @@ class CharacterDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val characterId: Int = arguments?.getInt(ARG_CHARACTER_ID) as Int
-        characterDetailViewModel.loadCharacter(characterId)
+        characterDetailViewModel.loadCharacterFull(characterId)
     }
 
     override fun onCreateView(
@@ -57,17 +57,7 @@ class CharacterDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        characterDetailViewModel.characterLiveData.observe(
-            viewLifecycleOwner
-        ) { character ->
-            character?.let {
-                characterDetailViewModel.loadEpisodes(character.episode)
-                updateUI(character)
-            }
-        }
-        characterDetailViewModel.episodesLiveData.observe(viewLifecycleOwner) { episodes ->
-            updateRecyclerEpisodes(episodes)
-        }
+        observeData()
     }
 
     private fun initView(view: View) {
@@ -87,6 +77,19 @@ class CharacterDetailFragment : Fragment() {
         episodesDiffUtilCallback =
             EpisodesDiffUtilCallback(episodesAdapter!!.entitiesList, emptyList())
         recyclerEpisodes.adapter = episodesAdapter
+    }
+
+    private fun observeData(){
+        characterDetailViewModel.characterLiveData.observe(
+            viewLifecycleOwner
+        ) { character ->
+            character?.let {
+                updateUI(character)
+            }
+        }
+        characterDetailViewModel.episodesLiveData.observe(viewLifecycleOwner) { episodes ->
+            updateRecyclerEpisodes(episodes)
+        }
     }
 
     private fun updateUI(character: CharacterEntity) {

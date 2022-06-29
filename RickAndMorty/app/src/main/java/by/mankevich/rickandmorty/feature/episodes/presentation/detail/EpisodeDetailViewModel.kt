@@ -1,35 +1,31 @@
 package by.mankevich.rickandmorty.feature.episodes.presentation.detail
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import by.mankevich.rickandmorty.library.db.CharacterEntity
 import by.mankevich.rickandmorty.library.db.EpisodeEntity
 import by.mankevich.rickandmorty.library.repository.CharactersRepository
 import by.mankevich.rickandmorty.library.repository.EpisodesRepository
+import kotlinx.coroutines.launch
 
 class EpisodeDetailViewModel : ViewModel() {
     private val episodesRepository = EpisodesRepository.getInstance()
     private val charactersRepository = CharactersRepository.getInstance()
-    private val episodeIdLiveData = MutableLiveData<Int>()
-    private val charactersIdListLiveData = MutableLiveData<List<Int>>()
 
-    var episodeLiveData: LiveData<EpisodeEntity?> =
-        Transformations.switchMap(episodeIdLiveData) { episodeId ->
-            episodesRepository.getEpisode(episodeId)
-        }
+    private val _episodeLiveData = MutableLiveData<EpisodeEntity?>()
+    val episodeLiveData: LiveData<EpisodeEntity?> = _episodeLiveData
 
     var charactersLiveData: LiveData<List<CharacterEntity>> =
-        Transformations.switchMap(charactersIdListLiveData) { charactersIdList ->
-            charactersRepository.getMultipleCharacters(charactersIdList)
+        Transformations.switchMap(_episodeLiveData) { episode ->
+            val charactersLiveData = MutableLiveData<List<CharacterEntity>>()
+            viewModelScope.launch {
+                charactersLiveData.value=charactersRepository.getMultipleCharacters(episode!!.characters)
+            }
+            return@switchMap charactersLiveData
         }
 
-    fun loadCharacters(charactersIdList: List<Int>) {
-        charactersIdListLiveData.value = charactersIdList
-    }
-
-    fun loadEpisode(episodeId: Int) {
-        episodeIdLiveData.value = episodeId
+    fun loadEpisodeFull(episodeId: Int) {
+        viewModelScope.launch {
+            _episodeLiveData.value = episodesRepository.getEpisode(episodeId)
+        }
     }
 }

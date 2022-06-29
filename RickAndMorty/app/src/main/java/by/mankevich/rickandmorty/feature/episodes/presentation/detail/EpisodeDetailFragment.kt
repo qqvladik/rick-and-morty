@@ -35,7 +35,7 @@ class EpisodeDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val episodeId: Int = arguments?.getInt(ARG_EPISODE_ID) as Int
-        episodeDetailViewModel.loadEpisode(episodeId)
+        episodeDetailViewModel.loadEpisodeFull(episodeId)
     }
 
     override fun onCreateView(
@@ -51,7 +51,6 @@ class EpisodeDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         episodeDetailViewModel.episodeLiveData.observe(viewLifecycleOwner) { episode ->
             episode?.let {
-                episodeDetailViewModel.loadCharacters(episode.characters)
                 updateUI(episode)
             }
         }

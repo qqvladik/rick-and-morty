@@ -24,15 +24,12 @@ class LocationsRepository private constructor(
         return locations
     }
 
-    fun getAllLocations(): LiveData<List<LocationEntity>> {
-        val locationsLiveData: MutableLiveData<List<LocationEntity>> = MutableLiveData()
-        locationsLiveData.value = ArrayList(locations)
-        return locationsLiveData
+    suspend fun getAllLocations(): List<LocationEntity> {
+        return ArrayList(locations)
     }
 
-    fun getLocation(id: Int): LiveData<LocationEntity?>{
-        val locationEntity = locations[id-1].copy()
-        return MutableLiveData(locationEntity)
+    suspend fun getLocation(id: Int): LocationEntity?{
+        return locations[id-1].copy()
     }
 
     companion object {

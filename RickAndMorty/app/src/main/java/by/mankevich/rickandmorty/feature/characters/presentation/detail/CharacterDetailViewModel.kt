@@ -1,35 +1,31 @@
 package by.mankevich.rickandmorty.feature.characters.presentation.detail
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import by.mankevich.rickandmorty.library.db.CharacterEntity
 import by.mankevich.rickandmorty.library.db.EpisodeEntity
 import by.mankevich.rickandmorty.library.repository.CharactersRepository
 import by.mankevich.rickandmorty.library.repository.EpisodesRepository
+import kotlinx.coroutines.launch
 
 class CharacterDetailViewModel : ViewModel() {
     private val charactersRepository = CharactersRepository.getInstance()
     private val episodesRepository = EpisodesRepository.getInstance()
-    private val characterIdLiveData = MutableLiveData<Int>()
-    private val episodesIdListLiveData = MutableLiveData<List<Int>>()
 
-    var characterLiveData: LiveData<CharacterEntity?> =
-        Transformations.switchMap(characterIdLiveData) { characterId ->
-            charactersRepository.getCharacter(characterId)
-        }
+    private val _characterLiveData = MutableLiveData<CharacterEntity?>()
+    val characterLiveData: LiveData<CharacterEntity?> = _characterLiveData
 
     var episodesLiveData: LiveData<List<EpisodeEntity>> =
-        Transformations.switchMap(episodesIdListLiveData) { episodesIdList ->
-            episodesRepository.getMultipleEpisodes(episodesIdList)
+        Transformations.switchMap(_characterLiveData) { character ->
+            val episodesLiveData = MutableLiveData<List<EpisodeEntity>>()
+            viewModelScope.launch {
+                episodesLiveData.value=episodesRepository.getMultipleEpisodes(character!!.episode)
+            }
+            return@switchMap episodesLiveData
         }
 
-    fun loadEpisodes(episodesIdList: List<Int>) {
-        episodesIdListLiveData.value = episodesIdList
-    }
-
-    fun loadCharacter(characterId: Int) {
-        characterIdLiveData.value = characterId
+    fun loadCharacterFull(characterId: Int) {
+        viewModelScope.launch {
+            _characterLiveData.value = charactersRepository.getCharacter(characterId)
+        }
     }
 }
