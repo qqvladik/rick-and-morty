@@ -1,28 +1,30 @@
 package by.mankevich.rickandmorty.library.db.entity
 
 import android.os.Parcelable
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import by.mankevich.rickandmorty.domain.base.IEntity
 import by.mankevich.rickandmorty.library.api.response.CharacterResponse
 import by.mankevich.rickandmorty.library.api.response.LocationResponse
+import by.mankevich.rickandmorty.library.db.dao.CharacterDao
 import kotlinx.parcelize.Parcelize
 
 const val UNDEFINED_VALUE = "undefined"
 
-@Entity
 @Parcelize
+@Entity(tableName = CharacterDao.CHARACTER_TABLE_NAME)
 data class CharacterEntity(
-    @PrimaryKey var id: Int,
-    var name: String,
-    var status: String,
-    var species: String,
-    var type: String,
-    var gender: String,
-    var origin: Location,
-    var location: Location,
-    var image: String,
-    var episode: List<Int>
+    @PrimaryKey @ColumnInfo(name = "id") var id: Int,
+    @ColumnInfo(name = "name") var name: String,
+    @ColumnInfo(name = "status") var status: String,
+    @ColumnInfo(name = "species") var species: String,
+    @ColumnInfo(name = "type") var type: String,
+    @ColumnInfo(name = "gender") var gender: String,
+    @ColumnInfo(name = "origin") var origin: Location,
+    @ColumnInfo(name = "location") var location: Location,
+    @ColumnInfo(name = "image") var image: String,
+    @ColumnInfo(name = "episode") var episode: List<Int>
 ) : Parcelable, IEntity {
 
     fun getStatusAndSpecies(): String {

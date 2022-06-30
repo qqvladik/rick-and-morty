@@ -36,9 +36,9 @@ interface RickAndMortyApi {
     @GET("character/{ids}")
     suspend fun fetchMultipleCharacters(@Path("ids") ids: List<Int>): List<CharacterResponse>
 
-    @GET("location/{ids}")
-    suspend fun fetchMultipleLocations(@Path("ids") ids: List<Int>): List<CharacterResponse>
+//    @GET("location/{ids}")
+//    suspend fun fetchMultipleLocations(@Path("ids") ids: List<Int>): List<LocationResponse>
 
     @GET("episode/{ids}")
-    suspend fun fetchMultipleEpisodes(@Path("ids") ids: List<Int>): List<CharacterResponse>
+    suspend fun fetchMultipleEpisodes(@Path("ids") ids: List<Int>): List<EpisodeResponse>
 }

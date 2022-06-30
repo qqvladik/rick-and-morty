@@ -6,16 +6,17 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import by.mankevich.rickandmorty.domain.base.IEntity
 import by.mankevich.rickandmorty.library.api.response.EpisodeResponse
+import by.mankevich.rickandmorty.library.db.dao.EpisodeDao
 import kotlinx.parcelize.Parcelize
 
-@Entity
 @Parcelize
+@Entity(tableName = EpisodeDao.EPISODE_TABLE_NAME)
 data class EpisodeEntity(
-    @PrimaryKey var id: Int,
-    var name: String,
+    @PrimaryKey @ColumnInfo(name = "id") var id: Int,
+    @ColumnInfo(name = "name") var name: String,
     @ColumnInfo(name = "air_date") var airDate: String,
-    var episode: String,
-    var characters: List<Int>
+    @ColumnInfo(name = "episode") var episode: String,
+    @ColumnInfo(name = "characters") var characters: List<Int>
 ) : Parcelable, IEntity {
 
     fun getSeasonNum(): String {      //"S03E07"

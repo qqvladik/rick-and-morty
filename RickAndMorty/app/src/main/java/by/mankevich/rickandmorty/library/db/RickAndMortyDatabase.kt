@@ -22,9 +22,9 @@ import by.mankevich.rickandmorty.library.db.entity.LocationEntity
         EpisodeEntity::class,
         LocationEntity::class
     ],
-    version = RickAndMortyDataBase.DATABASE_VERSION
+    version = RickAndMortyDatabase.DATABASE_VERSION
 )
-abstract class RickAndMortyDataBase : RoomDatabase() {
+abstract class RickAndMortyDatabase : RoomDatabase() {
     companion object {
         const val DATABASE_VERSION = 1
         const val DATABASE_NAME = "ram_database"
