@@ -18,7 +18,11 @@ class LocationsListViewModel: ViewModel() {
 
     fun loadLocations() {
         viewModelScope.launch {
-            _locationsLiveData.postValue(locationsRepository.fetchAllLocations())//todo можно обернуть в state
+            try{
+            _locationsLiveData.postValue(locationsRepository.fetchAllAndInsertLocations())//todo можно обернуть в state
+            } catch (e: Exception) {
+                Log.d(TAG, "loadLocations failure")
+            }
         }
         //через viewModelScope работает гораздо быстрее чем блок ниже, даже связь с инетом через liveData работала быстрее
 //        locationsLiveData = liveData(Dispatchers.IO) {

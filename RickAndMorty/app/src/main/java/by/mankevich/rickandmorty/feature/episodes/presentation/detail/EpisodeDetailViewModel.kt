@@ -18,7 +18,7 @@ class EpisodeDetailViewModel : ViewModel() {
         Transformations.switchMap(_episodeLiveData) { episode ->
             val charactersLiveData = MutableLiveData<List<CharacterEntity>>()
             viewModelScope.launch {
-                charactersLiveData.value=charactersRepository.getMultipleCharacters(episode!!.characters)
+                charactersLiveData.value=charactersRepository.fetchMultipleAndInsertCharacters(episode!!.characters)
             }
             return@switchMap charactersLiveData
         }

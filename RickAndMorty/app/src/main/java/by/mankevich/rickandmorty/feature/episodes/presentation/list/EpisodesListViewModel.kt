@@ -15,11 +15,15 @@ class EpisodesListViewModel: ViewModel() {
     private val episodesRepository = EpisodesRepository.getInstance()
 
     private val _episodesLiveData = MutableLiveData<List<EpisodeEntity>>()
-    val episodesLiveData: LiveData<List<EpisodeEntity>> = _episodesLiveData //= episodesRepository.fetchAllEpisodes()
+    val episodesLiveData: LiveData<List<EpisodeEntity>> = _episodesLiveData
 
     fun loadEpisodes(){
         viewModelScope.launch {
-            _episodesLiveData.postValue(episodesRepository.fetchAllEpisodes())
+            try {
+            _episodesLiveData.postValue(episodesRepository.fetchAllAndInsertEpisodes())
+            } catch (e: Exception) {
+                Log.d(TAG, "loadEpisodes failure")
+            }
         }
     }
 }

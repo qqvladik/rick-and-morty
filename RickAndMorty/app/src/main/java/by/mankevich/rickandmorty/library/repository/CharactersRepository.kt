@@ -1,7 +1,9 @@
 package by.mankevich.rickandmorty.library.repository
 
-import android.content.Context
 import by.mankevich.photogallery.api.RickAndMortyApi
+import by.mankevich.rickandmorty.library.db.RickAndMortyDatabase
+import by.mankevich.rickandmorty.library.db.base.BaseRepository
+import by.mankevich.rickandmorty.library.db.dao.CharacterDao
 import by.mankevich.rickandmorty.library.db.entity.CharacterEntity
 import by.mankevich.rickandmorty.library.db.entity.Location
 import by.mankevich.rickandmorty.library.db.entity.parseToCharacterEntity
@@ -9,8 +11,10 @@ import by.mankevich.rickandmorty.library.db.entity.parseToCharacterEntity
 private const val TAG = "RAMCharactersRepository"
 
 class CharactersRepository private constructor(
-    private val rickAndMortyApi: RickAndMortyApi
-) {
+    private val rickAndMortyApi: RickAndMortyApi,
+    rickAndMortyDatabase: RickAndMortyDatabase
+) : BaseRepository {
+    private val characterDao: CharacterDao = rickAndMortyDatabase.getCharacterDao()
 
     private var characters: List<CharacterEntity> = mutableListOf(
         CharacterEntity(
@@ -75,37 +79,72 @@ class CharactersRepository private constructor(
         ),
     )
 
-    suspend fun fetchAllCharacters(): List<CharacterEntity>{
+    suspend fun fetchAllCharacters(): List<CharacterEntity> {
         val characters = ArrayList<CharacterEntity>()
-        rickAndMortyApi.fetchCharacters().charactersResponse.forEach{
+        rickAndMortyApi.fetchCharacters().charactersResponse.forEach {
             characters.add(it.parseToCharacterEntity())
         }
         return characters
     }
 
-    suspend fun getAllCharacters(): List<CharacterEntity> {
+    suspend fun fetchAllAndInsertCharacters(): List<CharacterEntity> {
+        val characters = ArrayList<CharacterEntity>()
+        rickAndMortyApi.fetchCharacters().charactersResponse.forEach {
+            characters.add(it.parseToCharacterEntity())
+        }
+        insertListCharacters(characters)
+        return characters
+    }
+
+    suspend fun fetchMultipleCharacters(ids: List<Int>): List<CharacterEntity> {
+        val characters = ArrayList<CharacterEntity>()
+        if (validateIds(ids)) {
+            rickAndMortyApi.fetchMultipleCharacters(ids).forEach {
+                characters.add(it.parseToCharacterEntity())
+            }
+        }
+        return characters
+    }
+
+    suspend fun fetchMultipleAndInsertCharacters(ids: List<Int>): List<CharacterEntity> {
+        val characters = ArrayList<CharacterEntity>()
+        if (validateIds(ids)) {
+            rickAndMortyApi.fetchMultipleCharacters(ids).forEach {
+                characters.add(it.parseToCharacterEntity())
+            }
+            insertListCharacters(characters)
+        }
+        return characters
+    }
+
+    suspend fun insertListCharacters(characters: List<CharacterEntity>) {
+        characterDao.insertListCharacters(characters)
+    }
+
+    suspend fun getAllCharacters(): List<CharacterEntity> {//todo
         return ArrayList(characters)
     }
 
     suspend fun getCharacter(id: Int): CharacterEntity? {
-        return characters[id - 1].copy()
+        return characterDao.getCharacterById(id)
     }
 
-    suspend fun getMultipleCharacters(charactersIdList: List<Int>): List<CharacterEntity> {
-//        val charactersLiveData: MutableLiveData<List<CharacterEntity>> = MutableLiveData()
+    suspend fun getMultipleCharacters(charactersIdList: List<Int>): List<CharacterEntity> {//todo
         val multipleCharacters = ArrayList<CharacterEntity>()
         charactersIdList.forEach {
             multipleCharacters.add(characters[it - 1].copy())
         }
-//        charactersLiveData.value = multipleCharacters
         return multipleCharacters//charactersLiveData
     }
 
     companion object {
         private var INSTANCE: CharactersRepository? = null
 
-        fun initialize(appContext: Context, rickAndMortyApi: RickAndMortyApi) {
-            INSTANCE = CharactersRepository(rickAndMortyApi)
+        fun initialize(
+            rickAndMortyApi: RickAndMortyApi,
+            rickAndMortyDatabase: RickAndMortyDatabase
+        ) {
+            INSTANCE = CharactersRepository(rickAndMortyApi, rickAndMortyDatabase)
         }
 
         fun getInstance(): CharactersRepository {

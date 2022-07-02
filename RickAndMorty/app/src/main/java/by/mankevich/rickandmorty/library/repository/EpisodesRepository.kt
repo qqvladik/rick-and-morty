@@ -1,15 +1,21 @@
 package by.mankevich.rickandmorty.library.repository
 
-import android.content.Context
 import by.mankevich.photogallery.api.RickAndMortyApi
+import by.mankevich.rickandmorty.library.db.RickAndMortyDatabase
+import by.mankevich.rickandmorty.library.db.base.BaseRepository
+import by.mankevich.rickandmorty.library.db.dao.EpisodeDao
+import by.mankevich.rickandmorty.library.db.entity.CharacterEntity
 import by.mankevich.rickandmorty.library.db.entity.EpisodeEntity
 import by.mankevich.rickandmorty.library.db.entity.parseToEpisodeEntity
 
 private const val TAG = "RAMEpisodesRepository"
 
 class EpisodesRepository private constructor(
-    private val rickAndMortyApi: RickAndMortyApi
-) {
+    private val rickAndMortyApi: RickAndMortyApi,
+    rickAndMortyDatabase: RickAndMortyDatabase
+) : BaseRepository {
+
+    private val episodeDao: EpisodeDao = rickAndMortyDatabase.getEpisodeDao()
 
     private var episodes: List<EpisodeEntity> = mutableListOf(
         EpisodeEntity(1, "Birthday", "October 09, 1998", "S01E01", mutableListOf(1)),
@@ -19,23 +25,57 @@ class EpisodesRepository private constructor(
         )
     )
 
-    suspend fun fetchAllEpisodes(): List<EpisodeEntity>{
+    suspend fun fetchAllEpisodes(): List<EpisodeEntity> {
         val episodes = ArrayList<EpisodeEntity>()
-        rickAndMortyApi.fetchEpisodes().episodesResponse.forEach{
+        rickAndMortyApi.fetchEpisodes().episodesResponse.forEach {
             episodes.add(it.parseToEpisodeEntity())
         }
         return episodes
     }
 
-    suspend fun getAllEpisodes(): List<EpisodeEntity> {
+    suspend fun fetchAllAndInsertEpisodes(): List<EpisodeEntity> {
+        val episodes = ArrayList<EpisodeEntity>()
+        rickAndMortyApi.fetchEpisodes().episodesResponse.forEach {
+            episodes.add(it.parseToEpisodeEntity())
+        }
+        insertListEpisodes(episodes)
+        return episodes
+    }
+
+    suspend fun fetchMultipleEpisodes(ids: List<Int>): List<EpisodeEntity> {
+        val episodes = ArrayList<EpisodeEntity>()
+        if (validateIds(ids)) {
+            rickAndMortyApi.fetchMultipleEpisodes(ids).forEach {
+                episodes.add(it.parseToEpisodeEntity())
+            }
+        }
+        return episodes
+    }
+
+    suspend fun fetchMultipleAndInsertEpisodes(ids: List<Int>): List<EpisodeEntity> {
+        val episodes = ArrayList<EpisodeEntity>()
+        if (validateIds(ids)) {
+            rickAndMortyApi.fetchMultipleEpisodes(ids).forEach {
+                episodes.add(it.parseToEpisodeEntity())
+            }
+            insertListEpisodes(episodes)
+        }
+        return episodes
+    }
+
+    suspend fun insertListEpisodes(episodes: List<EpisodeEntity>) {
+        episodeDao.insertListEpisodes(episodes)
+    }
+
+    suspend fun getAllEpisodes(): List<EpisodeEntity> {//todo
         return ArrayList(episodes)
     }
 
     suspend fun getEpisode(id: Int): EpisodeEntity? {
-        return episodes[id - 1].copy()
+        return episodeDao.getEpisodeById(id)
     }
 
-    suspend fun getMultipleEpisodes(episodesIdList: List<Int>): List<EpisodeEntity> {
+    suspend fun getMultipleEpisodes(episodesIdList: List<Int>): List<EpisodeEntity> {//todo
 //        val episodesLiveData: MutableLiveData<List<EpisodeEntity>> = MutableLiveData()
         val multipleEpisodes = ArrayList<EpisodeEntity>()
         episodesIdList.forEach {
@@ -48,8 +88,11 @@ class EpisodesRepository private constructor(
     companion object {
         private var INSTANCE: EpisodesRepository? = null
 
-        fun initialize(appContext: Context, rickAndMortyApi: RickAndMortyApi) {
-            INSTANCE = EpisodesRepository(rickAndMortyApi)
+        fun initialize(
+            rickAndMortyApi: RickAndMortyApi,
+            rickAndMortyDatabase: RickAndMortyDatabase
+        ) {
+            INSTANCE = EpisodesRepository(rickAndMortyApi, rickAndMortyDatabase)
         }
 
         fun getInstance(): EpisodesRepository {

@@ -16,8 +16,7 @@ class CharactersListViewModel : ViewModel() {
     private val charactersRepository = CharactersRepository.getInstance()
 
     private val _charactersLiveData = MutableLiveData<List<CharacterEntity>>()
-    val charactersLiveData: LiveData<List<CharacterEntity>> =
-        _charactersLiveData// = charactersRepository.fetchAllCharacters()
+    val charactersLiveData: LiveData<List<CharacterEntity>> = _charactersLiveData
 
 //    private val _stateCharactersLiveData = MutableLiveData<State<List<CharacterEntity>>>()
 //    val stateCharactersLiveData: LiveData<State<List<CharacterEntity>>> = _stateCharactersLiveData
@@ -26,7 +25,7 @@ class CharactersListViewModel : ViewModel() {
         viewModelScope.launch {
             //_charactersLiveData.postValue(State.Loading())//todo можно обернуть в state
             try {
-                _charactersLiveData.postValue(charactersRepository.fetchAllCharacters())
+                _charactersLiveData.postValue(charactersRepository.fetchAllAndInsertCharacters())
             } catch (e: Exception) {
                 Log.d(TAG, "loadCharacters failure")
                 //_charactersLiveData.postValue(State.Error(e))

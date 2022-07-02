@@ -10,7 +10,7 @@ import by.mankevich.rickandmorty.library.db.entity.LocationEntity
 @Dao
 interface LocationDao {
     companion object {
-        const val LOCATION_TABLE_NAME = "locations"
+        const val LOCATION_TABLE_NAME = "location"
         const val COLUMN_ID = "id"
         const val COLUMN_NAME = "name"
         const val COLUMN_TYPE = "type"
@@ -19,10 +19,10 @@ interface LocationDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertListLocations(locations: List<LocationEntity>)
-
-    @Query("SELECT * FROM $LOCATION_TABLE_NAME WHERE $COLUMN_NAME LIKE  '%' || :query || '%'")
-    suspend fun searchLocations(query: String): List<LocationEntity>
-
+//
+//    @Query("SELECT * FROM $LOCATION_TABLE_NAME WHERE $COLUMN_NAME LIKE  '%' || :query || '%'")
+//    suspend fun searchLocations(query: String): List<LocationEntity>
+//
     @Query("SELECT * FROM $LOCATION_TABLE_NAME WHERE $COLUMN_ID=(:id)")
     suspend fun getLocationById(id: Int): LocationEntity
 
@@ -32,13 +32,13 @@ interface LocationDao {
 //    @Query("SELECT * FROM $LOCATION_TABLE_NAME")
 //    fun getAllLocations(): Flow<List<LocationEntity>>
 
-    @Query("SELECT * FROM $LOCATION_TABLE_NAME " +
-            "WHERE $COLUMN_NAME LIKE '%' || (:name) || '%' " +
-            "AND $COLUMN_TYPE LIKE '%' || (:type) || '%' " +
-            "AND $COLUMN_DIMENSION LIKE '%' || (:dimension) || '%' ")
-    suspend fun filterEpisodes(
-        name: String = "",
-        type: String = "",
-        dimension: String = ""
-    ): List<EpisodeEntity>
+//    @Query("SELECT * FROM $LOCATION_TABLE_NAME " +
+//            "WHERE $COLUMN_NAME LIKE '%' || (:name) || '%' " +
+//            "AND $COLUMN_TYPE LIKE '%' || (:type) || '%' " +
+//            "AND $COLUMN_DIMENSION LIKE '%' || (:dimension) || '%' ")
+//    suspend fun filterEpisodes(
+//        name: String = "",
+//        type: String = "",
+//        dimension: String = ""
+//    ): List<EpisodeEntity>
 }

@@ -18,7 +18,7 @@ class LocationDetailViewModel : ViewModel() {
         Transformations.switchMap(_locationLiveData) { location ->
             val charactersLiveData = MutableLiveData<List<CharacterEntity>>()
             viewModelScope.launch {
-                charactersLiveData.value=charactersRepository.getMultipleCharacters(location!!.residents)
+                charactersLiveData.value=charactersRepository.fetchMultipleAndInsertCharacters(location!!.residents)
             }
             return@switchMap charactersLiveData
         }
