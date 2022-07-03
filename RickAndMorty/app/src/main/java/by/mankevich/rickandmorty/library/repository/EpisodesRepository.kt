@@ -2,7 +2,7 @@ package by.mankevich.rickandmorty.library.repository
 
 import by.mankevich.photogallery.api.RickAndMortyApi
 import by.mankevich.rickandmorty.library.db.RickAndMortyDatabase
-import by.mankevich.rickandmorty.library.db.base.BaseRepository
+import by.mankevich.rickandmorty.library.base.BaseRepository
 import by.mankevich.rickandmorty.library.db.dao.EpisodeDao
 import by.mankevich.rickandmorty.library.db.entity.EpisodeEntity
 import by.mankevich.rickandmorty.library.db.entity.parseToEpisodeEntity
@@ -12,7 +12,7 @@ private const val TAG = "RAMEpisodesRepository"
 class EpisodesRepository private constructor(
     private val rickAndMortyApi: RickAndMortyApi,
     rickAndMortyDatabase: RickAndMortyDatabase
-) : BaseRepository {
+) : BaseRepository<EpisodeEntity> {
 
     private val episodeDao: EpisodeDao = rickAndMortyDatabase.getEpisodeDao()
 
@@ -27,7 +27,7 @@ class EpisodesRepository private constructor(
 //        return episodes
 //    }
 
-    suspend fun fetchAllByIsConnect(limit: Int, page: Int): List<EpisodeEntity> {//todo add Filter
+    override suspend fun fetchAllByIsConnect(limit: Int, page: Int): List<EpisodeEntity> {//todo add Filter
         var episodes = ArrayList<EpisodeEntity>()
         if(isConnect) {
             rickAndMortyApi.fetchEpisodes(page = page).episodesResponse.forEach {

@@ -1,18 +1,18 @@
-package by.mankevich.rickandmorty.feature.adapter.paging
+package by.mankevich.rickandmorty.feature.adapter
 
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import by.mankevich.rickandmorty.R
 import by.mankevich.rickandmorty.library.db.entity.LocationEntity
-import by.mankevich.rickandmorty.feature.base.BaseAdapterByIds
-import by.mankevich.rickandmorty.feature.base.BasePagingAdapterByQuery
+import by.mankevich.rickandmorty.feature.base.BaseAdapter
 import by.mankevich.rickandmorty.feature.base.BaseViewHolder
 
-class LocationsPagingAdapterByQuery(
+class LocationsAdapter(
+    locations: List<LocationEntity>? = null,
     private var onItemClick: (LocationEntity) -> Unit
 ) :
-    BasePagingAdapterByQuery<LocationEntity, LocationsPagingAdapterByQuery.LocationViewHolder>(DIFF_ITEM_CALLBACK) {
+    BaseAdapter<LocationEntity, LocationsAdapter.LocationViewHolder>(locations, DIFF_ITEM_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationViewHolder =
         LocationViewHolder(R.layout.item_location, parent, onItemClick)

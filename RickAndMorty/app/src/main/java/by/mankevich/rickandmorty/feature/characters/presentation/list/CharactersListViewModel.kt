@@ -1,17 +1,12 @@
 package by.mankevich.rickandmorty.feature.characters.presentation.list
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
-import by.mankevich.rickandmorty.library.db.entity.CharacterEntity
-import by.mankevich.rickandmorty.feature.adapter.paging.CharactersPagingSource
+import by.mankevich.rickandmorty.feature.adapter.PagingSource
 import by.mankevich.rickandmorty.library.repository.CharactersRepository
-import kotlinx.coroutines.launch
 
 private const val TAG = "RAMCharactersViewModel"
 
@@ -28,7 +23,7 @@ class CharactersListViewModel : ViewModel() {
             initialLoadSize = 20
         ),
     ) {
-        CharactersPagingSource(charactersRepository)
+        PagingSource(charactersRepository)
     }.flow.cachedIn(viewModelScope)
 
 //    private val _stateCharactersLiveData = MutableLiveData<State<List<CharacterEntity>>>()

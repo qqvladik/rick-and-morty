@@ -9,8 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import by.mankevich.rickandmorty.R
-import by.mankevich.rickandmorty.feature.adapter.ids.EpisodesDiffUtilCallback
-import by.mankevich.rickandmorty.feature.adapter.paging.EpisodesPagingAdapterByQuery
+import by.mankevich.rickandmorty.feature.adapter.EpisodesAdapter
 import by.mankevich.rickandmorty.feature.base.UISupportService
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -18,7 +17,7 @@ import kotlinx.coroutines.launch
 class EpisodesListFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
 //    private lateinit var episodesDiffUtilCallback: EpisodesDiffUtilCallback
-    private var episodesPagingAdapter: EpisodesPagingAdapterByQuery? = null
+    private var episodesPagingAdapter: EpisodesAdapter? = null
     private val episodesListViewModel: EpisodesListViewModel by lazy {
         ViewModelProvider(this).get(EpisodesListViewModel::class.java)
     }
@@ -58,7 +57,7 @@ class EpisodesListFragment : Fragment() {
     }
 
     private fun initRecyclerView(view: View) {
-        episodesPagingAdapter = EpisodesPagingAdapterByQuery/*(emptyList())*/ {
+        episodesPagingAdapter = EpisodesAdapter/*(emptyList())*/ {
             UISupportService.showEpisodeDetailFragment(parentFragmentManager, it.id)
         }
 //        episodesDiffUtilCallback =

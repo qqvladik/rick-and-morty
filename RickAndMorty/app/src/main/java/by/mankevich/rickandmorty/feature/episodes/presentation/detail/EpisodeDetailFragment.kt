@@ -9,10 +9,10 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import by.mankevich.rickandmorty.R
-import by.mankevich.rickandmorty.feature.adapter.ids.CharactersAdapterByIds
+import by.mankevich.rickandmorty.feature.adapter.CharactersAdapter
 import by.mankevich.rickandmorty.library.db.entity.EpisodeEntity
 import by.mankevich.rickandmorty.feature.base.UISupportService
-import by.mankevich.rickandmorty.feature.adapter.ids.CharactersDiffUtilCallback
+import by.mankevich.rickandmorty.feature.adapter.CharactersDiffUtilCallback
 import by.mankevich.rickandmorty.library.db.entity.CharacterEntity
 
 private const val ARG_EPISODE_ID = "episode_id"
@@ -26,7 +26,7 @@ class EpisodeDetailFragment : Fragment() {
     private lateinit var recyclerCharacters: RecyclerView
 
     private lateinit var charactersDiffUtilCallback: CharactersDiffUtilCallback
-    private var charactersAdapter: CharactersAdapterByIds? = null
+    private var charactersAdapter: CharactersAdapter? = null
 
     private val episodeDetailViewModel: EpisodeDetailViewModel by lazy {
         ViewModelProvider(this).get(EpisodeDetailViewModel::class.java)
@@ -67,11 +67,11 @@ class EpisodeDetailFragment : Fragment() {
         recyclerCharacters = view.findViewById(R.id.recycler_episode_characters)
         UISupportService.designRecyclerView(requireContext(), recyclerCharacters, 2)
 
-        charactersAdapter = CharactersAdapterByIds(emptyList()) {
+        charactersAdapter = CharactersAdapter(emptyList()) {
             UISupportService.showCharacterDetailFragment(parentFragmentManager, it.id)
         }
         charactersDiffUtilCallback =
-            CharactersDiffUtilCallback(charactersAdapter!!.entitiesList, emptyList())
+            CharactersDiffUtilCallback(charactersAdapter!!.entitiesList!!, emptyList())
         recyclerCharacters.adapter = charactersAdapter
     }
 

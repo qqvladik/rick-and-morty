@@ -52,10 +52,10 @@ object UISupportService /*private constructor()*/ {
 
     fun <T: IEntity, K: BaseViewHolder<T>> updateRecyclerView(
         entitiesList: List<T>,
-        adapter: BaseAdapterByIds<T, K>,
+        adapter: BaseAdapter<T, K>,
         diffUtilCallback: BaseDiffUtilCallback<T>
     ) {
-        diffUtilCallback.oldList = adapter.entitiesList
+        diffUtilCallback.oldList = adapter.entitiesList!!
         diffUtilCallback.newList = entitiesList
         val contactsDiffResult = DiffUtil.calculateDiff(diffUtilCallback)
         adapter.entitiesList = entitiesList

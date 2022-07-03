@@ -1,18 +1,12 @@
 package by.mankevich.rickandmorty.feature.episodes.presentation.list
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
-import by.mankevich.rickandmorty.feature.adapter.paging.CharactersPagingSource
-import by.mankevich.rickandmorty.feature.adapter.paging.EpisodesPagingSource
-import by.mankevich.rickandmorty.library.db.entity.EpisodeEntity
+import by.mankevich.rickandmorty.feature.adapter.PagingSource
 import by.mankevich.rickandmorty.library.repository.EpisodesRepository
-import kotlinx.coroutines.launch
 
 private const val TAG = "RAMEpisodesViewModel"
 
@@ -26,7 +20,7 @@ class EpisodesListViewModel: ViewModel() {
             initialLoadSize = 20
         ),
     ) {
-        EpisodesPagingSource(episodesRepository)
+        PagingSource(episodesRepository)
     }.flow.cachedIn(viewModelScope)
 
 //    private val _episodesLiveData = MutableLiveData<List<EpisodeEntity>>()

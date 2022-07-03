@@ -1,18 +1,21 @@
-package by.mankevich.rickandmorty.feature.adapter.paging
+package by.mankevich.rickandmorty.feature.adapter
 
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import by.mankevich.rickandmorty.R
 import by.mankevich.rickandmorty.library.db.entity.EpisodeEntity
-import by.mankevich.rickandmorty.feature.base.BaseAdapterByIds
-import by.mankevich.rickandmorty.feature.base.BasePagingAdapterByQuery
+import by.mankevich.rickandmorty.feature.base.BaseAdapter
 import by.mankevich.rickandmorty.feature.base.BaseViewHolder
 
-class EpisodesPagingAdapterByQuery(
+class EpisodesAdapter(
+    episodes: List<EpisodeEntity>? = null,
     private var onItemClick: (EpisodeEntity) -> Unit
 ) :
-    BasePagingAdapterByQuery<EpisodeEntity, EpisodesPagingAdapterByQuery.EpisodeViewHolder>(DIFF_ITEM_CALLBACK) {
+    BaseAdapter<EpisodeEntity, EpisodesAdapter.EpisodeViewHolder>(
+        episodes,
+        DIFF_ITEM_CALLBACK
+    ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodeViewHolder =
         EpisodeViewHolder(R.layout.item_episode, parent, onItemClick)
@@ -51,8 +54,8 @@ class EpisodesPagingAdapterByQuery(
                 newItem: EpisodeEntity
             ): Boolean =
                 oldItem.name == newItem.name &&
-                oldItem.airDate == newItem.airDate &&
-                oldItem.episode == newItem.episode
+                        oldItem.airDate == newItem.airDate &&
+                        oldItem.episode == newItem.episode
         }
     }
 }

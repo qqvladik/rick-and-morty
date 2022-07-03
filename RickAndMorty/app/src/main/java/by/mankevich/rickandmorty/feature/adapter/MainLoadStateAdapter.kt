@@ -1,4 +1,4 @@
-package by.mankevich.rickandmorty.feature.adapter.paging
+package by.mankevich.rickandmorty.feature.adapter
 
 import android.view.LayoutInflater
 import android.view.View

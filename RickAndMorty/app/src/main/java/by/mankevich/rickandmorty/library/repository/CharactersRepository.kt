@@ -2,7 +2,7 @@ package by.mankevich.rickandmorty.library.repository
 
 import by.mankevich.photogallery.api.RickAndMortyApi
 import by.mankevich.rickandmorty.library.db.RickAndMortyDatabase
-import by.mankevich.rickandmorty.library.db.base.BaseRepository
+import by.mankevich.rickandmorty.library.base.BaseRepository
 import by.mankevich.rickandmorty.library.db.dao.CharacterDao
 import by.mankevich.rickandmorty.library.db.entity.CharacterEntity
 import by.mankevich.rickandmorty.library.db.entity.parseToCharacterEntity
@@ -12,13 +12,13 @@ private const val TAG = "RAMCharactersRepository"
 class CharactersRepository private constructor(
     private val rickAndMortyApi: RickAndMortyApi,
     rickAndMortyDatabase: RickAndMortyDatabase
-) : BaseRepository {
+) : BaseRepository<CharacterEntity> {
     private val characterDao: CharacterDao = rickAndMortyDatabase.getCharacterDao()
 
     var isConnect: Boolean = true
     var isInsert: Boolean = true
 
-    suspend fun fetchAllByIsConnect(limit: Int, page: Int): List<CharacterEntity> {//todo add Filter
+    override suspend fun fetchAllByIsConnect(limit: Int, page: Int): List<CharacterEntity> {//todo add Filter
         var characters = ArrayList<CharacterEntity>()
         if(isConnect) {
             rickAndMortyApi.fetchCharacters(page = page).charactersResponse.forEach {

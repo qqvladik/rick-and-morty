@@ -1,17 +1,11 @@
 package by.mankevich.rickandmorty.feature.locations.presentation.list
 
-import android.util.Log
 import androidx.lifecycle.*
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
-import by.mankevich.rickandmorty.feature.adapter.paging.EpisodesPagingSource
-import by.mankevich.rickandmorty.feature.adapter.paging.LocationsPagingSource
-import by.mankevich.rickandmorty.library.db.entity.EpisodeEntity
-import by.mankevich.rickandmorty.library.db.entity.LocationEntity
+import by.mankevich.rickandmorty.feature.adapter.PagingSource
 import by.mankevich.rickandmorty.library.repository.LocationsRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 private const val TAG = "RAMLocationsViewModel"
 
@@ -25,7 +19,7 @@ class LocationsListViewModel: ViewModel() {
             initialLoadSize = 20
         ),
     ) {
-        LocationsPagingSource(locationsRepository)
+        PagingSource(locationsRepository)
     }.flow.cachedIn(viewModelScope)
 
 //    private val _locationsLiveData = MutableLiveData<List<LocationEntity>>()

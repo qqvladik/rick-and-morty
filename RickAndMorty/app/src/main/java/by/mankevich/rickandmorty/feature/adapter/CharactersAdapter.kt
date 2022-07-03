@@ -1,17 +1,21 @@
-package by.mankevich.rickandmorty.feature.adapter.ids
+package by.mankevich.rickandmorty.feature.adapter
 
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import by.mankevich.rickandmorty.R
-import by.mankevich.rickandmorty.feature.base.BaseAdapterByIds
+import by.mankevich.rickandmorty.feature.base.BaseAdapter
 import by.mankevich.rickandmorty.library.db.entity.CharacterEntity
 import by.mankevich.rickandmorty.feature.base.BaseViewHolder
 import com.squareup.picasso.Picasso
 
-class CharactersAdapterByIds(characters: List<CharacterEntity>, private var onItemClick: (CharacterEntity) -> Unit) :
-    BaseAdapterByIds<CharacterEntity, CharactersAdapterByIds.CharacterViewHolder>(characters,
+class CharactersAdapter(
+    characters: List<CharacterEntity>? = null,
+    private var onItemClick: (CharacterEntity) -> Unit
+) :
+    BaseAdapter<CharacterEntity, CharactersAdapter.CharacterViewHolder>(
+        characters,
         DIFF_ITEM_CALLBACK
     ) {
 
@@ -19,7 +23,11 @@ class CharactersAdapterByIds(characters: List<CharacterEntity>, private var onIt
         CharacterViewHolder(R.layout.item_character, parent, onItemClick)
 
 
-    inner class CharacterViewHolder(resource: Int, parent: ViewGroup, onItemClick: (CharacterEntity) -> Unit) :
+    inner class CharacterViewHolder(
+        resource: Int,
+        parent: ViewGroup,
+        onItemClick: (CharacterEntity) -> Unit
+    ) :
         BaseViewHolder<CharacterEntity>(
             resource,
             parent, onItemClick
@@ -31,7 +39,7 @@ class CharactersAdapterByIds(characters: List<CharacterEntity>, private var onIt
         private val imageView: ImageView = itemView.findViewById(R.id.item_character_image)
 
         override fun bindView(entity: CharacterEntity) {
-            textName.text = entity.name
+            textName.text = entity.id.toString().plus(" ").plus(entity.name)
             textStatus.text = entity.getStatusAndSpecies()
             textGender.text = entity.gender
             Picasso.get()
@@ -45,10 +53,16 @@ class CharactersAdapterByIds(characters: List<CharacterEntity>, private var onIt
 
     companion object {
         val DIFF_ITEM_CALLBACK = object : DiffUtil.ItemCallback<CharacterEntity>() {
-            override fun areItemsTheSame(oldItem: CharacterEntity, newItem: CharacterEntity): Boolean =
+            override fun areItemsTheSame(
+                oldItem: CharacterEntity,
+                newItem: CharacterEntity
+            ): Boolean =
                 oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: CharacterEntity, newItem: CharacterEntity): Boolean =
+            override fun areContentsTheSame(
+                oldItem: CharacterEntity,
+                newItem: CharacterEntity
+            ): Boolean =
                 oldItem.name == newItem.name &&
                         oldItem.status == newItem.status &&
                         oldItem.species == newItem.species &&

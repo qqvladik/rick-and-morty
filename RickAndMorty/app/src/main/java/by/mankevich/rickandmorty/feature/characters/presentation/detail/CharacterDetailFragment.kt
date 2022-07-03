@@ -14,8 +14,8 @@ import by.mankevich.rickandmorty.R
 import by.mankevich.rickandmorty.library.db.entity.CharacterEntity
 import by.mankevich.rickandmorty.library.db.entity.EpisodeEntity
 import by.mankevich.rickandmorty.feature.base.UISupportService
-import by.mankevich.rickandmorty.feature.adapter.ids.EpisodesAdapterByIds
-import by.mankevich.rickandmorty.feature.adapter.ids.EpisodesDiffUtilCallback
+import by.mankevich.rickandmorty.feature.adapter.EpisodesAdapter
+import by.mankevich.rickandmorty.feature.adapter.EpisodesDiffUtilCallback
 import com.squareup.picasso.Picasso
 
 private const val ARG_CHARACTER_ID = "character_id"
@@ -32,7 +32,7 @@ class CharacterDetailFragment : Fragment() {
     private lateinit var recyclerEpisodes: RecyclerView
 
     private lateinit var episodesDiffUtilCallback: EpisodesDiffUtilCallback
-    private var episodesAdapterByIds: EpisodesAdapterByIds? = null
+    private var episodesAdapter: EpisodesAdapter? = null
 
     private val characterDetailViewModel: CharacterDetailViewModel by lazy {
         ViewModelProvider(this).get(CharacterDetailViewModel::class.java)
@@ -71,12 +71,12 @@ class CharacterDetailFragment : Fragment() {
         recyclerEpisodes = view.findViewById(R.id.recycler_character_episodes)
 
         UISupportService.designRecyclerView(requireContext(), recyclerEpisodes, 1)
-        episodesAdapterByIds = EpisodesAdapterByIds(emptyList()) {
+        episodesAdapter = EpisodesAdapter(emptyList()) {
             UISupportService.showEpisodeDetailFragment(parentFragmentManager, it.id)
         }
         episodesDiffUtilCallback =
-            EpisodesDiffUtilCallback(episodesAdapterByIds!!.entitiesList, emptyList())
-        recyclerEpisodes.adapter = episodesAdapterByIds
+            EpisodesDiffUtilCallback(episodesAdapter!!.entitiesList!!, emptyList())
+        recyclerEpisodes.adapter = episodesAdapter
     }
 
     private fun observeData(){
@@ -118,7 +118,7 @@ class CharacterDetailFragment : Fragment() {
     }
 
     private fun updateRecyclerEpisodes(episodes: List<EpisodeEntity>) {
-        UISupportService.updateRecyclerView(episodes, episodesAdapterByIds!!, episodesDiffUtilCallback)
+        UISupportService.updateRecyclerView(episodes, episodesAdapter!!, episodesDiffUtilCallback)
     }
 
     companion object {

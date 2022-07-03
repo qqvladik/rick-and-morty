@@ -9,8 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.*
 import by.mankevich.rickandmorty.R
-import by.mankevich.rickandmorty.feature.adapter.ids.LocationsAdapterByIds
-import by.mankevich.rickandmorty.feature.adapter.paging.LocationsPagingAdapterByQuery
+import by.mankevich.rickandmorty.feature.adapter.LocationsAdapter
 import by.mankevich.rickandmorty.feature.base.UISupportService
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -19,7 +18,7 @@ class LocationsListFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
 //    private lateinit var locationsDiffUtilCallback: LocationsDiffUtilCallback
-    private var locationsPagingAdapter: LocationsPagingAdapterByQuery? = null
+    private var locationsPagingAdapter: LocationsAdapter? = null
     private val locationsListViewModel: LocationsListViewModel by lazy {
         ViewModelProvider(this).get(LocationsListViewModel::class.java)
     }
@@ -59,7 +58,7 @@ class LocationsListFragment : Fragment() {
     }
 
     private fun initRecyclerView(view: View) {
-        locationsPagingAdapter = LocationsPagingAdapterByQuery/*(emptyList())*/ {
+        locationsPagingAdapter = LocationsAdapter/*(emptyList())*/ {
             UISupportService.showLocationDetailFragment(parentFragmentManager, it.id)
         }
 //        locationsDiffUtilCallback =

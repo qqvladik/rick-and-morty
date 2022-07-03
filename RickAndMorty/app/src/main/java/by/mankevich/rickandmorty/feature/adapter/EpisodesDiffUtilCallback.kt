@@ -1,4 +1,4 @@
-package by.mankevich.rickandmorty.feature.adapter.ids
+package by.mankevich.rickandmorty.feature.adapter
 
 import by.mankevich.rickandmorty.library.db.entity.EpisodeEntity
 import by.mankevich.rickandmorty.feature.base.BaseDiffUtilCallback

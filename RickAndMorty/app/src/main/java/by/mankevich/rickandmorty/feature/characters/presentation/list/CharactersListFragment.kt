@@ -9,16 +9,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import by.mankevich.rickandmorty.R
-import by.mankevich.rickandmorty.feature.adapter.paging.CharactersPagingAdapterByQuery
+import by.mankevich.rickandmorty.feature.adapter.CharactersAdapter
 import by.mankevich.rickandmorty.feature.base.UISupportService
-import by.mankevich.rickandmorty.feature.adapter.paging.MainLoadStateAdapter
+import by.mankevich.rickandmorty.feature.adapter.MainLoadStateAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class CharactersListFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
 //    private lateinit var charactersDiffUtilCallback: CharactersDiffUtilCallback
-    private lateinit var charactersPagingAdapter: CharactersPagingAdapterByQuery//? = null
+    private lateinit var charactersPagingAdapter: CharactersAdapter//? = null
     private val charactersListViewModel: CharactersListViewModel by lazy {
         ViewModelProvider(this).get(CharactersListViewModel::class.java)
     }
@@ -58,7 +58,7 @@ class CharactersListFragment : Fragment() {
     }
 
     private fun initRecyclerView(view: View) {
-        charactersPagingAdapter = CharactersPagingAdapterByQuery/*(emptyList())*/ {
+        charactersPagingAdapter = CharactersAdapter/*(emptyList())*/ {
             UISupportService.showCharacterDetailFragment(parentFragmentManager, it.id)
         }
         /*charactersDiffUtilCallback =

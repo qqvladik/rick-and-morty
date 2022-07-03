@@ -2,7 +2,7 @@ package by.mankevich.rickandmorty.library.repository
 
 import by.mankevich.photogallery.api.RickAndMortyApi
 import by.mankevich.rickandmorty.library.db.RickAndMortyDatabase
-import by.mankevich.rickandmorty.library.db.base.BaseRepository
+import by.mankevich.rickandmorty.library.base.BaseRepository
 import by.mankevich.rickandmorty.library.db.entity.CharacterEntity
 import by.mankevich.rickandmorty.library.db.entity.LocationEntity
 import by.mankevich.rickandmorty.library.db.entity.parseToCharacterEntity
@@ -11,11 +11,11 @@ import by.mankevich.rickandmorty.library.db.entity.parseToLocationEntity
 class LocationsRepository private constructor(
     private val rickAndMortyApi: RickAndMortyApi,
     rickAndMortyDatabase: RickAndMortyDatabase
-) : BaseRepository {
+) : BaseRepository<LocationEntity> {
 
     private val locationDao = rickAndMortyDatabase.getLocationDao()
 
-    var isConnect: Boolean = true
+    var isConnect: Boolean = false
     var isInsert: Boolean = true
 
 //    suspend fun fetchAllLocations(): List<LocationEntity> {
@@ -26,7 +26,7 @@ class LocationsRepository private constructor(
 //        return locations
 //    }
 
-    suspend fun fetchAllByIsConnect(limit: Int, page: Int): List<LocationEntity> {//todo add Filter
+    override suspend fun fetchAllByIsConnect(limit: Int, page: Int): List<LocationEntity> {//todo add Filter
         var locations = ArrayList<LocationEntity>()
         if(isConnect) {
             rickAndMortyApi.fetchLocations(page = page).locationsResponse.forEach {
