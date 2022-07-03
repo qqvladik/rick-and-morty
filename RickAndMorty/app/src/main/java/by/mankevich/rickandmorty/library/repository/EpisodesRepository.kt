@@ -4,7 +4,6 @@ import by.mankevich.photogallery.api.RickAndMortyApi
 import by.mankevich.rickandmorty.library.db.RickAndMortyDatabase
 import by.mankevich.rickandmorty.library.db.base.BaseRepository
 import by.mankevich.rickandmorty.library.db.dao.EpisodeDao
-import by.mankevich.rickandmorty.library.db.entity.CharacterEntity
 import by.mankevich.rickandmorty.library.db.entity.EpisodeEntity
 import by.mankevich.rickandmorty.library.db.entity.parseToEpisodeEntity
 
@@ -17,18 +16,28 @@ class EpisodesRepository private constructor(
 
     private val episodeDao: EpisodeDao = rickAndMortyDatabase.getEpisodeDao()
 
-    private var episodes: List<EpisodeEntity> = mutableListOf(
-        EpisodeEntity(1, "Birthday", "October 09, 1998", "S01E01", mutableListOf(1)),
-        EpisodeEntity(
-            2, "BrothersBirthday", "xxxxxxx xx, xxxx", "S01E02",
-            mutableListOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
-        )
-    )
+    var isConnect: Boolean = true
+    var isInsert: Boolean = true
 
-    suspend fun fetchAllEpisodes(): List<EpisodeEntity> {
-        val episodes = ArrayList<EpisodeEntity>()
-        rickAndMortyApi.fetchEpisodes().episodesResponse.forEach {
-            episodes.add(it.parseToEpisodeEntity())
+//    suspend fun fetchAllEpisodes(): List<EpisodeEntity> {
+//        val episodes = ArrayList<EpisodeEntity>()
+//        rickAndMortyApi.fetchEpisodes().episodesResponse.forEach {
+//            episodes.add(it.parseToEpisodeEntity())
+//        }
+//        return episodes
+//    }
+
+    suspend fun fetchAllByIsConnect(limit: Int, page: Int): List<EpisodeEntity> {//todo add Filter
+        var episodes = ArrayList<EpisodeEntity>()
+        if(isConnect) {
+            rickAndMortyApi.fetchEpisodes(page = page).episodesResponse.forEach {
+                episodes.add(it.parseToEpisodeEntity())
+            }
+            if (isInsert) {
+                insertListEpisodes(episodes)
+            }
+        }else{
+            episodes = episodeDao.getEpisodes(limit = limit, offset = (page - 1) * limit) as ArrayList<EpisodeEntity>
         }
         return episodes
     }
@@ -67,22 +76,8 @@ class EpisodesRepository private constructor(
         episodeDao.insertListEpisodes(episodes)
     }
 
-    suspend fun getAllEpisodes(): List<EpisodeEntity> {//todo
-        return ArrayList(episodes)
-    }
-
     suspend fun getEpisode(id: Int): EpisodeEntity? {
         return episodeDao.getEpisodeById(id)
-    }
-
-    suspend fun getMultipleEpisodes(episodesIdList: List<Int>): List<EpisodeEntity> {//todo
-//        val episodesLiveData: MutableLiveData<List<EpisodeEntity>> = MutableLiveData()
-        val multipleEpisodes = ArrayList<EpisodeEntity>()
-        episodesIdList.forEach {
-            multipleEpisodes.add(episodes[it - 1].copy())
-        }
-//        episodesLiveData.value = multipleEpisodes
-        return multipleEpisodes//episodesLiveData
     }
 
     companion object {

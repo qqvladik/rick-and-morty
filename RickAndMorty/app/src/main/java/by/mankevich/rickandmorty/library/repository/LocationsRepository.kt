@@ -3,7 +3,9 @@ package by.mankevich.rickandmorty.library.repository
 import by.mankevich.photogallery.api.RickAndMortyApi
 import by.mankevich.rickandmorty.library.db.RickAndMortyDatabase
 import by.mankevich.rickandmorty.library.db.base.BaseRepository
+import by.mankevich.rickandmorty.library.db.entity.CharacterEntity
 import by.mankevich.rickandmorty.library.db.entity.LocationEntity
+import by.mankevich.rickandmorty.library.db.entity.parseToCharacterEntity
 import by.mankevich.rickandmorty.library.db.entity.parseToLocationEntity
 
 class LocationsRepository private constructor(
@@ -13,15 +15,28 @@ class LocationsRepository private constructor(
 
     private val locationDao = rickAndMortyDatabase.getLocationDao()
 
-    private var locations: List<LocationEntity> = mutableListOf(
-        LocationEntity(1, "Earth", "Planet", "Ours", mutableListOf(2)),
-        LocationEntity(2, "Mars", "Planet", "Ours", mutableListOf(1))
-    )
+    var isConnect: Boolean = true
+    var isInsert: Boolean = true
 
-    suspend fun fetchAllLocations(): List<LocationEntity> {
-        val locations = ArrayList<LocationEntity>()
-        rickAndMortyApi.fetchLocations().locationsResponse.forEach {
-            locations.add(it.parseToLocationEntity())
+//    suspend fun fetchAllLocations(): List<LocationEntity> {
+//        val locations = ArrayList<LocationEntity>()
+//        rickAndMortyApi.fetchLocations().locationsResponse.forEach {
+//            locations.add(it.parseToLocationEntity())
+//        }
+//        return locations
+//    }
+
+    suspend fun fetchAllByIsConnect(limit: Int, page: Int): List<LocationEntity> {//todo add Filter
+        var locations = ArrayList<LocationEntity>()
+        if(isConnect) {
+            rickAndMortyApi.fetchLocations(page = page).locationsResponse.forEach {
+                locations.add(it.parseToLocationEntity())
+            }
+            if (isInsert) {
+                insertListLocations(locations)
+            }
+        }else{
+            locations = locationDao.getLocations(limit = limit, offset = (page - 1) * limit) as ArrayList<LocationEntity>
         }
         return locations
     }
@@ -51,10 +66,6 @@ class LocationsRepository private constructor(
 
     suspend fun insertListLocations(locations: List<LocationEntity>) {
         locationDao.insertListLocations(locations)
-    }
-
-    suspend fun getAllLocations(): List<LocationEntity> {
-        return ArrayList(locations)
     }
 
     suspend fun getLocation(id: Int): LocationEntity? {

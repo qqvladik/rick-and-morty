@@ -32,13 +32,16 @@ interface LocationDao {
 //    @Query("SELECT * FROM $LOCATION_TABLE_NAME")
 //    fun getAllLocations(): Flow<List<LocationEntity>>
 
-//    @Query("SELECT * FROM $LOCATION_TABLE_NAME " +
-//            "WHERE $COLUMN_NAME LIKE '%' || (:name) || '%' " +
-//            "AND $COLUMN_TYPE LIKE '%' || (:type) || '%' " +
-//            "AND $COLUMN_DIMENSION LIKE '%' || (:dimension) || '%' ")
-//    suspend fun filterEpisodes(
-//        name: String = "",
-//        type: String = "",
-//        dimension: String = ""
-//    ): List<EpisodeEntity>
+    @Query("SELECT * FROM $LOCATION_TABLE_NAME " +//todo add to lowercase
+            "WHERE $COLUMN_NAME LIKE '%' || (:name) || '%' " +
+            "AND $COLUMN_TYPE LIKE '%' || (:type) || '%' " +
+            "AND $COLUMN_DIMENSION LIKE '%' || (:dimension) || '%' " +
+            "ORDER BY id ASC LIMIT (:limit) OFFSET (:offset)")
+    suspend fun getLocations(
+        name: String = "",
+        type: String = "",
+        dimension: String = "",
+        limit: Int = 20,
+        offset: Int
+    ): List<LocationEntity>
 }

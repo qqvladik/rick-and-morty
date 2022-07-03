@@ -1,4 +1,4 @@
-package by.mankevich.rickandmorty.feature.locations.presentation.list
+package by.mankevich.rickandmorty.feature.adapter.ids
 
 import by.mankevich.rickandmorty.library.db.entity.LocationEntity
 import by.mankevich.rickandmorty.feature.base.BaseDiffUtilCallback

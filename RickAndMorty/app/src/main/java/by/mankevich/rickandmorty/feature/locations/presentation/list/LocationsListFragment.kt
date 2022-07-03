@@ -6,24 +6,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.*
 import by.mankevich.rickandmorty.R
-import by.mankevich.rickandmorty.library.db.entity.LocationEntity
+import by.mankevich.rickandmorty.feature.adapter.ids.LocationsAdapterByIds
+import by.mankevich.rickandmorty.feature.adapter.paging.LocationsPagingAdapterByQuery
 import by.mankevich.rickandmorty.feature.base.UISupportService
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class LocationsListFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var locationsDiffUtilCallback: LocationsDiffUtilCallback
-    private var locationsAdapter: LocationsAdapter? = null
+//    private lateinit var locationsDiffUtilCallback: LocationsDiffUtilCallback
+    private var locationsPagingAdapter: LocationsPagingAdapterByQuery? = null
     private val locationsListViewModel: LocationsListViewModel by lazy {
         ViewModelProvider(this).get(LocationsListViewModel::class.java)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        locationsListViewModel.loadLocations()
-    }
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        locationsListViewModel.loadLocations()
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,33 +43,39 @@ class LocationsListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        locationsListViewModel.locationsLiveData.observe(
-            viewLifecycleOwner
-        ) { locations ->
-            locations?.let {
-                updateUI(locations)
+//        locationsListViewModel.locationsLiveData.observe(
+//            viewLifecycleOwner
+//        ) { locations ->
+//            locations?.let {
+//                updateUI(locations)
+//            }
+//        }
+
+        lifecycleScope.launch {
+            locationsListViewModel.data.collectLatest {
+                locationsPagingAdapter!!.submitData(it)
             }
         }
     }
 
     private fun initRecyclerView(view: View) {
-        locationsAdapter = LocationsAdapter(emptyList()) {
+        locationsPagingAdapter = LocationsPagingAdapterByQuery/*(emptyList())*/ {
             UISupportService.showLocationDetailFragment(parentFragmentManager, it.id)
         }
-        locationsDiffUtilCallback =
-            LocationsDiffUtilCallback(locationsAdapter!!.entitiesList, emptyList())
+//        locationsDiffUtilCallback =
+//            LocationsDiffUtilCallback(locationsAdapterByIds!!.entitiesList, emptyList())
         recyclerView = view.findViewById(R.id.recycler_list)
         UISupportService.designRecyclerView(requireContext(), recyclerView, 2)
-        recyclerView.adapter = locationsAdapter
+        recyclerView.adapter = locationsPagingAdapter
     }
 
-    private fun updateUI(locations: List<LocationEntity>) {
-        UISupportService.updateRecyclerView(
-            locations,
-            locationsAdapter!!,
-            locationsDiffUtilCallback
-        )
-    }
+//    private fun updateUI(locations: List<LocationEntity>) {
+//        UISupportService.updateRecyclerView(
+//            locations,
+//            locationsAdapterByIds!!,
+//            locationsDiffUtilCallback
+//        )
+//    }
 
     companion object {
         fun newInstance(): LocationsListFragment {

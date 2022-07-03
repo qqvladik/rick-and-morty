@@ -1,20 +1,28 @@
-package by.mankevich.rickandmorty.feature.episodes.presentation.list
+package by.mankevich.rickandmorty.feature.adapter.ids
 
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import by.mankevich.rickandmorty.R
 import by.mankevich.rickandmorty.library.db.entity.EpisodeEntity
-import by.mankevich.rickandmorty.feature.base.BaseAdapter
+import by.mankevich.rickandmorty.feature.base.BaseAdapterByIds
 import by.mankevich.rickandmorty.feature.base.BaseViewHolder
 
-class EpisodesAdapter(episodes: List<EpisodeEntity>, private var onItemClick: (EpisodeEntity) -> Unit) :
-    BaseAdapter<EpisodeEntity, EpisodesAdapter.EpisodeViewHolder>(episodes) {
+class EpisodesAdapterByIds(
+    episodes: List<EpisodeEntity>,
+    private var onItemClick: (EpisodeEntity) -> Unit
+) :
+    BaseAdapterByIds<EpisodeEntity, EpisodesAdapterByIds.EpisodeViewHolder>(episodes, DIFF_ITEM_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodeViewHolder =
         EpisodeViewHolder(R.layout.item_episode, parent, onItemClick)
 
 
-    inner class EpisodeViewHolder(resource: Int, parent: ViewGroup, onItemClick: (EpisodeEntity) -> Unit) :
+    inner class EpisodeViewHolder(
+        resource: Int,
+        parent: ViewGroup,
+        onItemClick: (EpisodeEntity) -> Unit
+    ) :
         BaseViewHolder<EpisodeEntity>(
             resource,
             parent, onItemClick
@@ -30,6 +38,21 @@ class EpisodesAdapter(episodes: List<EpisodeEntity>, private var onItemClick: (E
             textDate.text = entity.airDate
             textSeason.text = entity.getSeasonNum()
             textEpisodeNum.text = entity.getEpisodeNum()
+        }
+    }
+
+    companion object {
+        val DIFF_ITEM_CALLBACK = object : DiffUtil.ItemCallback<EpisodeEntity>() {
+            override fun areItemsTheSame(oldItem: EpisodeEntity, newItem: EpisodeEntity): Boolean =
+                oldItem.id == newItem.id
+
+            override fun areContentsTheSame(
+                oldItem: EpisodeEntity,
+                newItem: EpisodeEntity
+            ): Boolean =
+                oldItem.name == newItem.name &&
+                oldItem.airDate == newItem.airDate &&
+                oldItem.episode == newItem.episode
         }
     }
 }

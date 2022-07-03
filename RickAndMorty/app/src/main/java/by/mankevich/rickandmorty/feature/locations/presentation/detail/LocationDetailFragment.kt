@@ -9,11 +9,11 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import by.mankevich.rickandmorty.R
-import by.mankevich.rickandmorty.library.db.entity.CharacterEntity
+import by.mankevich.rickandmorty.feature.adapter.ids.CharactersAdapterByIds
 import by.mankevich.rickandmorty.library.db.entity.LocationEntity
 import by.mankevich.rickandmorty.feature.base.UISupportService
-import by.mankevich.rickandmorty.feature.characters.presentation.list.CharactersAdapter
-import by.mankevich.rickandmorty.feature.characters.presentation.list.CharactersDiffUtilCallback
+import by.mankevich.rickandmorty.feature.adapter.ids.CharactersDiffUtilCallback
+import by.mankevich.rickandmorty.library.db.entity.CharacterEntity
 
 private const val ARG_LOCATION_ID = "location_id"
 
@@ -28,7 +28,7 @@ class LocationDetailFragment : Fragment() {
     }
 
     private lateinit var charactersDiffUtilCallback: CharactersDiffUtilCallback
-    private var charactersAdapter: CharactersAdapter? = null
+    private var charactersAdapter: CharactersAdapterByIds? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +64,7 @@ class LocationDetailFragment : Fragment() {
         recyclerResidents = view.findViewById(R.id.recycler_location_residents)
         UISupportService.designRecyclerView(requireContext(), recyclerResidents, 2)
 
-        charactersAdapter = CharactersAdapter(emptyList()) {
+        charactersAdapter = CharactersAdapterByIds(emptyList()) {
             UISupportService.showCharacterDetailFragment(parentFragmentManager, it.id)
         }
         charactersDiffUtilCallback =

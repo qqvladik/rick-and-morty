@@ -30,11 +30,14 @@ interface EpisodeDao {
 //    @Query("SELECT * FROM $EPISODE_TABLE_NAME")
 //    fun getAllEpisodes(): Flow<List<EpisodeEntity>>
 
-//    @Query("SELECT * FROM $EPISODE_TABLE_NAME " +
-//            "WHERE $COLUMN_NAME LIKE '%' || (:name) || '%' " +
-//            "AND $COLUMN_EPISODE LIKE '%' || (:episode) || '%' ")
-//    suspend fun filterEpisodes(
-//        name: String = "",
-//        episode: String = ""
-//    ): List<EpisodeEntity>
+    @Query("SELECT * FROM $EPISODE_TABLE_NAME " +//todo add to lower case
+            "WHERE $COLUMN_NAME LIKE '%' || (:name) || '%' " +
+            "AND $COLUMN_EPISODE LIKE '%' || (:episode) || '%' " +
+            "ORDER BY id ASC LIMIT (:limit) OFFSET (:offset)")
+    suspend fun getEpisodes(
+        name: String = "",
+        episode: String = "",
+        limit: Int = 20,
+        offset: Int
+    ): List<EpisodeEntity>
 }

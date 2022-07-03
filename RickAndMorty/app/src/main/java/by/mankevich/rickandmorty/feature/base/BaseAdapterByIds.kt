@@ -1,11 +1,14 @@
 package by.mankevich.rickandmorty.feature.base
 
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import by.mankevich.rickandmorty.domain.base.IEntity
 
-abstract class BaseAdapter<K: IEntity, T: BaseViewHolder<K>>(
-    var entitiesList: List<K>
-): RecyclerView.Adapter<T>() {
+abstract class BaseAdapterByIds<K: IEntity, T: BaseViewHolder<K>>(
+    var entitiesList: List<K>,
+    diffUtilItemCallback: DiffUtil.ItemCallback<K>
+): PagingDataAdapter<K, T>(diffUtilItemCallback) {
 
     override fun onBindViewHolder(holder: T, position: Int) {
         holder.bind(entitiesList[position])

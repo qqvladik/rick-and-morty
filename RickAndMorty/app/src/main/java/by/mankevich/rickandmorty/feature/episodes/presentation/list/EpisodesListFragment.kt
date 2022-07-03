@@ -6,23 +6,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import by.mankevich.rickandmorty.R
-import by.mankevich.rickandmorty.library.db.entity.EpisodeEntity
+import by.mankevich.rickandmorty.feature.adapter.ids.EpisodesDiffUtilCallback
+import by.mankevich.rickandmorty.feature.adapter.paging.EpisodesPagingAdapterByQuery
 import by.mankevich.rickandmorty.feature.base.UISupportService
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class EpisodesListFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
-    private lateinit var episodesDiffUtilCallback: EpisodesDiffUtilCallback
-    private var episodesAdapter: EpisodesAdapter? = null
+//    private lateinit var episodesDiffUtilCallback: EpisodesDiffUtilCallback
+    private var episodesPagingAdapter: EpisodesPagingAdapterByQuery? = null
     private val episodesListViewModel: EpisodesListViewModel by lazy {
         ViewModelProvider(this).get(EpisodesListViewModel::class.java)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        episodesListViewModel.loadEpisodes()
-    }
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        episodesListViewModel.loadEpisodes()
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,29 +42,35 @@ class EpisodesListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        episodesListViewModel.episodesLiveData.observe(
-            viewLifecycleOwner
-        ) { episodes ->
-            episodes?.let {
-                updateUI(episodes)
+//        episodesListViewModel.episodesLiveData.observe(
+//            viewLifecycleOwner
+//        ) { episodes ->
+//            episodes?.let {
+//                updateUI(episodes)
+//            }
+//        }
+
+        lifecycleScope.launch {
+            episodesListViewModel.data.collectLatest {
+                episodesPagingAdapter!!.submitData(it)
             }
         }
     }
 
     private fun initRecyclerView(view: View) {
-        episodesAdapter = EpisodesAdapter(emptyList()) {
+        episodesPagingAdapter = EpisodesPagingAdapterByQuery/*(emptyList())*/ {
             UISupportService.showEpisodeDetailFragment(parentFragmentManager, it.id)
         }
-        episodesDiffUtilCallback =
-            EpisodesDiffUtilCallback(episodesAdapter!!.entitiesList, emptyList())
+//        episodesDiffUtilCallback =
+//            EpisodesDiffUtilCallback(episodesAdapterByIds!!.entitiesList, emptyList())
         recyclerView = view.findViewById(R.id.recycler_list)
         UISupportService.designRecyclerView(requireContext(), recyclerView, 2)
-        recyclerView.adapter = episodesAdapter
+        recyclerView.adapter = episodesPagingAdapter
     }
 
-    private fun updateUI(episodes: List<EpisodeEntity>) {
-        UISupportService.updateRecyclerView(episodes, episodesAdapter!!, episodesDiffUtilCallback)
-    }
+//    private fun updateUI(episodes: List<EpisodeEntity>) {
+//        UISupportService.updateRecyclerView(episodes, episodesAdapterByIds!!, episodesDiffUtilCallback)
+//    }
 
     companion object {
         fun newInstance(): EpisodesListFragment {

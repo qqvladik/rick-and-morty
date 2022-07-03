@@ -53,21 +53,24 @@ interface CharacterDao {
 //    @Query("SELECT $COLUMN_LOCATION FROM $CHARACTER_TABLE_NAME GROUP BY $COLUMN_LOCATION")
 //    suspend fun getLocationList(): List<Location>
 //
-//    @Query("SELECT * FROM $CHARACTER_TABLE_NAME " +
-//            "WHERE $COLUMN_NAME LIKE '%' || (:name) || '%' " +
-//            "AND $COLUMN_STATUS LIKE '%' || (:status) || '%' " +
-//            "AND $COLUMN_SPECIES LIKE '%' || (:species) || '%' " +
-//            "AND $COLUMN_TYPE LIKE '%' || (:type) || '%' " +
-//            "AND $COLUMN_GENDER LIKE '%' || (:gender) || '%' " +
-//            "AND $COLUMN_ORIGIN LIKE '%' || (:origin) || '%' " +
-//            "AND $COLUMN_LOCATION LIKE '%' || (:location) || '%'")
-//    suspend fun filterCharacters(
-//        name: String = "",
-//        status: String = "",
-//        species: String = "",
-//        type: String = "",
-//        gender: String = "",
-//        origin: String = "",
-//        location: String = ""
-//    ): List<CharacterEntity>
+    @Query("SELECT * FROM $CHARACTER_TABLE_NAME " +//todo add to lower case
+            "WHERE $COLUMN_NAME LIKE '%' || (:name) || '%' " +
+            "AND $COLUMN_STATUS LIKE '%' || (:status) || '%' " +
+            "AND $COLUMN_SPECIES LIKE '%' || (:species) || '%' " +
+            "AND $COLUMN_TYPE LIKE '%' || (:type) || '%' " +
+            "AND $COLUMN_GENDER LIKE '%' || (:gender) || '%' " +
+            "AND $COLUMN_ORIGIN LIKE '%' || (:origin) || '%' " +
+            "AND $COLUMN_LOCATION LIKE '%' || (:location) || '%'" +
+            "ORDER BY id ASC LIMIT (:limit) OFFSET (:offset)")
+    suspend fun getCharacters(
+        name: String = "",
+        status: String = "",
+        species: String = "",
+        type: String = "",
+        gender: String = "",
+        origin: String = "",
+        location: String = "",
+        limit: Int = 20,
+        offset: Int
+    ): List<CharacterEntity>
 }

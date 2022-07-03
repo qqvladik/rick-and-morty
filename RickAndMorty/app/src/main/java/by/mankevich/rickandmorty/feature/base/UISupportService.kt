@@ -52,7 +52,7 @@ object UISupportService /*private constructor()*/ {
 
     fun <T: IEntity, K: BaseViewHolder<T>> updateRecyclerView(
         entitiesList: List<T>,
-        adapter: BaseAdapter<T, K>,
+        adapter: BaseAdapterByIds<T, K>,
         diffUtilCallback: BaseDiffUtilCallback<T>
     ) {
         diffUtilCallback.oldList = adapter.entitiesList

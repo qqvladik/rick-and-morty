@@ -6,23 +6,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import by.mankevich.rickandmorty.R
-import by.mankevich.rickandmorty.library.db.entity.CharacterEntity
+import by.mankevich.rickandmorty.feature.adapter.paging.CharactersPagingAdapterByQuery
 import by.mankevich.rickandmorty.feature.base.UISupportService
+import by.mankevich.rickandmorty.feature.adapter.paging.MainLoadStateAdapter
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class CharactersListFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
-    private lateinit var charactersDiffUtilCallback: CharactersDiffUtilCallback
-    private var charactersAdapter: CharactersAdapter? = null
+//    private lateinit var charactersDiffUtilCallback: CharactersDiffUtilCallback
+    private lateinit var charactersPagingAdapter: CharactersPagingAdapterByQuery//? = null
     private val charactersListViewModel: CharactersListViewModel by lazy {
         ViewModelProvider(this).get(CharactersListViewModel::class.java)
     }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        charactersListViewModel.loadCharacters()
-    }
+//
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        charactersListViewModel.loadCharacters()
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,33 +42,39 @@ class CharactersListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        charactersListViewModel.charactersLiveData.observe(
-            viewLifecycleOwner
-        ) { characters ->
-            characters?.let {
-                updateUI(characters)
+//        charactersListViewModel.charactersLiveData.observe(
+//            viewLifecycleOwner
+//        ) { characters ->
+//            characters?.let {
+//                updateUI(characters)
+//            }
+//        }
+
+        lifecycleScope.launch {
+            charactersListViewModel.data.collectLatest {
+                charactersPagingAdapter.submitData(it)
             }
         }
     }
 
     private fun initRecyclerView(view: View) {
-        charactersAdapter = CharactersAdapter(emptyList()) {
+        charactersPagingAdapter = CharactersPagingAdapterByQuery/*(emptyList())*/ {
             UISupportService.showCharacterDetailFragment(parentFragmentManager, it.id)
         }
-        charactersDiffUtilCallback =
-            CharactersDiffUtilCallback(charactersAdapter!!.entitiesList, emptyList())
+        /*charactersDiffUtilCallback =
+            CharactersDiffUtilCallback(charactersAdapter.entitiesList, emptyList())*/
         recyclerView = view.findViewById(R.id.recycler_list)
         UISupportService.designRecyclerView(requireContext(), recyclerView, 2)
-        recyclerView.adapter = charactersAdapter
+        recyclerView.adapter = charactersPagingAdapter.withLoadStateFooter(MainLoadStateAdapter())
     }
 
-    private fun updateUI(characters: List<CharacterEntity>) {
-        UISupportService.updateRecyclerView(
-            characters,
-            charactersAdapter!!,
-            charactersDiffUtilCallback
-        )
-    }
+//    private fun updateUI(characters: List<CharacterEntity>) {
+//        UISupportService.updateRecyclerView(
+//            characters,
+//            charactersAdapter,
+//            charactersDiffUtilCallback
+//        )
+//    }
 
     companion object {
         fun newInstance(): CharactersListFragment {
