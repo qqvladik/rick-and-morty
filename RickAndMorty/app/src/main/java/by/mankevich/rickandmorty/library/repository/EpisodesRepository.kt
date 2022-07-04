@@ -19,35 +19,54 @@ class EpisodesRepository private constructor(
     var isConnect: Boolean = true
     var isInsert: Boolean = true
 
-//    suspend fun fetchAllEpisodes(): List<EpisodeEntity> {
-//        val episodes = ArrayList<EpisodeEntity>()
-//        rickAndMortyApi.fetchEpisodes().episodesResponse.forEach {
-//            episodes.add(it.parseToEpisodeEntity())
-//        }
-//        return episodes
-//    }
-
-    override suspend fun fetchAllByIsConnect(limit: Int, page: Int): List<EpisodeEntity> {//todo add Filter
-        var episodes = ArrayList<EpisodeEntity>()
-        if(isConnect) {
-            rickAndMortyApi.fetchEpisodes(page = page).episodesResponse.forEach {
-                episodes.add(it.parseToEpisodeEntity())
-            }
+    override suspend fun fetchAllByIsConnect(
+        limit: Int,
+        page: Int
+    ): List<EpisodeEntity> {//todo add Filter
+        val episodes: List<EpisodeEntity>//()
+        if (isConnect) {
+//            rickAndMortyApi.fetchEpisodes(page = page).episodesResponse.forEach {
+//                episodes.add(it.parseToEpisodeEntity())
+//            }
+            episodes = fetchAllEpisodes(page)
             if (isInsert) {
                 insertListEpisodes(episodes)
             }
-        }else{
-            episodes = episodeDao.getEpisodes(limit = limit, offset = (page - 1) * limit) as ArrayList<EpisodeEntity>
+        } else {
+//            episodes = episodeDao.getEpisodes(
+//                limit = limit,
+//                offset = (page - 1) * limit
+//            )
+            episodes = getEpisodes(limit, page)
         }
         return episodes
     }
 
-    suspend fun fetchAllAndInsertEpisodes(): List<EpisodeEntity> {
+    suspend fun fetchMultipleEpisodesByIsConnect(ids: List<Int>): List<EpisodeEntity> {
+        val episodes: List<EpisodeEntity>//()
+        if (validateIds(ids)) {
+            if (isConnect) {
+//                rickAndMortyApi.fetchMultipleEpisodes(ids).forEach {
+//                    episodes.add(it.parseToEpisodeEntity())
+//                }
+                episodes = fetchMultipleEpisodes(ids)
+                if(isInsert) {
+                    insertListEpisodes(episodes)
+                }
+            }else{
+                episodes = getMultipleEpisodes(ids)
+            }
+        }else{
+            return emptyList()
+        }
+        return episodes
+    }
+
+    suspend fun fetchAllEpisodes(page: Int): List<EpisodeEntity> {
         val episodes = ArrayList<EpisodeEntity>()
-        rickAndMortyApi.fetchEpisodes().episodesResponse.forEach {
+        rickAndMortyApi.fetchEpisodes(page = page).episodesResponse.forEach {
             episodes.add(it.parseToEpisodeEntity())
         }
-        insertListEpisodes(episodes)
         return episodes
     }
 
@@ -61,24 +80,15 @@ class EpisodesRepository private constructor(
         return episodes
     }
 
-    suspend fun fetchMultipleAndInsertEpisodes(ids: List<Int>): List<EpisodeEntity> {
-        val episodes = ArrayList<EpisodeEntity>()
-        if (validateIds(ids)) {
-            rickAndMortyApi.fetchMultipleEpisodes(ids).forEach {
-                episodes.add(it.parseToEpisodeEntity())
-            }
-            insertListEpisodes(episodes)
-        }
-        return episodes
-    }
-
-    suspend fun insertListEpisodes(episodes: List<EpisodeEntity>) {
+    suspend fun insertListEpisodes(episodes: List<EpisodeEntity>) =
         episodeDao.insertListEpisodes(episodes)
-    }
 
-    suspend fun getEpisode(id: Int): EpisodeEntity? {
-        return episodeDao.getEpisodeById(id)
-    }
+    suspend fun getEpisode(id: Int): EpisodeEntity? = episodeDao.getEpisodeById(id)
+
+    suspend fun getEpisodes(limit: Int, page: Int) =
+        episodeDao.getEpisodes(limit = limit, offset = (page - 1) * limit)
+
+    suspend fun getMultipleEpisodes(ids: List<Int>) = episodeDao.getEpisodesByIds(ids)
 
     companion object {
         private var INSTANCE: EpisodesRepository? = null

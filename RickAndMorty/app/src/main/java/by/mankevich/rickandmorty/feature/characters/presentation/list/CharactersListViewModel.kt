@@ -26,6 +26,10 @@ class CharactersListViewModel : ViewModel() {
         PagingSource(charactersRepository)
     }.flow.cachedIn(viewModelScope)
 
+    fun setIsConnect(isConnect: Boolean){
+        charactersRepository.isConnect=isConnect
+    }
+
 //    private val _stateCharactersLiveData = MutableLiveData<State<List<CharacterEntity>>>()
 //    val stateCharactersLiveData: LiveData<State<List<CharacterEntity>>> = _stateCharactersLiveData
 

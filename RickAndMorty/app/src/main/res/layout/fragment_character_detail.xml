@@ -20,8 +20,8 @@
 
         <ImageView
             android:id="@+id/character_image"
-            android:layout_width="140dp"
-            android:layout_height="140dp"
+            android:layout_width="125dp"
+            android:layout_height="125dp"
             android:layout_gravity="center"
             android:contentDescription="@string/avatar_content_description"
             android:scaleType="centerCrop"
@@ -34,10 +34,9 @@
         <TextView
             android:id="@+id/text_character_name"
             style="@style/StyleDetailText"
-            android:layout_width="wrap_content"
-            android:layout_marginStart="8dp"
             android:textSize="@dimen/text_big_size"
             android:textStyle="bold"
+            android:layout_marginStart="@dimen/margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/character_image"
@@ -47,7 +46,6 @@
         <TextView
             android:id="@+id/text_status"
             style="@style/StyleDetailText"
-            android:layout_width="wrap_content"
             android:layout_marginTop="@dimen/margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -58,7 +56,6 @@
         <TextView
             android:id="@+id/text_title_character_type"
             style="@style/StyleDetailTitle"
-            android:layout_width="0dp"
             android:layout_marginTop="@dimen/margin"
             android:text="@string/text_type"
             app:layout_constraintStart_toStartOf="@+id/text_status"
@@ -67,7 +64,6 @@
         <TextView
             android:id="@+id/text_character_type"
             style="@style/StyleDetailText"
-            android:layout_width="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/text_title_character_type"
@@ -77,19 +73,16 @@
         <TextView
             android:id="@+id/text_title_gender"
             style="@style/StyleDetailTitle"
-            android:layout_width="wrap_content"
             android:layout_marginTop="@dimen/margin"
             android:text="@string/text_gender"
             app:layout_constraintStart_toEndOf="@+id/character_image"
             app:layout_constraintStart_toStartOf="@+id/text_title_character_type"
-            app:layout_constraintTop_toBottomOf="@+id/text_title_character_type" />
+            app:layout_constraintTop_toBottomOf="@+id/text_character_type" />
 
         <TextView
             android:id="@+id/text_gender"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/StyleDetailText"
             android:textColor="@color/text_color"
-            android:textSize="@dimen/text_average_size"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/text_title_gender"
@@ -109,7 +102,6 @@
         <TextView
             android:id="@+id/text_origin"
             style="@style/StyleDetailTitle"
-            android:layout_width="wrap_content"
             android:layout_marginStart="@dimen/margin"
             android:layout_marginTop="@dimen/margin"
             android:text="@string/text_origin"
@@ -123,7 +115,6 @@
             android:id="@+id/button_origin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -135,7 +126,7 @@
             style="@style/StyleDetailTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="4dp"
             android:text="@string/text_location"
             android:textStyle=""
             app:layout_constraintEnd_toEndOf="parent"
@@ -147,7 +138,6 @@
             android:id="@+id/button_character_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -168,8 +158,6 @@
         <TextView
             android:id="@+id/text_character_episodes"
             style="@style/StyleDetailTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin"
             android:layout_marginTop="@dimen/margin"
             android:text="@string/text_episodes"
@@ -178,13 +166,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view_animator_character2" />
 
+        <TextView
+            android:id="@+id/text_character_network_unavailable"
+            style="@style/StyleDetailTitle"
+            android:layout_width="match_parent"
+            android:text="@string/text_network_unavailable"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_character_episodes" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_character_episodes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin"
         android:nestedScrollingEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

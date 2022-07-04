@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.view.isGone
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import by.mankevich.rickandmorty.R
@@ -16,16 +18,18 @@ import by.mankevich.rickandmorty.library.db.entity.EpisodeEntity
 import by.mankevich.rickandmorty.feature.base.UISupportService
 import by.mankevich.rickandmorty.feature.adapter.EpisodesAdapter
 import by.mankevich.rickandmorty.feature.adapter.EpisodesDiffUtilCallback
+import by.mankevich.rickandmorty.feature.base.BaseFragment
 import com.squareup.picasso.Picasso
 
 private const val ARG_CHARACTER_ID = "character_id"
 
-class CharacterDetailFragment : Fragment() {
+class CharacterDetailFragment : BaseFragment() {
 
     private lateinit var textName: TextView
     private lateinit var textStatus: TextView
     private lateinit var textType: TextView
     private lateinit var textGender: TextView
+    private lateinit var textNetwork: TextView
     private lateinit var imageCharacter: ImageView
     private lateinit var buttonOrigin: Button
     private lateinit var buttonLocation: Button
@@ -42,6 +46,7 @@ class CharacterDetailFragment : Fragment() {
         super.onCreate(savedInstanceState)
         val characterId: Int = arguments?.getInt(ARG_CHARACTER_ID) as Int
         characterDetailViewModel.loadCharacterFull(characterId)
+        characterDetailViewModel.setIsConnect(isConnect())
     }
 
     override fun onCreateView(
@@ -69,6 +74,7 @@ class CharacterDetailFragment : Fragment() {
         buttonOrigin = view.findViewById(R.id.button_origin)
         buttonLocation = view.findViewById(R.id.button_character_location)
         recyclerEpisodes = view.findViewById(R.id.recycler_character_episodes)
+        textNetwork = view.findViewById(R.id.text_character_network_unavailable)
 
         UISupportService.designRecyclerView(requireContext(), recyclerEpisodes, 1)
         episodesAdapter = EpisodesAdapter(emptyList()) {
@@ -79,7 +85,7 @@ class CharacterDetailFragment : Fragment() {
         recyclerEpisodes.adapter = episodesAdapter
     }
 
-    private fun observeData(){
+    private fun observeData() {
         characterDetailViewModel.characterLiveData.observe(
             viewLifecycleOwner
         ) { character ->
@@ -97,6 +103,7 @@ class CharacterDetailFragment : Fragment() {
         textStatus.text = character.getStatusAndSpecies()
         textType.text = character.type
         textGender.text = character.gender
+        textNetwork.isGone=isConnect()
         Picasso.get()
             .load(character.image)
             .placeholder(android.R.drawable.ic_menu_gallery)
@@ -107,13 +114,32 @@ class CharacterDetailFragment : Fragment() {
         buttonOrigin.text = character.origin.name
         buttonLocation.text = character.location.name
         buttonOrigin.setOnClickListener {
-            UISupportService.showLocationDetailFragment(parentFragmentManager, character.origin.id)
+            if (characterDetailViewModel.isOriginAvailable) {
+                UISupportService.showLocationDetailFragment(
+                    parentFragmentManager,
+                    character.origin.id
+                )
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Origin unavailable because it is not cashed",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
         buttonLocation.setOnClickListener {
-            UISupportService.showLocationDetailFragment(
-                parentFragmentManager,
-                character.location.id
-            )
+            if (characterDetailViewModel.isLocationAvailable) {
+                UISupportService.showLocationDetailFragment(
+                    parentFragmentManager,
+                    character.location.id
+                )
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Location unavailable because it is not cashed",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
     }
 

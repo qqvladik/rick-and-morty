@@ -18,17 +18,11 @@ interface EpisodeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertListEpisodes(episodes: List<EpisodeEntity>)
 
-//    @Query("SELECT * FROM $EPISODE_TABLE_NAME WHERE $COLUMN_NAME LIKE  '%' || :query || '%'")
-//    suspend fun searchEpisodes(query: String): List<EpisodeEntity>
-
     @Query("SELECT * FROM $EPISODE_TABLE_NAME WHERE $COLUMN_ID=(:id)")
-    suspend fun getEpisodeById(id: Int): EpisodeEntity
+    suspend fun getEpisodeById(id: Int): EpisodeEntity?
 
-//    @Query("SELECT * FROM $EPISODE_TABLE_NAME WHERE $COLUMN_ID in (:ids)")
-//    suspend fun getEpisodesByIds(ids: List<Int>): List<EpisodeEntity>
-
-//    @Query("SELECT * FROM $EPISODE_TABLE_NAME")
-//    fun getAllEpisodes(): Flow<List<EpisodeEntity>>
+    @Query("SELECT * FROM $EPISODE_TABLE_NAME WHERE $COLUMN_ID in (:ids)")
+    suspend fun getEpisodesByIds(ids: List<Int>): List<EpisodeEntity>
 
     @Query("SELECT * FROM $EPISODE_TABLE_NAME " +//todo add to lower case
             "WHERE $COLUMN_NAME LIKE '%' || (:name) || '%' " +

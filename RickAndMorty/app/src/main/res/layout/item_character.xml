@@ -13,8 +13,8 @@
 
         <ImageView
             android:id="@+id/item_character_image"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
             android:layout_gravity="center"
             android:contentDescription="@string/avatar_content_description"
             android:scaleType="centerCrop"

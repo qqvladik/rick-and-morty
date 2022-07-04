@@ -15,7 +15,7 @@ class LocationsRepository private constructor(
 
     private val locationDao = rickAndMortyDatabase.getLocationDao()
 
-    var isConnect: Boolean = false
+    var isConnect: Boolean = true
     var isInsert: Boolean = true
 
 //    suspend fun fetchAllLocations(): List<LocationEntity> {
@@ -54,9 +54,14 @@ class LocationsRepository private constructor(
         return rickAndMortyApi.fetchLocation(id).parseToLocationEntity()
     }
 
-    suspend fun fetchAndInsertLocation(id: Int): LocationEntity {
-        val location = rickAndMortyApi.fetchLocation(id).parseToLocationEntity()
-        insertLocation(location)
+    suspend fun fetchAndInsertLocation(id: Int): LocationEntity? {
+        val location: LocationEntity?
+        if(isConnect) {
+            location = fetchLocation(id)
+            insertLocation(location)
+        }else{
+            location = getLocation(id)
+        }
         return location
     }
 

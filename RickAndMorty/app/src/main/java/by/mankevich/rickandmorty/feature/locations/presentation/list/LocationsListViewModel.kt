@@ -22,6 +22,10 @@ class LocationsListViewModel: ViewModel() {
         PagingSource(locationsRepository)
     }.flow.cachedIn(viewModelScope)
 
+    fun setIsConnect(isConnect: Boolean){
+        locationsRepository.isConnect=isConnect
+    }
+
 //    private val _locationsLiveData = MutableLiveData<List<LocationEntity>>()
 //    val locationsLiveData: LiveData<List<LocationEntity>> = _locationsLiveData// = loadLocations() //= locationsRepository.getAllLocations()
 //

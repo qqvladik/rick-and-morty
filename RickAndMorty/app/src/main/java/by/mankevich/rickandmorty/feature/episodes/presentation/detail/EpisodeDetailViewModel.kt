@@ -18,7 +18,7 @@ class EpisodeDetailViewModel : ViewModel() {
         Transformations.switchMap(_episodeLiveData) { episode ->
             val charactersLiveData = MutableLiveData<List<CharacterEntity>>()
             viewModelScope.launch {
-                charactersLiveData.value=charactersRepository.fetchMultipleAndInsertCharacters(episode!!.characters)
+                charactersLiveData.value=charactersRepository.fetchMultipleCharactersByIsConnect(episode!!.characters)
             }
             return@switchMap charactersLiveData
         }
@@ -27,5 +27,10 @@ class EpisodeDetailViewModel : ViewModel() {
         viewModelScope.launch {
             _episodeLiveData.value = episodesRepository.getEpisode(episodeId)
         }
+    }
+
+    fun setIsConnect(isConnect: Boolean){
+        charactersRepository.isConnect=isConnect
+        episodesRepository.isConnect=isConnect
     }
 }

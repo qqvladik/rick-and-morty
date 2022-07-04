@@ -18,7 +18,7 @@ class LocationDetailViewModel : ViewModel() {
         Transformations.switchMap(_locationLiveData) { location ->
             val charactersLiveData = MutableLiveData<List<CharacterEntity>>()
             viewModelScope.launch {
-                charactersLiveData.value=charactersRepository.fetchMultipleAndInsertCharacters(location!!.residents)
+                charactersLiveData.value=charactersRepository.fetchMultipleCharactersByIsConnect(location!!.residents)
             }
             return@switchMap charactersLiveData
         }
@@ -27,5 +27,10 @@ class LocationDetailViewModel : ViewModel() {
         viewModelScope.launch {
             _locationLiveData.value = locationsRepository.getLocation(locationId)
         }
+    }
+
+    fun setIsConnect(isConnect: Boolean){
+        charactersRepository.isConnect=isConnect
+        locationsRepository.isConnect=isConnect
     }
 }

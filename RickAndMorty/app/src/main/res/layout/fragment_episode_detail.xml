@@ -21,7 +21,6 @@
             <TextView
                 android:id="@+id/text_episode_name"
                 style="@style/StyleDetailText"
-                android:layout_width="wrap_content"
                 android:textSize="@dimen/text_big_size"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +32,6 @@
             <TextView
                 android:id="@+id/text_date"
                 style="@style/StyleDetailText"
-                android:layout_width="wrap_content"
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -44,7 +42,6 @@
             <TextView
                 android:id="@+id/text_title_season"
                 style="@style/StyleDetailTitle"
-                android:layout_width="wrap_content"
                 android:layout_marginTop="@dimen/margin"
                 android:text="@string/text_season"
                 app:layout_constraintStart_toStartOf="parent"
@@ -53,7 +50,6 @@
             <TextView
                 android:id="@+id/text_season"
                 style="@style/StyleDetailText"
-                android:layout_width="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/text_title_season"
@@ -63,7 +59,6 @@
             <TextView
                 android:id="@+id/text_title_episode_num"
                 style="@style/StyleDetailTitle"
-                android:layout_width="wrap_content"
                 android:layout_marginTop="@dimen/margin"
                 android:text="@string/text_episode"
                 app:layout_constraintStart_toStartOf="parent"
@@ -72,7 +67,6 @@
             <TextView
                 android:id="@+id/text_episode_num"
                 style="@style/StyleDetailText"
-                android:layout_width="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/text_title_episode_num"
@@ -92,12 +86,21 @@
             <TextView
                 android:id="@+id/text_episode_characters"
                 style="@style/StyleDetailTitle"
-                android:layout_width="wrap_content"
                 android:layout_marginStart="@dimen/margin"
                 android:layout_marginTop="@dimen/margin"
                 android:text="@string/text_characters"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view_episode_animator" />
+
+            <TextView
+                android:id="@+id/text_episode_network_unavailable"
+                style="@style/StyleDetailTitle"
+                android:layout_width="match_parent"
+                android:text="@string/text_network_unavailable"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_episode_characters" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -105,7 +108,6 @@
             android:id="@+id/recycler_episode_characters"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin"
             android:nestedScrollingEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

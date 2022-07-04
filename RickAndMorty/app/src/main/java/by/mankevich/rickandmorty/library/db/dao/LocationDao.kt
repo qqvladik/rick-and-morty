@@ -24,7 +24,7 @@ interface LocationDao {
 //    suspend fun searchLocations(query: String): List<LocationEntity>
 //
     @Query("SELECT * FROM $LOCATION_TABLE_NAME WHERE $COLUMN_ID=(:id)")
-    suspend fun getLocationById(id: Int): LocationEntity
+    suspend fun getLocationById(id: Int): LocationEntity?
 
 //    @Query("SELECT * FROM $LOCATION_TABLE_NAME WHERE $COLUMN_ID in (:ids)")
 //    suspend fun getLocationsByIds(ids: List<Int>): List<LocationEntity>

@@ -23,6 +23,10 @@ class EpisodesListViewModel: ViewModel() {
         PagingSource(episodesRepository)
     }.flow.cachedIn(viewModelScope)
 
+    fun setIsConnect(isConnect: Boolean){
+        episodesRepository.isConnect=isConnect
+    }
+
 //    private val _episodesLiveData = MutableLiveData<List<EpisodeEntity>>()
 //    val episodesLiveData: LiveData<List<EpisodeEntity>> = _episodesLiveData
 //
