@@ -14,4 +14,7 @@
     <string name="text_season">Season:\ </string>
     <string name="text_episode">Episode:\ </string>
     <string name="text_network_unavailable">(The list may not be complete because not all data may have been cashed)</string>
+    <string name="item_search_text">Search</string>
+    <string name="item_filters_text">Filters</string>
+    <string name="item_back_text">Back</string>
 </resources>

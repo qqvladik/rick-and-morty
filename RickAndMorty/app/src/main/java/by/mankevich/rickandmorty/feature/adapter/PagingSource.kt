@@ -3,11 +3,13 @@ package by.mankevich.rickandmorty.feature.adapter
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import by.mankevich.rickandmorty.domain.base.IEntity
+import by.mankevich.rickandmorty.library.base.BaseFilter
 import by.mankevich.rickandmorty.library.base.BaseRepository
+import by.mankevich.rickandmorty.library.repository.filter.FilterCharacters
 
 class PagingSource <K: IEntity> (
     private val repository: BaseRepository<K>, //todo add filter
-//    val query: String
+    val filter: BaseFilter<K>
 ): PagingSource<Int, K>() {
     override fun getRefreshKey(state: PagingState<Int, K>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
@@ -19,7 +21,7 @@ class PagingSource <K: IEntity> (
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, K> {
         val page = params.key ?: 1
         return try {
-            val entities = repository.fetchAllByIsConnect(params.loadSize, page)
+            val entities = repository.fetchAllByIsConnect(params.loadSize, page, filter)
             return LoadResult.Page(
                 data = entities,
                 prevKey = if (page == 1) null else page - 1,

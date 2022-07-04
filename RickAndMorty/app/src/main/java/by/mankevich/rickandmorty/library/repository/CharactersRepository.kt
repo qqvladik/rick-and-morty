@@ -1,17 +1,20 @@
 package by.mankevich.rickandmorty.library.repository
 
 import by.mankevich.photogallery.api.RickAndMortyApi
+import by.mankevich.rickandmorty.library.base.BaseFilter
 import by.mankevich.rickandmorty.library.db.RickAndMortyDatabase
 import by.mankevich.rickandmorty.library.base.BaseRepository
 import by.mankevich.rickandmorty.library.db.dao.CharacterDao
 import by.mankevich.rickandmorty.library.db.entity.CharacterEntity
 import by.mankevich.rickandmorty.library.db.entity.parseToCharacterEntity
+import by.mankevich.rickandmorty.library.repository.filter.FilterCharacters
 
 private const val TAG = "RAMCharactersRepository"
 
 class CharactersRepository private constructor(
     private val rickAndMortyApi: RickAndMortyApi,
-    rickAndMortyDatabase: RickAndMortyDatabase
+    rickAndMortyDatabase: RickAndMortyDatabase,
+//    val filter: FilterCharacters = FilterCharacters()
 ) : BaseRepository<CharacterEntity> {
     private val characterDao: CharacterDao = rickAndMortyDatabase.getCharacterDao()
 
@@ -20,34 +23,25 @@ class CharactersRepository private constructor(
 
     override suspend fun fetchAllByIsConnect(
         limit: Int,
-        page: Int
-    ): List<CharacterEntity> {//todo add Filter
-        val characters: List<CharacterEntity>//()
+        page: Int,
+        filter: BaseFilter<CharacterEntity>
+    ): List<CharacterEntity> {
+        val characters: List<CharacterEntity>
         if (isConnect) {
-//            rickAndMortyApi.fetchCharacters(page = page).charactersResponse.forEach {
-//                characters.add(it.parseToCharacterEntity())
-//            }
-            characters = fetchAllCharacters(page)
+            characters = fetchAllCharacters(page, filter as FilterCharacters)//todo add Filter
             if (isInsert) {
                 insertListCharacters(characters)
             }
         } else {
-//            characters = characterDao.getCharacters(
-//                limit = limit,
-//                offset = (page - 1) * limit
-//            )
-            characters = getCharacters(limit, page)
+            characters = getCharacters(limit, page, filter as FilterCharacters)
         }
         return characters
     }
 
-    suspend fun fetchMultipleCharactersByIsConnect(ids: List<Int>): List<CharacterEntity> {//todo add isInsert and isConnect
-        val characters: List<CharacterEntity>//()
+    suspend fun fetchMultipleCharactersByIsConnect(ids: List<Int>): List<CharacterEntity> {
+        val characters: List<CharacterEntity>
         if (validateIds(ids)) {
             if (isConnect) {
-//                rickAndMortyApi.fetchMultipleCharacters(ids).forEach {
-//                    characters.add(it.parseToCharacterEntity())
-//                }
                 characters = fetchMultipleCharacters(ids)
                 if (isInsert) {
                     insertListCharacters(characters)
@@ -55,15 +49,25 @@ class CharactersRepository private constructor(
             } else {
                 characters = getMultipleCharacters(ids)
             }
-        }else{
+        } else {
             return emptyList()
         }
         return characters
     }
 
-    suspend fun fetchAllCharacters(page: Int): List<CharacterEntity> {
+    suspend fun fetchAllCharacters(
+        page: Int,
+        filter: FilterCharacters = FilterCharacters("morty", "dead")//todo remove
+    ): List<CharacterEntity> {//todo add Filter
         val characters = ArrayList<CharacterEntity>()
-        rickAndMortyApi.fetchCharacters(page = page).charactersResponse.forEach {
+        rickAndMortyApi.fetchCharacters(
+            page = page,
+            name = filter.name,
+            status = filter.status,
+            species = filter.species,
+            type = filter.type,
+            gender = filter.gender
+        ).charactersResponse.forEach {
             characters.add(it.parseToCharacterEntity())
         }
         return characters
@@ -82,8 +86,20 @@ class CharactersRepository private constructor(
 
     suspend fun getCharacter(id: Int): CharacterEntity? = characterDao.getCharacterById(id)
 
-    suspend fun getCharacters(limit: Int, page: Int): List<CharacterEntity> =
-        characterDao.getCharacters(limit = limit, offset = (page - 1) * limit)
+    suspend fun getCharacters(
+        limit: Int,
+        page: Int,
+        filter: FilterCharacters// = FilterCharacters(species = "alien")//todo remove
+    ): List<CharacterEntity> =
+        characterDao.getCharacters(
+            limit = limit,
+            offset = (page - 1) * limit,
+            name = filter.name,
+            status = filter.status,
+            species = filter.species,
+            type = filter.type,
+            gender = filter.gender
+        )
 
     suspend fun getMultipleCharacters(ids: List<Int>) = characterDao.getCharactersByIds(ids)
 
@@ -94,7 +110,8 @@ class CharactersRepository private constructor(
             rickAndMortyApi: RickAndMortyApi,
             rickAndMortyDatabase: RickAndMortyDatabase
         ) {
-            INSTANCE = CharactersRepository(rickAndMortyApi, rickAndMortyDatabase)
+            INSTANCE =
+                CharactersRepository(rickAndMortyApi, rickAndMortyDatabase/*, FilterCharacters()*/)
         }
 
         fun getInstance(): CharactersRepository {

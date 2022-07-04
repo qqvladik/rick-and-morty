@@ -7,5 +7,5 @@ interface BaseRepository <K: IEntity> {
         return ids.isNotEmpty()
     }
 
-    suspend fun fetchAllByIsConnect(limit: Int, page: Int): List<K>
+    suspend fun fetchAllByIsConnect(limit: Int, page: Int, filter: BaseFilter<K>): List<K>
 }

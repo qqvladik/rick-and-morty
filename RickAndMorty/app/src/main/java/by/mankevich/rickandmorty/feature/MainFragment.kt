@@ -43,7 +43,7 @@ class MainFragment : Fragment() {
     }
 
     private fun setCurrentFragment(fragment:Fragment) {
-        parentFragmentManager.beginTransaction().apply {
+        childFragmentManager.beginTransaction().apply {
             replace(R.id.fragment_nav_container, fragment)
             commit()
         }

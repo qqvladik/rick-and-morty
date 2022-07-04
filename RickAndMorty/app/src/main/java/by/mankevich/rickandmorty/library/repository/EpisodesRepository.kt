@@ -1,6 +1,7 @@
 package by.mankevich.rickandmorty.library.repository
 
 import by.mankevich.photogallery.api.RickAndMortyApi
+import by.mankevich.rickandmorty.library.base.BaseFilter
 import by.mankevich.rickandmorty.library.db.RickAndMortyDatabase
 import by.mankevich.rickandmorty.library.base.BaseRepository
 import by.mankevich.rickandmorty.library.db.dao.EpisodeDao
@@ -21,7 +22,8 @@ class EpisodesRepository private constructor(
 
     override suspend fun fetchAllByIsConnect(
         limit: Int,
-        page: Int
+        page: Int,
+        filter: BaseFilter<EpisodeEntity>
     ): List<EpisodeEntity> {//todo add Filter
         val episodes: List<EpisodeEntity>//()
         if (isConnect) {

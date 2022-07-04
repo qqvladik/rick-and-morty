@@ -1,6 +1,7 @@
 package by.mankevich.rickandmorty.library.repository
 
 import by.mankevich.photogallery.api.RickAndMortyApi
+import by.mankevich.rickandmorty.library.base.BaseFilter
 import by.mankevich.rickandmorty.library.db.RickAndMortyDatabase
 import by.mankevich.rickandmorty.library.base.BaseRepository
 import by.mankevich.rickandmorty.library.db.entity.CharacterEntity
@@ -26,7 +27,11 @@ class LocationsRepository private constructor(
 //        return locations
 //    }
 
-    override suspend fun fetchAllByIsConnect(limit: Int, page: Int): List<LocationEntity> {//todo add Filter
+    override suspend fun fetchAllByIsConnect(
+        limit: Int,
+        page: Int,
+        filter: BaseFilter<LocationEntity>
+    ): List<LocationEntity> {//todo add Filter
         var locations = ArrayList<LocationEntity>()
         if(isConnect) {
             rickAndMortyApi.fetchLocations(page = page).locationsResponse.forEach {
