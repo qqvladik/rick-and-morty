@@ -1,5 +1,6 @@
 package by.mankevich.rickandmorty.feature.characters.presentation.list
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -34,6 +35,7 @@ class CharactersListFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d(TAG, "onCreateView: CharactersListFragment")
         val view = inflater.inflate(R.layout.fragment_list, container, false)
 
         setHasOptionsMenu(true)
@@ -73,6 +75,11 @@ class CharactersListFragment : BaseFragment() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart: CharactersListFragment")
+    }
+
     override fun onStop() {
         super.onStop()
         Log.d(TAG, "onStop: CharactersListFragment")
@@ -81,6 +88,21 @@ class CharactersListFragment : BaseFragment() {
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "onDestroy: CharactersListFragment")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d(TAG, "onDestroy: CharactersListFragment")
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        Log.d(TAG, "onAttach: CharactersListFragment")
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Log.d(TAG, "onDetach: CharactersListFragment")
     }
 
     private fun initRecyclerView(view: View) {

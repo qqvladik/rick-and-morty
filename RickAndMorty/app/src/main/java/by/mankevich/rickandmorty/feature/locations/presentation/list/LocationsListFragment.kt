@@ -1,5 +1,6 @@
 package by.mankevich.rickandmorty.feature.locations.presentation.list
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -27,6 +28,7 @@ class LocationsListFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG, "onCreate: LocationsListFragment")
         locationsListViewModel.setIsConnect(isConnect())
     }
 
@@ -34,6 +36,7 @@ class LocationsListFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d(TAG, "onCreateView: LocationsListFragment")
         val view = inflater.inflate(R.layout.fragment_list, container, false)
 
         setHasOptionsMenu(true)
@@ -73,14 +76,34 @@ class LocationsListFragment : BaseFragment() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart: LocationsListFragment")
+    }
+
     override fun onStop() {
         super.onStop()
         Log.d(TAG, "onStop: LocationsListFragment")
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d(TAG, "onDestroyView: LocationsListFragment")
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "onDestroy: LocationsListFragment")
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        Log.d(TAG, "onAttach: LocationsListFragment")
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Log.d(TAG, "onDetach: LocationsListFragment")
     }
 
     private fun initRecyclerView(view: View) {

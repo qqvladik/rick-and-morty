@@ -2,4 +2,5 @@
 <resources>
     <color name="text_color">@color/teal_200</color>
     <color name="animator_color">@color/pink_500</color>
+    <color name="menu_item_color">@color/white</color>
 </resources>
