@@ -19,39 +19,32 @@ class LocationsRepository private constructor(
     var isConnect: Boolean = true
     var isInsert: Boolean = true
 
-//    suspend fun fetchAllLocations(): List<LocationEntity> {
-//        val locations = ArrayList<LocationEntity>()
-//        rickAndMortyApi.fetchLocations().locationsResponse.forEach {
-//            locations.add(it.parseToLocationEntity())
-//        }
-//        return locations
-//    }
-
     override suspend fun fetchAllByIsConnect(
         limit: Int,
         page: Int,
-        filter: BaseFilter<LocationEntity>
+        search: String,
+//        filter: BaseFilter<LocationEntity>
     ): List<LocationEntity> {//todo add Filter
-        var locations = ArrayList<LocationEntity>()
-        if(isConnect) {
-            rickAndMortyApi.fetchLocations(page = page).locationsResponse.forEach {
-                locations.add(it.parseToLocationEntity())
-            }
+        val locations: List<LocationEntity>
+        if (isConnect) {
+            locations = fetchAllLocations(page, search)
             if (isInsert) {
                 insertListLocations(locations)
             }
-        }else{
-            locations = locationDao.getLocations(limit = limit, offset = (page - 1) * limit) as ArrayList<LocationEntity>
+        } else {
+            locations = getLocations(limit, page, search)
         }
         return locations
     }
 
-    suspend fun fetchAllAndInsertLocations(): List<LocationEntity> {
+    suspend fun fetchAllLocations(
+        page: Int,
+        search: String,
+    ): List<LocationEntity> {
         val locations = ArrayList<LocationEntity>()
-        rickAndMortyApi.fetchLocations().locationsResponse.forEach {
+        rickAndMortyApi.fetchLocations(page, search).locationsResponse.forEach {
             locations.add(it.parseToLocationEntity())
         }
-        insertListLocations(locations)
         return locations
     }
 
@@ -61,10 +54,10 @@ class LocationsRepository private constructor(
 
     suspend fun fetchAndInsertLocation(id: Int): LocationEntity? {
         val location: LocationEntity?
-        if(isConnect) {
+        if (isConnect) {
             location = fetchLocation(id)
             insertLocation(location)
-        }else{
+        } else {
             location = getLocation(id)
         }
         return location
@@ -77,6 +70,16 @@ class LocationsRepository private constructor(
     suspend fun insertListLocations(locations: List<LocationEntity>) {
         locationDao.insertListLocations(locations)
     }
+
+    suspend fun getLocations(
+        limit: Int,
+        page: Int,
+        search: String
+    ): List<LocationEntity> = locationDao.getLocations(
+        limit = limit,
+        offset = (page - 1) * limit,
+        name = search
+    )
 
     suspend fun getLocation(id: Int): LocationEntity? {
         return locationDao.getLocationById(id)

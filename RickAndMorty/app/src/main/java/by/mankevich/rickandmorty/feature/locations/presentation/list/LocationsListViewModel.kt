@@ -6,36 +6,37 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import by.mankevich.rickandmorty.feature.adapter.PagingSource
 import by.mankevich.rickandmorty.library.repository.LocationsRepository
+import by.mankevich.rickandmorty.library.repository.filter.FilterEpisodes
+import by.mankevich.rickandmorty.library.repository.filter.FilterLocations
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 
 private const val TAG = "RAMLocationsViewModel"
 
-class LocationsListViewModel: ViewModel() {
+class LocationsListViewModel : ViewModel() {
     private val locationsRepository = LocationsRepository.getInstance()
+    private val _searchFlow = MutableStateFlow("")
 
-    val data = Pager(
-        PagingConfig(
-            pageSize = 20,
-            enablePlaceholders = false,
-            initialLoadSize = 20
-        ),
-    ) {
-        PagingSource(locationsRepository)
-    }.flow.cachedIn(viewModelScope)
-
-    fun setIsConnect(isConnect: Boolean){
-        locationsRepository.isConnect=isConnect
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val data = _searchFlow.flatMapLatest {
+        Pager(
+            PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = false,
+                initialLoadSize = 20
+            ),
+        ) {
+            PagingSource(locationsRepository, it)
+        }.flow.cachedIn(viewModelScope)
     }
 
-//    private val _locationsLiveData = MutableLiveData<List<LocationEntity>>()
-//    val locationsLiveData: LiveData<List<LocationEntity>> = _locationsLiveData// = loadLocations() //= locationsRepository.getAllLocations()
-//
-//    fun loadLocations() {
-//        viewModelScope.launch {
-//            try{
-//            _locationsLiveData.postValue(locationsRepository.fetchAllAndInsertLocations())//todo можно обернуть в state
-//            } catch (e: Exception) {
-//                Log.d(TAG, "loadLocations failure")
-//            }
-//        }
-//    }
+    fun setIsConnect(isConnect: Boolean) {
+        locationsRepository.isConnect = isConnect
+    }
+
+    fun onSearchChanged(search: String) {
+        _searchFlow.value = search
+    }
+
 }

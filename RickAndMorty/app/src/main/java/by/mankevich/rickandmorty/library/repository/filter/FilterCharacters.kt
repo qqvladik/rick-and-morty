@@ -7,7 +7,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class FilterCharacters(
-    var name: String = "",
     var status: String = "",
     var species: String = "",
     var type: String = "",

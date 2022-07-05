@@ -7,36 +7,37 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import by.mankevich.rickandmorty.feature.adapter.PagingSource
 import by.mankevich.rickandmorty.library.repository.EpisodesRepository
+import by.mankevich.rickandmorty.library.repository.filter.FilterCharacters
+import by.mankevich.rickandmorty.library.repository.filter.FilterEpisodes
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 
 private const val TAG = "RAMEpisodesViewModel"
 
-class EpisodesListViewModel: ViewModel() {
+class EpisodesListViewModel : ViewModel() {
     private val episodesRepository = EpisodesRepository.getInstance()
+    private val _searchFlow = MutableStateFlow("")
 
-    val data = Pager(
-        PagingConfig(
-            pageSize = 20,
-            enablePlaceholders = false,
-            initialLoadSize = 20
-        ),
-    ) {
-        PagingSource(episodesRepository)
-    }.flow.cachedIn(viewModelScope)
-
-    fun setIsConnect(isConnect: Boolean){
-        episodesRepository.isConnect=isConnect
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val data = _searchFlow.flatMapLatest {
+        Pager(
+            PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = false,
+                initialLoadSize = 20
+            ),
+        ) {
+            PagingSource(episodesRepository, it)
+        }.flow.cachedIn(viewModelScope)
     }
 
-//    private val _episodesLiveData = MutableLiveData<List<EpisodeEntity>>()
-//    val episodesLiveData: LiveData<List<EpisodeEntity>> = _episodesLiveData
-//
-//    fun loadEpisodes(){
-//        viewModelScope.launch {
-//            try {
-//            _episodesLiveData.postValue(episodesRepository.fetchAllAndInsertEpisodes())
-//            } catch (e: Exception) {
-//                Log.d(TAG, "loadEpisodes failure")
-//            }
-//        }
-//    }
+    fun setIsConnect(isConnect: Boolean) {
+        episodesRepository.isConnect = isConnect
+    }
+
+    fun onSearchChanged(search: String) {
+        _searchFlow.value = search
+    }
+
 }

@@ -7,6 +7,5 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class FilterEpisodes (
-    var name: String = "",
     var episode: String = ""
 ): BaseFilter<EpisodeEntity>, Parcelable

@@ -1,10 +1,10 @@
 package by.mankevich.rickandmorty.feature.locations.presentation.list
 
 import android.os.Bundle
+import android.util.Log
+import android.view.*
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.*
@@ -14,6 +14,8 @@ import by.mankevich.rickandmorty.feature.base.BaseFragment
 import by.mankevich.rickandmorty.feature.base.UISupportService
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+
+private const val TAG = "RAMLocationsList"
 
 class LocationsListFragment : BaseFragment() {
 
@@ -49,9 +51,41 @@ class LocationsListFragment : BaseFragment() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.toolbar_list_menu, menu)
+
+        val searchItem: MenuItem = menu.findItem(R.id.item_search)
+        val searchView = searchItem.actionView as SearchView
+
+        searchView.apply {
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(queryText: String): Boolean {
+                    return true
+                }
+
+                override fun onQueryTextChange(queryText: String): Boolean {
+                    Log.d(TAG, "QueryTextChange: $queryText")
+                    locationsListViewModel.onSearchChanged(queryText)
+                    return true
+                }
+            })
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "onStop: LocationsListFragment")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "onDestroy: LocationsListFragment")
+    }
+
     private fun initRecyclerView(view: View) {
         locationsPagingAdapter = LocationsAdapter{
-            UISupportService.showLocationDetailFragment(parentFragmentManager, it.id)
+            UISupportService.showLocationDetailFragment(requireActivity().supportFragmentManager, it.id)
         }
         recyclerView = view.findViewById(R.id.recycler_list)
         UISupportService.designRecyclerView(requireContext(), recyclerView, 2)

@@ -7,7 +7,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class FilterLocations(
-    var name: String = "",
     var type: String = "",
     var dimension: String = ""
 ): BaseFilter<LocationEntity>, Parcelable

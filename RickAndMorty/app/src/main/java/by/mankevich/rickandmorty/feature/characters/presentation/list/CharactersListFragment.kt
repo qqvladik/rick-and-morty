@@ -2,10 +2,8 @@ package by.mankevich.rickandmorty.feature.characters.presentation.list
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +12,7 @@ import by.mankevich.rickandmorty.feature.adapter.CharactersAdapter
 import by.mankevich.rickandmorty.feature.base.UISupportService
 import by.mankevich.rickandmorty.feature.adapter.MainLoadStateAdapter
 import by.mankevich.rickandmorty.feature.base.BaseFragment
+import by.mankevich.rickandmorty.library.repository.filter.FilterCharacters
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -52,9 +51,41 @@ class CharactersListFragment : BaseFragment() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.toolbar_list_menu, menu)
+
+        val searchItem: MenuItem = menu.findItem(R.id.item_search)
+        val searchView = searchItem.actionView as SearchView
+
+        searchView.apply {
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(queryText: String): Boolean {
+                    return true
+                }
+
+                override fun onQueryTextChange(queryText: String): Boolean {
+                    Log.d(TAG, "QueryTextChange: $queryText")
+                    charactersListViewModel.onSearchChanged(queryText)
+                    return true
+                }
+            })
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "onStop: CharactersListFragment")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "onDestroy: CharactersListFragment")
+    }
+
     private fun initRecyclerView(view: View) {
         charactersPagingAdapter = CharactersAdapter{
-            UISupportService.showCharacterDetailFragment(parentFragmentManager, it.id)
+            UISupportService.showCharacterDetailFragment(requireActivity().supportFragmentManager, it.id)
         }
         recyclerView = view.findViewById(R.id.recycler_list)
         UISupportService.designRecyclerView(requireContext(), recyclerView, 2)

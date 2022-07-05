@@ -24,16 +24,16 @@ class CharactersRepository private constructor(
     override suspend fun fetchAllByIsConnect(
         limit: Int,
         page: Int,
-        filter: BaseFilter<CharacterEntity>
+        search: String
     ): List<CharacterEntity> {
         val characters: List<CharacterEntity>
         if (isConnect) {
-            characters = fetchAllCharacters(page, filter as FilterCharacters)//todo add Filter
+            characters = fetchAllCharacters(page, search)//todo add Filter
             if (isInsert) {
                 insertListCharacters(characters)
             }
         } else {
-            characters = getCharacters(limit, page, filter as FilterCharacters)
+            characters = getCharacters(limit, page, search)
         }
         return characters
     }
@@ -57,16 +57,17 @@ class CharactersRepository private constructor(
 
     suspend fun fetchAllCharacters(
         page: Int,
-        filter: FilterCharacters = FilterCharacters("morty", "dead")//todo remove
+        search: String,
+        //filter: FilterCharacters = FilterCharacters("morty", "dead")//todo remove
     ): List<CharacterEntity> {//todo add Filter
         val characters = ArrayList<CharacterEntity>()
         rickAndMortyApi.fetchCharacters(
             page = page,
-            name = filter.name,
-            status = filter.status,
-            species = filter.species,
-            type = filter.type,
-            gender = filter.gender
+            name = search,
+//            status = filter.status,
+//            species = filter.species,
+//            type = filter.type,
+//            gender = filter.gender
         ).charactersResponse.forEach {
             characters.add(it.parseToCharacterEntity())
         }
@@ -89,16 +90,17 @@ class CharactersRepository private constructor(
     suspend fun getCharacters(
         limit: Int,
         page: Int,
-        filter: FilterCharacters// = FilterCharacters(species = "alien")//todo remove
+        search: String,
+//        filter: FilterCharacters// = FilterCharacters(species = "alien")//todo remove
     ): List<CharacterEntity> =
         characterDao.getCharacters(
             limit = limit,
             offset = (page - 1) * limit,
-            name = filter.name,
-            status = filter.status,
-            species = filter.species,
-            type = filter.type,
-            gender = filter.gender
+            name = search,
+//            status = filter.status,
+//            species = filter.species,
+//            type = filter.type,
+//            gender = filter.gender
         )
 
     suspend fun getMultipleCharacters(ids: List<Int>) = characterDao.getCharactersByIds(ids)
