@@ -3,10 +3,11 @@ package by.mankevich.rickandmorty.feature.episodes.presentation.list
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import by.mankevich.rickandmorty.R
@@ -80,26 +81,31 @@ class EpisodesListFragment : BaseFragment() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        Log.d(TAG, "onStop: EpisodesListFragment")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d(TAG, "onDestroy: EpisodesListFragment")
-    }
-
     private fun initRecyclerView(view: View) {
-        episodesPagingAdapter = EpisodesAdapter{
-            UISupportService.showEpisodeDetailFragment(requireActivity().supportFragmentManager, it.id)
+        episodesPagingAdapter = EpisodesAdapter {
+            UISupportService.showEpisodeDetailFragment(
+                requireActivity().supportFragmentManager,
+                it.id
+            )
+        }
+        episodesPagingAdapter.addLoadStateListener { loadStates ->
+            if(loadStates.source.refresh is LoadState.NotLoading &&
+                loadStates.append.endOfPaginationReached
+            ) {
+                if (episodesPagingAdapter.itemCount < 1) {
+                    Toast.makeText(requireContext(), "No results", Toast.LENGTH_SHORT).show()
+                }
+            }else if(loadStates.source.refresh is LoadState.Error){
+                val error = loadStates.source.refresh as LoadState.Error
+                Toast.makeText(requireContext(), error.error.message, Toast.LENGTH_SHORT).show()
+            }
         }
         recyclerView = view.findViewById(R.id.recycler_list)
         UISupportService.designRecyclerView(requireContext(), recyclerView, 2)
         recyclerView.adapter = episodesPagingAdapter
     }
 
-    private fun initSwipeRefresh(view: View){
+    private fun initSwipeRefresh(view: View) {
         swipeRefresh = view.findViewById(R.id.swipe_refresh)
         swipeRefresh.setOnRefreshListener {
             swipeRefresh.isRefreshing = true

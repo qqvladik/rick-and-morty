@@ -1,12 +1,13 @@
 package by.mankevich.rickandmorty.feature.characters.presentation.list
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import by.mankevich.rickandmorty.R
@@ -14,7 +15,6 @@ import by.mankevich.rickandmorty.feature.adapter.CharactersAdapter
 import by.mankevich.rickandmorty.feature.base.UISupportService
 import by.mankevich.rickandmorty.feature.adapter.MainLoadStateAdapter
 import by.mankevich.rickandmorty.feature.base.BaseFragment
-import by.mankevich.rickandmorty.library.repository.filter.FilterCharacters
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -32,7 +32,6 @@ class CharactersListFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d(TAG, "onCreateView: CharactersListFragment")
         val view = inflater.inflate(R.layout.fragment_list, container, false)
 
         setHasOptionsMenu(true)
@@ -66,7 +65,6 @@ class CharactersListFragment : BaseFragment() {
                 }
 
                 override fun onQueryTextChange(queryText: String): Boolean {
-                    Log.d(TAG, "QueryTextChange: $queryText")
                     charactersListViewModel.onSearchChanged(queryText)
                     return true
                 }
@@ -84,46 +82,31 @@ class CharactersListFragment : BaseFragment() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        Log.d(TAG, "onStart: CharactersListFragment")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d(TAG, "onStop: CharactersListFragment")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d(TAG, "onDestroy: CharactersListFragment")
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.d(TAG, "onDestroy: CharactersListFragment")
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        Log.d(TAG, "onAttach: CharactersListFragment")
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        Log.d(TAG, "onDetach: CharactersListFragment")
-    }
-
     private fun initRecyclerView(view: View) {
-        charactersPagingAdapter = CharactersAdapter{
-            UISupportService.showCharacterDetailFragment(requireActivity().supportFragmentManager, it.id)
+        charactersPagingAdapter = CharactersAdapter {
+            UISupportService.showCharacterDetailFragment(
+                requireActivity().supportFragmentManager,
+                it.id
+            )
+        }
+        charactersPagingAdapter.addLoadStateListener { loadStates ->
+            if(loadStates.source.refresh is LoadState.NotLoading &&
+                loadStates.append.endOfPaginationReached
+            ) {
+                if (charactersPagingAdapter.itemCount < 1) {
+                    Toast.makeText(requireContext(), "No results", Toast.LENGTH_SHORT).show()
+                }
+            }else if(loadStates.source.refresh is LoadState.Error){
+                val error = loadStates.source.refresh as LoadState.Error
+                Toast.makeText(requireContext(), error.error.message, Toast.LENGTH_SHORT).show()
+            }
         }
         recyclerView = view.findViewById(R.id.recycler_list)
         UISupportService.designRecyclerView(requireContext(), recyclerView, 2)
         recyclerView.adapter = charactersPagingAdapter.withLoadStateFooter(MainLoadStateAdapter())
     }
 
-    private fun initSwipeRefresh(view: View){
+    private fun initSwipeRefresh(view: View) {
         swipeRefresh = view.findViewById(R.id.swipe_refresh)
         swipeRefresh.setOnRefreshListener {
             swipeRefresh.isRefreshing = true
