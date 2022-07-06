@@ -14,7 +14,7 @@ private const val TAG = "RAMCharactersRepository"
 class CharactersRepository private constructor(
     private val rickAndMortyApi: RickAndMortyApi,
     rickAndMortyDatabase: RickAndMortyDatabase,
-//    val filter: FilterCharacters = FilterCharacters()
+    val filter: FilterCharacters = FilterCharacters()
 ) : BaseRepository<CharacterEntity> {
     private val characterDao: CharacterDao = rickAndMortyDatabase.getCharacterDao()
 
@@ -28,7 +28,7 @@ class CharactersRepository private constructor(
     ): List<CharacterEntity> {
         val characters: List<CharacterEntity>
         if (isConnect) {
-            characters = fetchAllCharacters(page, search)//todo add Filter
+            characters = fetchAllCharacters(page, search)
             if (isInsert) {
                 insertListCharacters(characters)
             }
@@ -58,16 +58,15 @@ class CharactersRepository private constructor(
     suspend fun fetchAllCharacters(
         page: Int,
         search: String,
-        //filter: FilterCharacters = FilterCharacters("morty", "dead")//todo remove
-    ): List<CharacterEntity> {//todo add Filter
+    ): List<CharacterEntity> {
         val characters = ArrayList<CharacterEntity>()
         rickAndMortyApi.fetchCharacters(
             page = page,
             name = search,
-//            status = filter.status,
-//            species = filter.species,
-//            type = filter.type,
-//            gender = filter.gender
+            status = filter.status,
+            species = filter.species,
+            type = filter.type,
+            gender = filter.gender
         ).charactersResponse.forEach {
             characters.add(it.parseToCharacterEntity())
         }
@@ -91,16 +90,15 @@ class CharactersRepository private constructor(
         limit: Int,
         page: Int,
         search: String,
-//        filter: FilterCharacters// = FilterCharacters(species = "alien")//todo remove
     ): List<CharacterEntity> =
         characterDao.getCharacters(
             limit = limit,
             offset = (page - 1) * limit,
             name = search,
-//            status = filter.status,
-//            species = filter.species,
-//            type = filter.type,
-//            gender = filter.gender
+            status = filter.status,
+            species = filter.species,
+            type = filter.type,
+            gender = filter.gender
         )
 
     suspend fun getMultipleCharacters(ids: List<Int>) = characterDao.getCharactersByIds(ids)
@@ -113,7 +111,7 @@ class CharactersRepository private constructor(
             rickAndMortyDatabase: RickAndMortyDatabase
         ) {
             INSTANCE =
-                CharactersRepository(rickAndMortyApi, rickAndMortyDatabase/*, FilterCharacters()*/)
+                CharactersRepository(rickAndMortyApi, rickAndMortyDatabase, FilterCharacters())
         }
 
         fun getInstance(): CharactersRepository {

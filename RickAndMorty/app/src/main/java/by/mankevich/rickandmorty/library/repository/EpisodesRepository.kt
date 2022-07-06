@@ -7,12 +7,15 @@ import by.mankevich.rickandmorty.library.base.BaseRepository
 import by.mankevich.rickandmorty.library.db.dao.EpisodeDao
 import by.mankevich.rickandmorty.library.db.entity.EpisodeEntity
 import by.mankevich.rickandmorty.library.db.entity.parseToEpisodeEntity
+import by.mankevich.rickandmorty.library.repository.filter.FilterCharacters
+import by.mankevich.rickandmorty.library.repository.filter.FilterEpisodes
 
 private const val TAG = "RAMEpisodesRepository"
 
 class EpisodesRepository private constructor(
     private val rickAndMortyApi: RickAndMortyApi,
-    rickAndMortyDatabase: RickAndMortyDatabase
+    rickAndMortyDatabase: RickAndMortyDatabase,
+    val filter: FilterEpisodes = FilterEpisodes()
 ) : BaseRepository<EpisodeEntity> {
 
     private val episodeDao: EpisodeDao = rickAndMortyDatabase.getEpisodeDao()
@@ -24,9 +27,8 @@ class EpisodesRepository private constructor(
         limit: Int,
         page: Int,
         search: String,
-//        filter: BaseFilter<EpisodeEntity>
-    ): List<EpisodeEntity> {//todo add Filter
-        val episodes: List<EpisodeEntity>//()
+    ): List<EpisodeEntity> {
+        val episodes: List<EpisodeEntity>
         if (isConnect) {
             episodes = fetchAllEpisodes(page, search)
             if (isInsert) {
@@ -62,7 +64,8 @@ class EpisodesRepository private constructor(
         val episodes = ArrayList<EpisodeEntity>()
         rickAndMortyApi.fetchEpisodes(
             page = page,
-            name = search
+            name = search,
+            episode = filter.getEpisodeForQuery()
         ).episodesResponse.forEach {
             episodes.add(it.parseToEpisodeEntity())
         }
@@ -91,7 +94,8 @@ class EpisodesRepository private constructor(
     ): List<EpisodeEntity> = episodeDao.getEpisodes(
             limit = limit,
             offset = (page - 1) * limit,
-            name = search
+            name = search,
+            episode = filter.getEpisodeForQuery()
         )
 
     suspend fun getMultipleEpisodes(ids: List<Int>) = episodeDao.getEpisodesByIds(ids)
@@ -103,7 +107,7 @@ class EpisodesRepository private constructor(
             rickAndMortyApi: RickAndMortyApi,
             rickAndMortyDatabase: RickAndMortyDatabase
         ) {
-            INSTANCE = EpisodesRepository(rickAndMortyApi, rickAndMortyDatabase)
+            INSTANCE = EpisodesRepository(rickAndMortyApi, rickAndMortyDatabase, FilterEpisodes())
         }
 
         fun getInstance(): EpisodesRepository {

@@ -29,7 +29,6 @@ class LocationsListFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate: LocationsListFragment")
-        locationsListViewModel.setIsConnect(isConnect())
     }
 
     override fun onCreateView(
@@ -47,6 +46,7 @@ class LocationsListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        locationsListViewModel.setIsConnect(isConnect())
         lifecycleScope.launch {
             locationsListViewModel.data.collectLatest {
                 locationsPagingAdapter.submitData(it)
@@ -73,6 +73,16 @@ class LocationsListFragment : BaseFragment() {
                     return true
                 }
             })
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.item_filter -> {
+                UISupportService.showFilterLocationsFragment(requireActivity().supportFragmentManager)
+                true
+            }
+            else -> return super.onOptionsItemSelected(item)
         }
     }
 

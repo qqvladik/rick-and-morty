@@ -17,4 +17,14 @@
     <string name="item_search_text">Search</string>
     <string name="item_filters_text">Filters</string>
     <string name="item_back_text">Back</string>
+    <string name="text_filter_status">Status</string>
+    <string name="text_species">Species</string>
+    <string name="text_filter_type">Type</string>
+    <string name="text_filter_gender">Gender</string>
+    <string name="text_apply">Apply</string>
+    <string name="text_cancel">Cancel</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="text_filter_dimension">Dimension</string>
+    <string name="text_filter_episode">First numbers of episode (\"03\" or \"11\")</string>
 </resources>

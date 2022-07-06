@@ -10,7 +10,13 @@ data class FilterCharacters(
     var status: String = "",
     var species: String = "",
     var type: String = "",
-    var gender: String = "",
-    var origin: String = "",
-    var location: String = ""
-) : BaseFilter<CharacterEntity>, Parcelable
+    var gender: String = ""
+) : BaseFilter<CharacterEntity>, Parcelable{
+
+    companion object{
+        val CHARACTERS_STATUS_LIST = listOf("any", "Alive", "Dead", "unknown")
+        val CHARACTERS_SPECIES_LIST = listOf("any", "Alien", "Animal", "Cronenberg", "Disease", "Human",
+            "Humanoid", "Mythological Creature", "Poopybutthole", "Robot", "unknown")
+        val CHARACTERS_GENDER_LIST = listOf("any", "Female", "Genderless", "Male", "unknown")
+    }
+}

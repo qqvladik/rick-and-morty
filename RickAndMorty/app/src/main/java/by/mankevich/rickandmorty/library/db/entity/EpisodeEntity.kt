@@ -24,7 +24,7 @@ data class EpisodeEntity(
     }
 
     fun getEpisodeNum(): String {    //"S03E07"
-        return String(episode.toCharArray(5, 6))
+        return String(episode.toCharArray(4, 6))
     }
 }
 

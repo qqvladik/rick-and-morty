@@ -7,5 +7,19 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class FilterEpisodes (
-    var episode: String = ""
-): BaseFilter<EpisodeEntity>, Parcelable
+    var season: String = "",
+    var episodeNum: String = ""
+): BaseFilter<EpisodeEntity>, Parcelable{
+
+    fun getEpisodeForQuery(): String {
+        var season = ""
+        if(this.season!=""){
+            season = "S0".plus(this.season)
+        }
+        return season.plus("E").plus(episodeNum)
+    }
+
+    companion object{
+        val SEASONS_LIST = listOf("any", "1", "2", "3", "4", "5")
+    }
+}

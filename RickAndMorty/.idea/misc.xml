@@ -17,6 +17,10 @@
         <entry key="..\:/study/android-trainee-aston/rick-and-morty/RickAndMorty/app/src/main/res/layout/fragment_characters_list.xml" value="0.2269021739130435" />
         <entry key="..\:/study/android-trainee-aston/rick-and-morty/RickAndMorty/app/src/main/res/layout/fragment_episode_detail.xml" value="0.4" />
         <entry key="..\:/study/android-trainee-aston/rick-and-morty/RickAndMorty/app/src/main/res/layout/fragment_episodes_list.xml" value="0.2269021739130435" />
+        <entry key="..\:/study/android-trainee-aston/rick-and-morty/RickAndMorty/app/src/main/res/layout/fragment_filter_cha.xml" value="0.3009833262077811" />
+        <entry key="..\:/study/android-trainee-aston/rick-and-morty/RickAndMorty/app/src/main/res/layout/fragment_filter_character.xml" value="0.3009833262077811" />
+        <entry key="..\:/study/android-trainee-aston/rick-and-morty/RickAndMorty/app/src/main/res/layout/fragment_filter_episodes.xml" value="0.3009833262077811" />
+        <entry key="..\:/study/android-trainee-aston/rick-and-morty/RickAndMorty/app/src/main/res/layout/fragment_filter_locations.xml" value="0.2894399315946986" />
         <entry key="..\:/study/android-trainee-aston/rick-and-morty/RickAndMorty/app/src/main/res/layout/fragment_list.xml" value="0.2269021739130435" />
         <entry key="..\:/study/android-trainee-aston/rick-and-morty/RickAndMorty/app/src/main/res/layout/fragment_location_detail.xml" value="0.264" />
         <entry key="..\:/study/android-trainee-aston/rick-and-morty/RickAndMorty/app/src/main/res/layout/fragment_locations_list.xml" value="0.2269021739130435" />

@@ -24,11 +24,6 @@ class EpisodesListFragment : BaseFragment() {
         ViewModelProvider(this).get(EpisodesListViewModel::class.java)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        episodesListViewModel.setIsConnect(isConnect())
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,6 +38,7 @@ class EpisodesListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        episodesListViewModel.setIsConnect(isConnect())
         lifecycleScope.launch {
             episodesListViewModel.data.collectLatest {
                 episodesPagingAdapter.submitData(it)
@@ -68,6 +64,16 @@ class EpisodesListFragment : BaseFragment() {
                     return true
                 }
             })
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.item_filter -> {
+                UISupportService.showFilterEpisodesFragment(requireActivity().supportFragmentManager)
+                true
+            }
+            else -> return super.onOptionsItemSelected(item)
         }
     }
 

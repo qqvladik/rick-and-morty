@@ -26,11 +26,6 @@ class CharactersListFragment : BaseFragment() {
         ViewModelProvider(this).get(CharactersListViewModel::class.java)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        charactersListViewModel.setIsConnect(isConnect())
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,6 +41,7 @@ class CharactersListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        charactersListViewModel.setIsConnect(isConnect())
         lifecycleScope.launch {
             charactersListViewModel.data.collectLatest {
                 charactersPagingAdapter.submitData(it)
@@ -72,6 +68,16 @@ class CharactersListFragment : BaseFragment() {
                     return true
                 }
             })
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.item_filter -> {
+                UISupportService.showFilterCharactersFragment(requireActivity().supportFragmentManager)
+                true
+            }
+            else -> return super.onOptionsItemSelected(item)
         }
     }
 

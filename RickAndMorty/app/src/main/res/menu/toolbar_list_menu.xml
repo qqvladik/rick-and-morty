@@ -9,7 +9,7 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         android:title="@string/item_search_text"/>
     <item
-        android:id="@+id/item_add"
+        android:id="@+id/item_filter"
         android:icon="@drawable/ic_baseline_filter_list_24"
         android:title="@string/item_filters_text"
         app:showAsAction="ifRoom"

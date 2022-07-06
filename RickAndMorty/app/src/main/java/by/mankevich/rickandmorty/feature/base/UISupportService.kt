@@ -14,8 +14,11 @@ import androidx.recyclerview.widget.RecyclerView
 import by.mankevich.rickandmorty.R
 import by.mankevich.rickandmorty.domain.base.IEntity
 import by.mankevich.rickandmorty.feature.characters.presentation.detail.CharacterDetailFragment
+import by.mankevich.rickandmorty.feature.characters.presentation.filter.FilterCharactersFragment
 import by.mankevich.rickandmorty.feature.episodes.presentation.detail.EpisodeDetailFragment
+import by.mankevich.rickandmorty.feature.episodes.presentation.filter.FilterEpisodesFragment
 import by.mankevich.rickandmorty.feature.locations.presentation.detail.LocationDetailFragment
+import by.mankevich.rickandmorty.feature.locations.presentation.filter.FilterLocationsFragment
 
 private const val TAG = "RAMUISupportService"
 
@@ -62,6 +65,21 @@ object UISupportService /*private constructor()*/ {
         showDetailFragment(fragmentManager, locationDetailFragment)
     }
 
+    fun showFilterCharactersFragment(fragmentManager: FragmentManager) {
+        val filterCharactersFragment = FilterCharactersFragment.newInstance()
+        showDetailFragment(fragmentManager, filterCharactersFragment)
+    }
+
+    fun showFilterEpisodesFragment(fragmentManager: FragmentManager) {
+        val filterEpisodesFragment = FilterEpisodesFragment.newInstance()
+        showDetailFragment(fragmentManager, filterEpisodesFragment)
+    }
+
+    fun showFilterLocationsFragment(fragmentManager: FragmentManager) {
+        val filterLocationsFragment = FilterLocationsFragment.newInstance()
+        showDetailFragment(fragmentManager, filterLocationsFragment)
+    }
+
     private fun showDetailFragment(fragmentManager: FragmentManager, fragment: Fragment) {
         fragmentManager.beginTransaction().apply {
             replace(R.id.fragment_container, fragment)
@@ -70,36 +88,4 @@ object UISupportService /*private constructor()*/ {
             commit()
         }
     }
-
-//    fun getIsConnect(context: Context): Boolean {
-//        var result = 0 // Returns connection type. 0: none; 1: mobile data; 2: wifi; 3: vpn
-//        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            cm?.run {
-//                cm.getNetworkCapabilities(cm.activeNetwork)?.run {
-//                    if (hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
-//                        result = 2
-//                    } else if (hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
-//                        result = 1
-//                    } else if (hasTransport(NetworkCapabilities.TRANSPORT_VPN)){
-//                        result = 3
-//                    }
-//                }
-//            }
-//        } else {
-//            cm?.run {
-//                cm.activeNetworkInfo?.run {
-//                    if (type == ConnectivityManager.TYPE_WIFI) {
-//                        result = 2
-//                    } else if (type == ConnectivityManager.TYPE_MOBILE) {
-//                        result = 1
-//                    } else if(type == ConnectivityManager.TYPE_VPN) {
-//                        result = 3
-//                    }
-//                }
-//            }
-//        }
-//        return result != 0
-//    }
-
 }

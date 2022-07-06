@@ -8,10 +8,13 @@ import by.mankevich.rickandmorty.library.db.entity.CharacterEntity
 import by.mankevich.rickandmorty.library.db.entity.LocationEntity
 import by.mankevich.rickandmorty.library.db.entity.parseToCharacterEntity
 import by.mankevich.rickandmorty.library.db.entity.parseToLocationEntity
+import by.mankevich.rickandmorty.library.repository.filter.FilterEpisodes
+import by.mankevich.rickandmorty.library.repository.filter.FilterLocations
 
 class LocationsRepository private constructor(
     private val rickAndMortyApi: RickAndMortyApi,
-    rickAndMortyDatabase: RickAndMortyDatabase
+    rickAndMortyDatabase: RickAndMortyDatabase,
+    val filter: FilterLocations = FilterLocations()
 ) : BaseRepository<LocationEntity> {
 
     private val locationDao = rickAndMortyDatabase.getLocationDao()
@@ -22,9 +25,8 @@ class LocationsRepository private constructor(
     override suspend fun fetchAllByIsConnect(
         limit: Int,
         page: Int,
-        search: String,
-//        filter: BaseFilter<LocationEntity>
-    ): List<LocationEntity> {//todo add Filter
+        search: String
+    ): List<LocationEntity> {
         val locations: List<LocationEntity>
         if (isConnect) {
             locations = fetchAllLocations(page, search)
@@ -42,7 +44,12 @@ class LocationsRepository private constructor(
         search: String,
     ): List<LocationEntity> {
         val locations = ArrayList<LocationEntity>()
-        rickAndMortyApi.fetchLocations(page, search).locationsResponse.forEach {
+        rickAndMortyApi.fetchLocations(
+            page = page,
+            name = search,
+            type = filter.type,
+            dimension = filter.dimension
+        ).locationsResponse.forEach {
             locations.add(it.parseToLocationEntity())
         }
         return locations
@@ -78,7 +85,9 @@ class LocationsRepository private constructor(
     ): List<LocationEntity> = locationDao.getLocations(
         limit = limit,
         offset = (page - 1) * limit,
-        name = search
+        name = search,
+        type = filter.type,
+        dimension = filter.dimension
     )
 
     suspend fun getLocation(id: Int): LocationEntity? {
@@ -92,7 +101,7 @@ class LocationsRepository private constructor(
             rickAndMortyApi: RickAndMortyApi,
             rickAndMortyDatabase: RickAndMortyDatabase
         ) {
-            INSTANCE = LocationsRepository(rickAndMortyApi, rickAndMortyDatabase)
+            INSTANCE = LocationsRepository(rickAndMortyApi, rickAndMortyDatabase, FilterLocations())
         }
 
         fun getInstance(): LocationsRepository {
