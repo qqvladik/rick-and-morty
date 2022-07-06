@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -46,6 +47,7 @@ class LocationDetailFragment : BaseFragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_location_detail, container, false)
         initView(view)
+        (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         return view
     }
 

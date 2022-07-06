@@ -1,9 +1,10 @@
 package by.mankevich.rickandmorty.feature.characters.presentation.list
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -21,6 +22,7 @@ import kotlinx.coroutines.launch
 private const val TAG = "RAMCharactersFragment"
 
 class CharactersListFragment : BaseFragment() {
+    private lateinit var imageStatusNetwork: ImageView
     private lateinit var recyclerView: RecyclerView
     private lateinit var swipeRefresh: SwipeRefreshLayout
     private lateinit var charactersPagingAdapter: CharactersAdapter
@@ -35,15 +37,16 @@ class CharactersListFragment : BaseFragment() {
         val view = inflater.inflate(R.layout.fragment_list, container, false)
 
         setHasOptionsMenu(true)
-        initRecyclerView(view)
+        initView(view)
         initSwipeRefresh(view)
+        (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(false)
 
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        charactersListViewModel.setIsConnect(isConnect())
+        setConnectWithImage()
         lifecycleScope.launch {
             charactersListViewModel.data.collectLatest {
                 charactersPagingAdapter.submitData(it)
@@ -82,7 +85,8 @@ class CharactersListFragment : BaseFragment() {
         }
     }
 
-    private fun initRecyclerView(view: View) {
+    private fun initView(view: View) {
+        imageStatusNetwork = view.findViewById(R.id.image_network_status)
         charactersPagingAdapter = CharactersAdapter {
             UISupportService.showCharacterDetailFragment(
                 requireActivity().supportFragmentManager,
@@ -110,9 +114,18 @@ class CharactersListFragment : BaseFragment() {
         swipeRefresh = view.findViewById(R.id.swipe_refresh)
         swipeRefresh.setOnRefreshListener {
             swipeRefresh.isRefreshing = true
-            charactersListViewModel.setIsConnect(isConnect())
+            setConnectWithImage()
             charactersPagingAdapter.refresh()
             swipeRefresh.isRefreshing = false
+        }
+    }
+
+    private fun setConnectWithImage(){
+        charactersListViewModel.setIsConnect(isConnect())
+        if(isConnect()) {
+            imageStatusNetwork.setImageResource(R.drawable.ic_ram_online_4)
+        }else{
+            imageStatusNetwork.setImageResource(R.drawable.ic_ram_offline_4)
         }
     }
 

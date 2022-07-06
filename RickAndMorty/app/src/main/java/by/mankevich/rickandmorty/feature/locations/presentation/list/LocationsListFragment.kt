@@ -4,7 +4,9 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -21,7 +23,7 @@ import kotlinx.coroutines.launch
 private const val TAG = "RAMLocationsList"
 
 class LocationsListFragment : BaseFragment() {
-
+    private lateinit var imageStatusNetwork: ImageView
     private lateinit var recyclerView: RecyclerView
     private lateinit var swipeRefresh: SwipeRefreshLayout
     private lateinit var locationsPagingAdapter: LocationsAdapter
@@ -36,15 +38,16 @@ class LocationsListFragment : BaseFragment() {
         val view = inflater.inflate(R.layout.fragment_list, container, false)
 
         setHasOptionsMenu(true)
-        initRecyclerView(view)
+        initView(view)
         initSwipeRefresh(view)
+        (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(false)
 
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        locationsListViewModel.setIsConnect(isConnect())
+        setConnectWithImage()
         lifecycleScope.launch {
             locationsListViewModel.data.collectLatest {
                 locationsPagingAdapter.submitData(it)
@@ -83,7 +86,9 @@ class LocationsListFragment : BaseFragment() {
             else -> return super.onOptionsItemSelected(item)
         }
     }
-    private fun initRecyclerView(view: View) {
+
+    private fun initView(view: View) {
+        imageStatusNetwork = view.findViewById(R.id.image_network_status)
         locationsPagingAdapter = LocationsAdapter {
             UISupportService.showLocationDetailFragment(
                 requireActivity().supportFragmentManager,
@@ -111,9 +116,18 @@ class LocationsListFragment : BaseFragment() {
         swipeRefresh = view.findViewById(R.id.swipe_refresh)
         swipeRefresh.setOnRefreshListener {
             swipeRefresh.isRefreshing = true
-            locationsListViewModel.setIsConnect(isConnect())
+            setConnectWithImage()
             locationsPagingAdapter.refresh()
             swipeRefresh.isRefreshing = false
+        }
+    }
+
+    private fun setConnectWithImage(){
+        locationsListViewModel.setIsConnect(isConnect())
+        if(isConnect()) {
+            imageStatusNetwork.setImageResource(R.drawable.ic_ram_online_4)
+        }else{
+            imageStatusNetwork.setImageResource(R.drawable.ic_ram_offline_4)
         }
     }
 

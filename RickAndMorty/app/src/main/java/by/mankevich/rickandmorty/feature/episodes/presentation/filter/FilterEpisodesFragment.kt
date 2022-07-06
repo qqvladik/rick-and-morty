@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import by.mankevich.rickandmorty.R
 import by.mankevich.rickandmorty.feature.characters.presentation.filter.FilterCharactersViewModel
@@ -31,6 +32,7 @@ class FilterEpisodesFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_filter_episodes, container, false)
         initView(view)
+        (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         return view
     }
 
