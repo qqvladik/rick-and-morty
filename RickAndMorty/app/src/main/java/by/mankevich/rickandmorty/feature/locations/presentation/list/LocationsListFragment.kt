@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.*
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import by.mankevich.rickandmorty.R
 import by.mankevich.rickandmorty.feature.adapter.LocationsAdapter
 import by.mankevich.rickandmorty.feature.base.BaseFragment
@@ -21,6 +22,7 @@ private const val TAG = "RAMLocationsList"
 class LocationsListFragment : BaseFragment() {
 
     private lateinit var recyclerView: RecyclerView
+    private lateinit var swipeRefresh: SwipeRefreshLayout
     private lateinit var locationsPagingAdapter: LocationsAdapter
     private val locationsListViewModel: LocationsListViewModel by lazy {
         ViewModelProvider(this).get(LocationsListViewModel::class.java)
@@ -40,6 +42,7 @@ class LocationsListFragment : BaseFragment() {
 
         setHasOptionsMenu(true)
         initRecyclerView(view)
+        initSwipeRefresh(view)
 
         return view
     }
@@ -123,6 +126,16 @@ class LocationsListFragment : BaseFragment() {
         recyclerView = view.findViewById(R.id.recycler_list)
         UISupportService.designRecyclerView(requireContext(), recyclerView, 2)
         recyclerView.adapter = locationsPagingAdapter
+    }
+
+    private fun initSwipeRefresh(view: View){
+        swipeRefresh = view.findViewById(R.id.swipe_refresh)
+        swipeRefresh.setOnRefreshListener {
+            swipeRefresh.isRefreshing = true
+            locationsListViewModel.setIsConnect(isConnect())
+            locationsPagingAdapter.refresh()
+            swipeRefresh.isRefreshing = false
+        }
     }
 
     companion object {

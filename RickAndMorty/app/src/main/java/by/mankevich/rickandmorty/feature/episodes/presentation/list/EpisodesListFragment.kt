@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import by.mankevich.rickandmorty.R
 import by.mankevich.rickandmorty.feature.adapter.EpisodesAdapter
 import by.mankevich.rickandmorty.feature.base.BaseFragment
@@ -19,6 +20,7 @@ private const val TAG = "RAMEpisodesListFragment"
 
 class EpisodesListFragment : BaseFragment() {
     private lateinit var recyclerView: RecyclerView
+    private lateinit var swipeRefresh: SwipeRefreshLayout
     private lateinit var episodesPagingAdapter: EpisodesAdapter
     private val episodesListViewModel: EpisodesListViewModel by lazy {
         ViewModelProvider(this).get(EpisodesListViewModel::class.java)
@@ -32,6 +34,7 @@ class EpisodesListFragment : BaseFragment() {
 
         setHasOptionsMenu(true)
         initRecyclerView(view)
+        initSwipeRefresh(view)
 
         return view
     }
@@ -94,6 +97,16 @@ class EpisodesListFragment : BaseFragment() {
         recyclerView = view.findViewById(R.id.recycler_list)
         UISupportService.designRecyclerView(requireContext(), recyclerView, 2)
         recyclerView.adapter = episodesPagingAdapter
+    }
+
+    private fun initSwipeRefresh(view: View){
+        swipeRefresh = view.findViewById(R.id.swipe_refresh)
+        swipeRefresh.setOnRefreshListener {
+            swipeRefresh.isRefreshing = true
+            episodesListViewModel.setIsConnect(isConnect())
+            episodesPagingAdapter.refresh()
+            swipeRefresh.isRefreshing = false
+        }
     }
 
     companion object {

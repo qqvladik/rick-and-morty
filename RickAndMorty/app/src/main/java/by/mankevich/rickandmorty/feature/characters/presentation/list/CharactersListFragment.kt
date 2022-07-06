@@ -8,6 +8,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import by.mankevich.rickandmorty.R
 import by.mankevich.rickandmorty.feature.adapter.CharactersAdapter
 import by.mankevich.rickandmorty.feature.base.UISupportService
@@ -21,6 +22,7 @@ private const val TAG = "RAMCharactersFragment"
 
 class CharactersListFragment : BaseFragment() {
     private lateinit var recyclerView: RecyclerView
+    private lateinit var swipeRefresh: SwipeRefreshLayout
     private lateinit var charactersPagingAdapter: CharactersAdapter
     private val charactersListViewModel: CharactersListViewModel by lazy {
         ViewModelProvider(this).get(CharactersListViewModel::class.java)
@@ -35,6 +37,7 @@ class CharactersListFragment : BaseFragment() {
 
         setHasOptionsMenu(true)
         initRecyclerView(view)
+        initSwipeRefresh(view)
 
         return view
     }
@@ -118,6 +121,16 @@ class CharactersListFragment : BaseFragment() {
         recyclerView = view.findViewById(R.id.recycler_list)
         UISupportService.designRecyclerView(requireContext(), recyclerView, 2)
         recyclerView.adapter = charactersPagingAdapter.withLoadStateFooter(MainLoadStateAdapter())
+    }
+
+    private fun initSwipeRefresh(view: View){
+        swipeRefresh = view.findViewById(R.id.swipe_refresh)
+        swipeRefresh.setOnRefreshListener {
+            swipeRefresh.isRefreshing = true
+            charactersListViewModel.setIsConnect(isConnect())
+            charactersPagingAdapter.refresh()
+            swipeRefresh.isRefreshing = false
+        }
     }
 
     companion object {
