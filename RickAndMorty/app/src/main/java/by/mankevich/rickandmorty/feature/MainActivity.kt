@@ -6,6 +6,7 @@ import by.mankevich.rickandmorty.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.Theme_RickAndMorty)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
